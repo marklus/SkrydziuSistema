@@ -2,7 +2,7 @@
 // operacija1.php
 // skirtapakeisti savo sudaryta operacija pratybose
 
-include("include\styles.cs");
+include("include/styles.css");
 session_start();
 // cia sesijos kontrole
 if (!isset($_SESSION['prev']) || ($_SESSION['prev'] != "index"))
