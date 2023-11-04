@@ -16,6 +16,7 @@ $role="";
         echo "</td></tr><tr><td>";
         if ($_SESSION['user'] != "guest") echo "[<a href=\"useredit.php\">Redaguoti paskyrą</a>] &nbsp;&nbsp;";
         echo "[<a href=\"operacija1.php\">Demo operacija1</a>] &nbsp;&nbsp;";
+        echo "[<a href=\"operacija1.php\">Uzsakymas</a>] &nbsp;&nbsp;";
         echo "[<a href=\"operacija2.php\">Demo operacija2</a>] &nbsp;&nbsp;";
      //Trečia operacija galima tik aukštesnių userlevel vartotojams , čia >=5:
         if ($userlevel >=5 ) {
