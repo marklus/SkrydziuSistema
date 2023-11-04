@@ -251,7 +251,7 @@
 							<div class="modal-content">
 								<form>
 									<div class="modal-header">						
-										<h4 class="modal-title">Editar Pabellón</h4>
+										<h4 class="modal-title">Redaguoti informaciją</h4>
 										<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 									</div>
 									<div class="modal-body">					
@@ -264,8 +264,12 @@
 											<input type="email" value="Pastas A" class="form-control" required>
 										</div>
 										<div class="form-group">
-											<label>Otros Campos</label>
-											<textarea class="form-control" required></textarea>
+											<label>Statusas</label>
+											<input type="text" value="W-13 Piso 1" class="form-control" required>
+										</div>
+										<div class="form-group">
+											<label>Vieta</label>
+											<input type="text" value="W-13 Piso 1" class="form-control" required>
 										</div>
 									</div>
 									<div class="modal-footer">
