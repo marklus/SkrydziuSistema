@@ -13,19 +13,29 @@ if ($_SESSION['prev'] == "index")
 	$_SESSION['passn_error'] = "";      // papildomi kintamieji naujam password įsiminti
 	$_SESSION['passn_login'] = ""; }  //visos kitos turetų būti tuščios
 $_SESSION['prev'] = "useredit"; 
+include("include/meniu.php"); //įterpiamas meniu pagal vartotojo rolę
 ?>
 
  <html>
         <head>  
             <meta http-equiv="X-UA-Compatible" content="IE=9; text/html; charset=utf-8"> 
             <title>Registracija</title>
-            <link href="include/styles.css" rel="stylesheet" type="text/css" >
-        </head>
+            <link rel="stylesheet" type="text/css" href="stylesUzsakymas.css">
+
+                    	    <!-- Required meta tags -->
+	    <meta charset="utf-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	
+	    <!-- Bootstrap CSS -->
+	    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+		<link rel="stylesheet" href="main.css">
+		<link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet">
+
+    </head>
+        
         <body>   
-            <table class="center"><tr><td> <img src="include/top.png"> </td></tr><tr><td> 
-				<table style="border-width: 2px; border-style: dotted;"><tr><td>
-                     Atgal į [<a href="index.php">Pradžia</a>] </td></tr>
-		        </table>               
+            <table class="center"><tr><td> <img src="#"> </td></tr><tr><td>           
                 <div align="center">   <font size="4" color="#ff0000"><?php echo $_SESSION['message']; ?><br></font>  
 					
       <table bgcolor=#C3FDB8>

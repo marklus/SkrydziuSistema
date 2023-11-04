@@ -20,8 +20,24 @@ date_default_timezone_set("Europe/Vilnius");
         <link href="include/styles.css" rel="stylesheet" type="text/css" >
     </head>
     <body>
+	<head>
+        <meta http-equiv="X-UA-Compatible" content="IE=9; text/html; charset=utf-8">
+        <title>Demo projektas</title>
+        <link rel="stylesheet" type="text/css" href="stylesUzsakymas.css">
+
+        	    <!-- Required meta tags -->
+	    <meta charset="utf-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	
+	    <!-- Bootstrap CSS -->
+	    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+		<link rel="stylesheet" href="main.css">
+		<link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet">
+
+    </head>
         <table class="center" ><tr><td>
-            <center><img src="include/top.png"></center>
+		
             </td></tr><tr><td>
 		<center><font size="5">Vartotojų registracija, peržiūra ir įgaliojimų keitimas</font></center></td></tr></table> <br>
 		<center><b><?php echo $_SESSION['message']; ?></b></center>
@@ -73,7 +89,17 @@ date_default_timezone_set("Europe/Vilnius");
       echo "<td><input type=\"checkbox\" name=\"naikinti_".$user."\">";
    }
 ?>
-        </table>
-        <br> <input type="submit" value="Vykdyti">
-        </form>
+<style>
+.center-elements {
+    text-align: center; /* Horizontally center elements within the container */
+    margin: 0 auto; /* Center the container itself within its parent element */
+}
+</style>
+<div class="center-elements">
+    <table>
+        <!-- Your table content -->
+    </table>
+    <br>
+    <input type="submit" value="Vykdyti">
+</div>
     </body></html>

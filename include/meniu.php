@@ -10,27 +10,11 @@ $role="";
 			      {if ($x_value == $userlevel) $role=$x;}
 } 
 
-        echo "<tr><td>";
-        echo "</td></tr><tr><td>";
-        if ($_SESSION['user'] != "guest") echo "[<a href=\"useredit.php\">Redaguoti paskyrą</a>] &nbsp;&nbsp;";
-        echo "[<a href=\"operacija1.php\">Demo operacija1</a>] &nbsp;&nbsp;";
-        echo "[<a href=\"uzsakymas.php\">Užsakymai</a>] &nbsp;&nbsp;";
-        echo "[<a href=\"operacija2.php\">Demo operacija2</a>] &nbsp;&nbsp;";
-     //Trečia operacija galima tik aukštesnių userlevel vartotojams , čia >=5:
-        if ($userlevel >=5 ) {
-            echo "[<a href=\"operacija3.php\">Demo operacija3</a>] &nbsp;&nbsp;";
-       		}   
-        //Administratoriaus sąsaja rodoma tik administratoriui
-        if ($userlevel == $user_roles[ADMIN_LEVEL] ) {
-            echo "[<a href=\"admin.php\">Administratoriaus sąsaja</a>] &nbsp;&nbsp;";
-        }
-        echo "[<a href=\"logout.php\">Atsijungti</a>]";
-      echo "</td></tr></table>";
 ?>       
 <link rel="stylesheet" type="text/css" href="stylesUzsakymas.css">
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
 				<div>
-					<img class="navbar-brand-logo" src="https://i.imgur.com/ipQpPYY.jpg">
+					<img class="navbar-brand-logo" src="include\lektuvas2.jpg">
 					<a class="navbar-brand" href="index.php">Visi Užsakymai</a>
 				</div>
 
@@ -45,7 +29,7 @@ $role="";
 								Pagrindinis <span class="sr-only"></span></a>
 						</li>
 						<li class="nav-item">
-                        <?php     //Administratoriaus sąsaja rodoma tik administratoriui
+                        <?php     //Administratoriaus sąsaja rodoma tik administratoriui tik aukštesnių userlevel vartotojams , čia >=5:
                             if ($userlevel == $user_roles[ADMIN_LEVEL] ) {
                                 echo '<a class="nav-link" href="admin.php"><i class="fa fa-calendar-plus"></i>Administratoriaus sąsaja <span class="sr-only"></span></a>';
                             }?>  
@@ -55,24 +39,24 @@ $role="";
 								Nueva reserva <span class="sr-only"></span></a>
 						</li> -->
 						<li class="nav-item">
-							<a class="nav-link" href="#" ><i class="fa fa-list-alt"></i>
-								Reservas <span class="sr-only"></span></a>
+							<a class="nav-link" href="uzsakymas.php" ><i class="fa fa-list-alt"></i>
+								Užsakymai <span class="sr-only"></span></a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="bilietas.php" ><i class="fa fa-list-alt"></i>
+								Bilietai <span class="sr-only"></span></a>
 						</li>
 						<li class="nav-item">
 							<a class="nav-link" href="#" ><i class="fa fa-chart-line"></i>
-								Informes <span class="sr-only"></span></a>
+								Demo operacija Čia savo dėkite <span class="sr-only"></span></a>
 						</li>
 						<li class="nav-item active">
-							<a class="nav-link" href="useredit.php"><i class="fa fa-sliders-h"></i>
-								Redaguoti paskyrą <span class="sr-only"></span></a>
+							<a class="nav-link" href="#"><i class="fa fa-sliders-h"></i>
+								Demo operacija 2 Čia savo dėkite <span class="sr-only"></span></a>
 						</li>
 					</ul>
 					<ul class="navbar-nav">
 						<li class="nav-item dropdown">
-							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								<img class="navbar-company-switcher-logo" src="https://i.imgur.com/ipQpPYY.jpg">
-								Antucoya Minerals
-							</a>
 							<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
 								<a class="dropdown-item" href="#">
 									<img class="navbar-company-switcher-logo" src="https://i.imgur.com/ipQpPYY.jpg">
@@ -90,7 +74,8 @@ $role="";
 								<i class="fas fa-user-circle"></i>
 							</a>
 							<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-								<a class="dropdown-item" href="login.html">Atsijungti</a>
+								<a class="dropdown-item" href="logout.php">Atsijungti</a>
+                                <a class="dropdown-item" href="useredit.php">Redaguoti paskyrą</a>
 							</div>
 						</li>
 					</ul>

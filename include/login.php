@@ -11,22 +11,22 @@ include("include/nustatymai.php");
 ?>
 
 		<form action="proclogin.php" method="POST" class="login-box">            
-        <center style="font-size:18pt; color: white;"><b>Prisijungimas</b></center>
-        <p style="text-align:left; color: white;"><br>
+        <center style="font-size:18pt; "><b>Prisijungimas</b></center>
+        <p style="text-align:left;"><br>
+        <label>Vartotojo vardas:</label>
         <div class="user-box">
             <input class ="user-box" name="user" type="text" value="<?php echo $_SESSION['name_login'];  ?>"/><br>
             <?php echo $_SESSION['name_error']; 
 			?>
-            <label>Vartotojo vardas:</label>
          </div>  
         </p>
 
         <div class="user-box">
-        <p style="text-align:left;  color: white;"><br>
+        <label>Vartotojo slaptazodis:</label>
+        <p style="text-align:left;"><br>
             <input class ="user-box" name="pass" type="password" value="<?php echo $_SESSION['pass_login']; ?>"/><br>
             <?php echo $_SESSION['pass_error']; 
 			?>
-            <label>Vartotojo slaptazodis:</label>
         </div>  
         </p>  
 

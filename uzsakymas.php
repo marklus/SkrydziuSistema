@@ -384,39 +384,3 @@
 		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 		<script src="https://unpkg.com/gijgo@1.9.11/js/gijgo.min.js" type="text/javascript"></script>
 		<link href="https://unpkg.com/gijgo@1.9.11/css/gijgo.min.css" rel="stylesheet" type="text/css" />
-		<script>
-			$(document).ready(function(){
-				// Activate tooltip
-				$('[data-toggle="tooltip"]').tooltip();
-				
-				// Select/Deselect checkboxes
-				var checkbox = $('table tbody input[type="checkbox"]');
-				$("#selectAll").click(function(){
-					if(this.checked){
-						checkbox.each(function(){
-							this.checked = true;                        
-						});
-					} else{
-						checkbox.each(function(){
-							this.checked = false;                        
-						});
-					} 
-				});
-				checkbox.click(function(){
-					if(!this.checked){
-						$("#selectAll").prop("checked", false);
-					}
-				});
-			});
-			$('.navbar-nav>li>a:not(.dropdown-toggle), .navbar-nav>li>div>a').on('click', function(){
-				$('.navbar-collapse').collapse('hide');
-			});
-			$('#inputCheckIn').datepicker({
-            	uiLibrary: 'bootstrap4'
-        	});
-			$('#inputCheckOut').datepicker({
-            	uiLibrary: 'bootstrap4'
-        	});	
-		</script>
-	</body>
-</html>
