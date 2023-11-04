@@ -9,30 +9,38 @@ include("include/functions.php");
 ?>
 
 <html>
-    <head>
+ <head>
         <meta http-equiv="X-UA-Compatible" content="IE=9; text/html; charset=utf-8">
         <title>Demo projektas</title>
-        <link href="include/styles.css" rel="stylesheet" type="text/css" >
+        <link rel="stylesheet" type="text/css" href="stylesUzsakymas.css">
+
+        	    <!-- Required meta tags -->
+	    <meta charset="utf-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	
+	    <!-- Bootstrap CSS -->
+	    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+		<link rel="stylesheet" href="main.css">
+		<link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet">
+
     </head>
     <body>
-        <table class="center" ><tr><td>
-            <center><img src="include/lektuvas.jpg" style="width: 80%; height: 80%;"></center>
-        </td></tr><tr><td> 
+        <!-- <table class="center" ><tr><td>
+           <center><img src="include/lektuvas.jpg" style="width: 80%; height: 80%;"></center>
+        </td></tr><tr><td> -->
 <?php
            
     if (!empty($_SESSION['user']))     //Jei vartotojas prisijungęs, valom logino kintamuosius ir rodom meniu
     {                                  // Sesijoje nustatyti kintamieji su reiksmemis is DB
                                        // $_SESSION['user'],$_SESSION['ulevel'],$_SESSION['userid'],$_SESSION['umail']
-		
+                                     //  <link href="include/styles.css" rel="stylesheet" type="text/css" >
 		inisession("part");   //   pavalom prisijungimo etapo kintamuosius
 		$_SESSION['prev']="index"; 
         
         include("include/meniu.php"); //įterpiamas meniu pagal vartotojo rolę
 ?>
-                <div style="text-align: center;color:black">
-                    <br><br>
-                    <h1>Main page.</h1>
-                </div><br>
+
       <?php
           }                
           else {   			 
