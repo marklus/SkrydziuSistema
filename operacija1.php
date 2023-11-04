@@ -28,7 +28,7 @@ if (!isset($_SESSION['prev']) || ($_SESSION['prev'] != "index"))
 			ir pakeiskite meniu.php šią eilutę:<br>
 			<?php highlight_string('echo "[<a href=\"operacija1.php\">Demo operacija1</a>] &nbsp;&nbsp;";');  ?><br>
 			Į meniu iš programos grįžtama html eilute:<br>
-			<?php highlight_string('Atgal į [<a href="index.php">Pradžia</a>]');  ?>
+			<?php highlight_string('Atgal į [<a href="index.php">Pradžia Patikrinu ar main change mato</a>]');  ?>
 			
 			
         </div><br>
