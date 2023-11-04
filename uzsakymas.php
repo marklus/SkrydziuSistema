@@ -58,7 +58,7 @@
 		<link rel="stylesheet" href="main.css">
 		<link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet">
 
-		<title>Gestión Hotelera</title>
+		<title>Užsakymai</title>
 
 
 	</head>
@@ -76,7 +76,7 @@
 								<a class="ui-tabs-anchor">
 									<a class="ui-tabs-anchor">
 										<i class="fa fa-angle-right"></i>
-									Pabellones
+									Sąrąšas
 								</a>
 							</li>
 							<li>
@@ -84,9 +84,6 @@
 							</li>
 							<li>
 								<a class="ui-tabs-anchor">Užsakymai</a>
-							</li>
-							<li>
-								<a class="ui-tabs-anchor">Áreas</a>
 							</li>
 						</ul>
 					</div>
@@ -100,6 +97,7 @@
 									<div class="col-sm-6">
 										<a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i class="fas fa-plus-circle"></i><span>Pridėti</span></a>
 										<a href="#deleteEmployeeModal" class="btn btn-danger" data-toggle="modal"><i class="fas fa-minus-circle"></i><span>Pašalinti</span></a>						
+										<input type="text" class="form-control" placeholder="Paieška">
 									</div>
 								</div>
 							</div>
@@ -203,7 +201,7 @@
 								</tbody>
 							</table>
 							<div class="clearfix">
-								<div class="hint-text">Mostrando <b>5</b> de <b>25</b> registros</div>
+								<div class="hint-text">Numeris nuo <b>5</b> iki <b>25</b> </div>
 								<ul class="pagination">
 									<li class="page-item disabled"><a href="#">Atgal</a></li>
 									<li class="page-item"><a href="#" class="page-link">1</a></li>
