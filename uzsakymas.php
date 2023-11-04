@@ -2,14 +2,18 @@
 // operacija1.php
 // skirtapakeisti savo sudaryta operacija pratybose
 
-include("include/styles.css");
 session_start();
 // cia sesijos kontrole
 if (!isset($_SESSION['prev']) || ($_SESSION['prev'] != "index"))
 { header("Location:logout.php");exit;}
 
 ?>
+<head>
+    <!-- Other head elements go here -->
 
+    <!-- Link to your external CSS file -->
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
 <html>
 <body>
 
@@ -231,5 +235,4 @@ if (!isset($_SESSION['prev']) || ($_SESSION['prev'] != "index"))
   
 
 </body>
-
 </html>

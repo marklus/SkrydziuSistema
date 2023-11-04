@@ -10,19 +10,19 @@ $_SESSION['prev'] = "login";
 include("include/nustatymai.php");
 ?>
 
-		<form action="proclogin.php" method="POST" class="login">             
-        <center style="font-size:18pt;"><b>Prisijungimas</b></center>
-        <p style="text-align:left;">Vartotojo vardas:<br>
-            <input class ="s1" name="user" type="text" value="<?php echo $_SESSION['name_login'];  ?>"/><br>
+		<form action="proclogin.php" method="POST" class="login-box">            
+        <center style="font-size:18pt; color: white;"><b>Prisijungimas</b></center>
+        <p style="text-align:left; color: white;">Vartotojo vardas:<br>
+            <input class ="user-box" name="user" type="text" value="<?php echo $_SESSION['name_login'];  ?>"/><br>
             <?php echo $_SESSION['name_error']; 
 			?>
         </p>
-        <p style="text-align:left;">Slaptažodis:<br>
-            <input class ="s1" name="pass" type="password" value="<?php echo $_SESSION['pass_login']; ?>"/><br>
+        <p style="text-align:left;  color: white;">Slaptažodis:<br>
+            <input class ="user-box" name="pass" type="password" value="<?php echo $_SESSION['pass_login']; ?>"/><br>
             <?php echo $_SESSION['pass_error']; 
 			?>
         </p>  
-        <p style="text-align:left;">
+        <p style="text-align:left;  color: white;">
             <input type="submit" name="login" value="Prisijungti"/>   
             <input type="submit" name="problem" value="Pamiršote slaptažodį?"/>   
         </p>
@@ -33,6 +33,5 @@ include("include/nustatymai.php");
 ?>
         </p>     
     </form>
-	
 
 

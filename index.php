@@ -16,7 +16,7 @@ include("include/functions.php");
     </head>
     <body>
         <table class="center" ><tr><td>
-            <center><img src="include/top.png"></center>
+            <center><img src="include/lektuvas.jpg" style="width: 80%; height: 80%;"></center>
         </td></tr><tr><td> 
 <?php
            
@@ -29,9 +29,9 @@ include("include/functions.php");
         
         include("include/meniu.php"); //įterpiamas meniu pagal vartotojo rolę
 ?>
-                <div style="text-align: center;color:green">
+                <div style="text-align: center;color:black">
                     <br><br>
-                    <h1>Pradinis sistemos puslapis (index.php).</h1>
+                    <h1>Main page.</h1>
                 </div><br>
       <?php
           }                
