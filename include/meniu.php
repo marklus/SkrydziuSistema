@@ -47,8 +47,12 @@ $role="";
 								Bilietai <span class="sr-only"></span></a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="#" ><i class="fa fa-chart-line"></i>
-								Demo operacija Čia savo dėkite <span class="sr-only"></span></a>
+							<a class="nav-link" href="darbuotojas.php" ><i class="fa fa-list-alt"></i>
+								Darbuotojai <span class="sr-only"></span></a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="pamaina.php" ><i class="fa fa-list-alt"></i>
+								Pamainos <span class="sr-only"></span></a>
 						</li>
 						<li class="nav-item active">
 							<a class="nav-link" href="#"><i class="fa fa-sliders-h"></i>
