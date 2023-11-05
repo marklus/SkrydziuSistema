@@ -8,7 +8,7 @@ include("include/functions.php");
 ?>
 <!doctype html>
 
-<link rel="stylesheet" type="text/css" href="stylesUzsakymas.css">
+<link rel="stylesheet" type="text/css" href="stylesLektuvas.css">
 
 
 <?php
@@ -58,7 +58,7 @@ else {
     <link rel="stylesheet" href="main.css">
     <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet">
 
-    <title>Mūsų lėktuvai</title>
+    <title>Skrydžių sistema | Lėktuvai</title>
 
 
 
@@ -69,39 +69,15 @@ else {
 
     <section class="main container-fluid h-100">
         <div class="row justify-content-center h-100">
-            <div class="sidebar d-none d-lg-block d-xl-block" id="yellow">
-                <ul class="ui-tabs-nav">
-                    <li>
-                        Pastas</a>
-                    </li>
-                    <li>
-                        <a class="ui-tabs-anchor">
-                            <a class="ui-tabs-anchor">
-                                <i class="fa fa-angle-right"></i>
-                                Sąrąšas
-                            </a>
-                    </li>
-                    <li>
-                        <a class="ui-tabs-anchor">Bilietai</a>
-                    </li>
-                    <li>
-                        <a class="ui-tabs-anchor">Užsakymai</a>
-                    </li>
-                </ul>
-            </div>
 
-<!--            <div>-->
-<!--                <p>Nepamirštamoms kelionėms galite rinktis bet kokius jūsų įgeidžius tenkinančią transporto priemonę!-->
-<!--                    Turite mėgstamiausią skrydžių įmonę? Būtent *tas* lėktuvo modelis jums suteikė trokštamą komfortą?-->
-<!--                    Išsirinkite geriausią!-->
-<!--                </p>-->
-<!--            </div>-->
+
+
             <div class="content-wrapper col">
                 <div class="table-wrapper">
                     <div class="table-title">
                         <div class="row">
                             <div class="col-sm-6">
-                                <h2>Užsakymai <b>  </b></h2>
+                                <h2>Mūsų lėktuvai <b>  </b></h2>
                             </div>
                             <div class="col-sm-6">
                                 <a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i class="fas fa-plus-circle"></i><span>Pridėti</span></a>
@@ -110,6 +86,12 @@ else {
                             </div>
                         </div>
                     </div>
+                                <div>
+                                    <p  class="basic-paragraph" >Nepamirštamoms kelionėms galite rinktis bet kokius jūsų įgeidžius tenkinančią transporto priemonę!
+                                        Turite mėgstamiausią skrydžių įmonę? Būtent *tas* lėktuvo modelis jums suteikė trokštamą komfortą?
+                                        Išsirinkite geriausią!
+                                    </p>
+                                </div>
                     <table class="table table-striped table-hover">
                         <thead>
                         <tr>
