@@ -54,6 +54,10 @@ $role="";
 							<a class="nav-link" href="pamaina.php" ><i class="fa fa-list-alt"></i>
 								Pamainos <span class="sr-only"></span></a>
 						</li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="lektuvas-list.php" ><i class="fa fa-list-alt"></i>
+                                Lėktuvai <span class="sr-only"></span></a>
+                        </li>
 						<li class="nav-item active">
 							<a class="nav-link" href="#"><i class="fa fa-sliders-h"></i>
 								Demo operacija 2 Čia savo dėkite <span class="sr-only"></span></a>
