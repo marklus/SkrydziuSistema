@@ -39,8 +39,17 @@ $role="";
 								Nueva reserva <span class="sr-only"></span></a>
 						</li> -->
 						<li class="nav-item">
-							<a class="nav-link" href="uzsakymas.php" ><i class="fa fa-list-alt"></i>
-								Užsakymai <span class="sr-only"></span></a>
+                        <?php     //Administratoriaus sąsaja rodoma tik administratoriui tik aukštesnių userlevel vartotojams , čia >=5:
+                            if ($userlevel == $user_roles[ADMIN_LEVEL] ) {
+                                echo '<a class="nav-link" href="uzsakymas.php" ><i class="fa fa-list-alt"></i>
+								Visi Užsakymai <span class="sr-only"></span></a>';
+                            }
+							if ($userlevel == $user_roles[DEFAULT_LEVEL] ) {
+                                echo '<a class="nav-link" href="uzsakymas.php" ><i class="fa fa-list-alt"></i>
+								Užsakymai <span class="sr-only"></span></a>';
+                            }
+							
+							?>  
 						</li>
 						<li class="nav-item">
 							<a class="nav-link" href="bilietas.php" ><i class="fa fa-list-alt"></i>
