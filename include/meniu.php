@@ -68,8 +68,8 @@ $role="";
 								Oro uostai <span class="sr-only"></span></a>
 						</li>
 						<li class="nav-item active">
-							<a class="nav-link" href="#"><i class="fa fa-sliders-h"></i>
-								Demo operacija 2 Čia savo dėkite <span class="sr-only"></span></a>
+							<a class="nav-link" href="skrydziai.php"><i class="fa fa-sliders-h"></i>
+								Skrydziai <span class="sr-only"></span></a>
 						</li>
 					</ul>
 					<ul class="navbar-nav">
