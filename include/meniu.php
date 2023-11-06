@@ -71,6 +71,10 @@ $role="";
 							<a class="nav-link" href="skrydziai.php"><i class="fa fa-sliders-h"></i>
 								Skrydziai <span class="sr-only"></span></a>
 						</li>
+						<li class="nav-item active">
+							<a class="nav-link" href="lektuvas-list.php"><i class="fa fa-sliders-h"></i>
+								Lėktuvas <span class="sr-only"></span></a>
+						</li>
 					</ul>
 					<ul class="navbar-nav">
 						<li class="nav-item dropdown">

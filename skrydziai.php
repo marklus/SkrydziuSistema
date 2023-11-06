@@ -51,7 +51,7 @@
 		<link rel="stylesheet" href="main.css">
 		<link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet">
 
-		<title>Oro uostai</title>
+		<title>Skrydziai</title>
 
 
 	</head>
@@ -88,7 +88,7 @@
 							<div class="table-title">
 								<div class="row">
 									<div class="col-sm-6">
-										<h2>Oro uostai<b>  </b></h2>
+										<h2>Skrydziai<b>  </b></h2>
 									</div>
 									<div class="col-sm-6">
 										<a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i class="fas fa-plus-circle"></i><span>Pridėti</span></a>
@@ -107,11 +107,14 @@
 											</span>
 										</th>
 										<th>Pavadinimas</th>
-										<th>IATA kodas</th>
-										<th>Miestas</th>
-										<th>Tipas</th>
-										<th>Reitingas</th>
-										<th>Adresas</th>
+										<th>Iš. laikas</th>
+                                        <th>Realus išvykimo laikas </th>
+										<th>Atv. laikas</th>
+                                        <th>Realus atvykimo laikas </th>
+										<th>Trukmė</th>
+										<th>Išvykimo vieta</th>
+										<th>Atvykimo vieta</th>
+
 									</tr>
 								</thead>
 								<tbody>
@@ -128,6 +131,8 @@
 										<td>Tarptautinis</td>
 										<td>4.5/5</td>
 										<td>Oro uosto g. 4</td>
+                                        <td>...</td>
+										<td>...</td>
 										<td>
 											<a href="#redaguotiOroUosta" class="edit" data-toggle="modal"><i class="fas fa-pen" data-toggle="tooltip" title="Redaguoti"></i></a>
 											<a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="fas fa-trash" data-toggle="tooltip" title="Pašalinti"></i></a>

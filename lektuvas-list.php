@@ -85,7 +85,7 @@ else {
                         <a class="ui-tabs-anchor">Bilietai</a>
                     </li>
                     <li>
-                        <a class="ui-tabs-anchor">Užsakymai</a>
+                        <a class="ui-tabs-anchor">Lėktuvai</a>
                     </li>
                 </ul>
             </div>
@@ -101,7 +101,7 @@ else {
                     <div class="table-title">
                         <div class="row">
                             <div class="col-sm-6">
-                                <h2>Užsakymai <b>  </b></h2>
+                                <h2>Lėktuvai <b>  </b></h2>
                             </div>
                             <div class="col-sm-6">
                                 <a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i class="fas fa-plus-circle"></i><span>Pridėti</span></a>
@@ -119,11 +119,11 @@ else {
 												<label for="selectAll"></label>
 											</span>
                             </th>
-                            <th>Nr</th>
+                            <th>Re Nr</th>
+                            <th>Pagaminimo data</th>
+                            <th>Įsigijimo data</th>
+                            <th>Wifi</th>
                             <th>Pavadinimas</th>
-                            <th>Kur</th>
-                            <th>Statusas</th>
-                            <th>Veiksmai</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -138,6 +138,8 @@ else {
                             <td>Pastas A</td>
                             <td>16</td>
                             <td>Activo</td>
+                            <td></td>
+                            <td></td>
                             <td>
                                 <a href="#redaguotiUžsakymą" class="edit" data-toggle="modal"><i class="fas fa-pen" data-toggle="tooltip" title="Redaguoti"></i></a>
                                 <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="fas fa-trash" data-toggle="tooltip" title="Pašalinti"></i></a>
@@ -154,6 +156,8 @@ else {
                             <td>Pastas A</td>
                             <td>16</td>
                             <td>Activo</td>
+                            <td></td>
+                            <td></td>
                             <td>
                                 <a href="#redaguotiUžsakymą" class="edit" data-toggle="modal"><i class="fas fa-pen" data-toggle="tooltip" title="Editar"></i></a>
                                 <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="fas fa-trash" data-toggle="tooltip" title="Eliminar"></i></a>
@@ -170,6 +174,8 @@ else {
                             <td>Pastas A</td>
                             <td>16</td>
                             <td>Activo</td>
+                            <td></td>
+                            <td></td>
                             <td>
                                 <a href="#redaguotiUžsakymą" class="edit" data-toggle="modal"><i class="fas fa-pen" data-toggle="tooltip" title="Editar"></i></a>
                                 <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="fas fa-trash" data-toggle="tooltip" title="Eliminar"></i></a>
@@ -186,6 +192,8 @@ else {
                             <td>Pastas A</td>
                             <td>16</td>
                             <td>Activo</td>
+                            <td></td>
+                            <td></td>
                             <td>
                                 <a href="#redaguotiUžsakymą" class="edit" data-toggle="modal"><i class="fas fa-pen" data-toggle="tooltip" title="Editar"></i></a>
                                 <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="fas fa-trash" data-toggle="tooltip" title="Eliminar"></i></a>
@@ -202,6 +210,8 @@ else {
                             <td>Pastas A</td>
                             <td>16</td>
                             <td>Activo</td>
+                            <td></td>
+                            <td></td>
                             <td>
                                 <a href="#redaguotiUžsakymą" class="edit" data-toggle="modal"><i class="fas fa-pen" data-toggle="tooltip" title="Editar"></i></a>
                                 <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="fas fa-trash" data-toggle="tooltip" title="Eliminar"></i></a>
