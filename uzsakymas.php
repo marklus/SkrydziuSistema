@@ -276,12 +276,13 @@
 											<label>Vieta</label>
 											<input type="text" value="W-13 Piso 1" class="form-control" required>
 										</div>
-										<?
+										<?php
 										echo
 										'<div class="form-group">
-											<label>Statusas</label>
+											<label>Spauskite norėdami apmokėti užsakymą</label>
 											<div id="paypal-payment-button"> </div>
-										</div>' ?>
+										</div>' 
+										?>
 									</div>
 									<div class="modal-footer">
 										<input type="button" class="btn btn-default" data-dismiss="modal" value="Atsaukti">
@@ -309,10 +310,10 @@
 										<input type="button" class="btn btn-default" data-dismiss="modal" value="Atšaukti">
 										<input type="submit" class="btn btn-danger" value="Pašalinti">
 									</div>
-<div class="col-sm-6">
+<!--<div class="col-sm-6">
 <p>Spauskite norint apmokėti užsakymą</p>
     <div class="col-sm-8" id="paypal-payment-button" style="width: 150px; height: 40px;"></div>
-</div>
+</div>-->
 								</form>
 							</div>
 						</div>
