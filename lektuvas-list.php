@@ -143,6 +143,8 @@ else {
                             <td>
                                 <a href="#redaguotiUžsakymą" class="edit" data-toggle="modal"><i class="fas fa-pen" data-toggle="tooltip" title="Redaguoti"></i></a>
                                 <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="fas fa-trash" data-toggle="tooltip" title="Pašalinti"></i></a>
+                                <a href="lektuvas.php">LĖKTUVO PERŽIŪRA</a>                                
+
                             </td>
                         </tr>
                         <tr>
@@ -161,6 +163,8 @@ else {
                             <td>
                                 <a href="#redaguotiUžsakymą" class="edit" data-toggle="modal"><i class="fas fa-pen" data-toggle="tooltip" title="Editar"></i></a>
                                 <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="fas fa-trash" data-toggle="tooltip" title="Eliminar"></i></a>
+                                <a href="lektuvas.php">LĖKTUVO PERŽIŪRA</a>                                
+
                             </td>
                         </tr>
                         <tr>
@@ -179,6 +183,8 @@ else {
                             <td>
                                 <a href="#redaguotiUžsakymą" class="edit" data-toggle="modal"><i class="fas fa-pen" data-toggle="tooltip" title="Editar"></i></a>
                                 <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="fas fa-trash" data-toggle="tooltip" title="Eliminar"></i></a>
+                                <a href="lektuvas.php">LĖKTUVO PERŽIŪRA</a>                                
+
                             </td>
                         </tr>
                         <tr>
@@ -197,6 +203,7 @@ else {
                             <td>
                                 <a href="#redaguotiUžsakymą" class="edit" data-toggle="modal"><i class="fas fa-pen" data-toggle="tooltip" title="Editar"></i></a>
                                 <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="fas fa-trash" data-toggle="tooltip" title="Eliminar"></i></a>
+                                <a href="lektuvas.php">LĖKTUVO PERŽIŪRA</a>                                
                             </td>
                         </tr>
                         <tr>
@@ -215,6 +222,8 @@ else {
                             <td>
                                 <a href="#redaguotiUžsakymą" class="edit" data-toggle="modal"><i class="fas fa-pen" data-toggle="tooltip" title="Editar"></i></a>
                                 <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="fas fa-trash" data-toggle="tooltip" title="Eliminar"></i></a>
+                                <a href="lektuvas.php">LĖKTUVO PERŽIŪRA</a>                                
+
                             </td>
                         </tr>
                         </tbody>

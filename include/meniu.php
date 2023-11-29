@@ -55,10 +55,10 @@ $role="";
 							<a class="nav-link" href="bilietas.php" ><i class="fa fa-list-alt"></i>
 								Bilietai <span class="sr-only"></span></a>
 						</li>
-						<li class="nav-item">
+						<!--<li class="nav-item">
 							<a class="nav-link" href="darbuotojas.php" ><i class="fa fa-list-alt"></i>
 								Darbuotojai <span class="sr-only"></span></a>
-						</li>
+						</li>-->
 						<li class="nav-item">
 							<a class="nav-link" href="pamaina.php" ><i class="fa fa-list-alt"></i>
 								Pamainos <span class="sr-only"></span></a>
@@ -67,12 +67,12 @@ $role="";
 							<a class="nav-link" href="oro_uostas.php" ><i class="fa fa-list-alt"></i>
 								Oro uostai <span class="sr-only"></span></a>
 						</li>
-						<li class="nav-item active">
-							<a class="nav-link" href="skrydziai.php"><i class="fa fa-sliders-h"></i>
+						<li class="nav-item">
+							<a class="nav-link" href="skrydziai.php"><i class="fa fa-list-alt"></i>
 								Skrydziai <span class="sr-only"></span></a>
 						</li>
-						<li class="nav-item active">
-							<a class="nav-link" href="lektuvas-list.php"><i class="fa fa-sliders-h"></i>
+						<li class="nav-item">
+							<a class="nav-link" href="lektuvas-list.php"><i class="fa fa-list-alt"></i>
 								Lėktuvas <span class="sr-only"></span></a>
 						</li>
 					</ul>

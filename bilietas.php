@@ -3,10 +3,28 @@
 	// jei vartotojas prisijungęs rodomas demonstracinis meniu pagal jo rolę
 	// jei neprisijungęs - prisijungimo forma per include("login.php");
 	// toje formoje daugiau galimybių...
+
+  
+  //https://developer.paypal.com/integration-builder/
 	
 	include("include/functions.php"); 
     ?>
+
 <!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PayPal JS SDK Standard Integration</title>
+  </head>
+  <body>
+    <div id="paypal-button-container"></div>
+    <p id="result-message"></p>
+    <!-- Replace the "test" client-id value with your client-id -->
+    <script src="https://www.paypal.com/sdk/js?client-id=test&components=buttons&enable-funding=&disable-funding=paylater,venmo,card" data-sdk-integration-source="integrationbuilder_sc"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
 
 <link rel="stylesheet" type="text/css" href="stylesUzsakymas.css">
 
@@ -36,13 +54,6 @@
            
 		  }
 ?>
-
-
-
-
-
-
-
 
 
 
