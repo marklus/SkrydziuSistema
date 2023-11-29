@@ -55,7 +55,7 @@
                             </li>
                             <hr>
                             <li class="flex justify-content-between">
-                                <label for="price">Amout Payble : </label>
+                                <label for="price">Amout Payable : </label>
                                 <span class="text-red font-title">$399</span>
                             </li>
                         </ul>

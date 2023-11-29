@@ -63,11 +63,16 @@
 
 	</head>
 	<body>
-		<div id="app" class="container-fluid h-100">
 
+					<!--accmokslui123654@proton.me-->
+		<script src="https://www.paypal.com/sdk/js?client-id=AS89FaARMRYphRAg5CfdpR7hmO1-UKCjWWXjkdvfkcnglK1Gtmzj0Zwearff0_EQNR7PycuDvRhd1dKb&disable-funding=credit,card"></script>
+		<script src="PayPal/index.js"></script>
+
+		<div id="app" class="container-fluid h-100">
 			<section class="main container-fluid h-100">
 				<div class="row justify-content-center h-100">
 					<div class="sidebar d-none d-lg-block d-xl-block" id="yellow">
+						
 						<ul class="ui-tabs-nav">					
 							<li>
 								Pastas</a>
@@ -101,6 +106,9 @@
 									</div>
 								</div>
 							</div>
+<!--<div class="col-sm-6">
+    <div class="col-sm-8" id="paypal-payment-button" style="width: 150px; height: 40px;"></div>
+</div>-->
 							<table class="table table-striped table-hover">
 								<thead>
 									<tr>
@@ -242,6 +250,7 @@
 										<input type="submit" class="btn btn-success" value="Add">
 									</div>
 								</form>
+								
 							</div>
 						</div>
 					</div>
@@ -264,18 +273,21 @@
 											<input type="email" value="Pastas A" class="form-control" required>
 										</div>
 										<div class="form-group">
-											<label>Statusas</label>
-											<input type="text" value="W-13 Piso 1" class="form-control" required>
-										</div>
-										<div class="form-group">
 											<label>Vieta</label>
 											<input type="text" value="W-13 Piso 1" class="form-control" required>
 										</div>
+										<?
+										echo
+										'<div class="form-group">
+											<label>Statusas</label>
+											<div id="paypal-payment-button"> </div>
+										</div>' ?>
 									</div>
 									<div class="modal-footer">
 										<input type="button" class="btn btn-default" data-dismiss="modal" value="Atsaukti">
 										<input type="submit" class="btn btn-info" value="Pateikti">
 									</div>
+									
 								</form>
 							</div>
 						</div>
@@ -297,11 +309,17 @@
 										<input type="button" class="btn btn-default" data-dismiss="modal" value="Atšaukti">
 										<input type="submit" class="btn btn-danger" value="Pašalinti">
 									</div>
+<div class="col-sm-6">
+<p>Spauskite norint apmokėti užsakymą</p>
+    <div class="col-sm-8" id="paypal-payment-button" style="width: 150px; height: 40px;"></div>
+</div>
 								</form>
 							</div>
 						</div>
 					</div>
 				</div>
+
+
 
 				<!-- <div style="height: 100px; background-color: rgba(255,0,0,0.1);">
 					<div class="h-25 d-inline-block" style="width: 120px; background-color: rgba(0,0,255,.1)">Height 25%</div>

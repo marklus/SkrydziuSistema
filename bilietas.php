@@ -341,11 +341,17 @@
                     <div class="value"><b>$</b>1,799</div>
                   </div>
                   <a href="#" class="btn btn-info btn-sm btn-buy">Buy Now!</a>
+                  
                 </li>
+                
               </ul>
+              
             </div>
             <div class="footer">
               <button class="btn toggle-tickets">Pirkti</button>
+              <div id="paypal-payment-button"> </div>
+              
+
             </div>
           </div>
         </div>
@@ -357,16 +363,12 @@
     </footer>
   </div>
 
-  <div id="paypal-button-container"></div>
-    <p id="result-message"></p>
-    <!-- Replace the "test" client-id value with your client-id -->
-    <script src="https://www.paypal.com/sdk/js?client-id=AS89FaARMRYphRAg5CfdpR7hmO1-UKCjWWXjkdvfkcnglK1Gtmzj0Zwearff0_EQNR7PycuDvRhd1dKb&components=buttons&enable-funding=paylater,venmo,card" data-sdk-integration-source="integrationbuilder_sc"></script>
-    <script src="app.js"></script>
+
+<!--accmokslui123654@proton.me-->
+<script src="https://www.paypal.com/sdk/js?client-id=AS89FaARMRYphRAg5CfdpR7hmO1-UKCjWWXjkdvfkcnglK1Gtmzj0Zwearff0_EQNR7PycuDvRhd1dKb&disable-funding=credit,card"></script>
+    <script src="PayPal/index.js"></script>
 </body>
 
-<PayPalButton
-         total=1
-        />
 		</div>
 		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
