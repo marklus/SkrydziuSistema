@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Paypal Payment</title>
 
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style1.css">
 </head>
 <body>
     <main id="cart-main">
@@ -68,7 +68,7 @@
         </div>
     </main>
 
-
+<!--accmokslui123654@proton.me-->
     <script src="https://www.paypal.com/sdk/js?client-id=AS89FaARMRYphRAg5CfdpR7hmO1-UKCjWWXjkdvfkcnglK1Gtmzj0Zwearff0_EQNR7PycuDvRhd1dKb&disable-funding=credit,card"></script>
     <script src="index.js"></script>
 </body>
