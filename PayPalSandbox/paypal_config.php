@@ -4,6 +4,10 @@ define("PP_USER_SANDBOX", "4ever.kellyan-facilitator_api1.gmail.com");
 define("PP_PASSWORD_SANDBOX", "YRMTJV9HTTZ3925P");
 define("PP_SIGNATURE_SANDBOX", "AZN5PBTDyJe4aZpC3rl8ZIUzu1JUApLrv.CmzLLPFZKI5qCh5.o2kKYA");
 
+//define("PP_USER_SANDBOX", "4ever.kellyan-facilitator_api1.gmail.com");
+//define("PP_PASSWORD_SANDBOX", "YRMTJV9HTTZ3925P");
+//define("PP_SIGNATURE_SANDBOX", "AZN5PBTDyJe4aZpC3rl8ZIUzu1JUApLrv.CmzLLPFZKI5qCh5.o2kKYA");
+
 //Seller Live credentials.
 define("PP_USER","seller_username_here");
 define("PP_PASSWORD", "seller_password_here");
