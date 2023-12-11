@@ -1,8 +1,11 @@
 <?php
 ?>
 <!doctype html>
+<script src="https://cdn.jsdelivr.net/npm/three@latest/build/three.min.js"></script>
 
 <link rel="stylesheet" type="text/css" href="stylesUzsakymas.css">
+
+
 
 
 <!doctype html>
