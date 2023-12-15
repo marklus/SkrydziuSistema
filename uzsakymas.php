@@ -174,7 +174,7 @@ include 'connect.php';
 												//echo "<td>" . $row['Statusas'] . "</td>";
 												echo "<td>
 													<a href='#redaguotiUžsakymą' class='edit' data-toggle='modal' data-id='{$row['id_uzsakymas']}'><i class='fas fa-pen' data-toggle='tooltip' title='Redaguoti'></i></a>
-													<a href='#deleteEmployeeModal' class='delete' data-toggle='modal'><i class='fas fa-trash' data-toggle='tooltip' title='Pašalinti'></i></a>
+													<a href='#deleteEmployeeModal' class='delete' data-toggle='modal' data-id='{$row['id_uzsakymas']}'><i class='fas fa-trash' data-toggle='tooltip' title='Pašalinti'></i></a>
 												</td>";
 												echo "</tr>";
 											}
@@ -185,91 +185,6 @@ include 'connect.php';
 										$conn->close();
 										?>
 
-<!--
-
-
-									<tr>
-										<td>
-											<span class="custom-checkbox">
-												<input type="checkbox" id="checkbox1" name="options[]" value="1">
-												<label for="checkbox1"></label>
-											</span>
-										</td>
-										<td>W-13 Piso 1</td>
-										<td>Pastas A</td>
-										<td>16</td>
-										<td>Activo</td>
-										<td>
-											<a href="#redaguotiUžsakymą" class="edit" data-toggle="modal"><i class="fas fa-pen" data-toggle="tooltip" title="Redaguoti"></i></a>
-											<a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="fas fa-trash" data-toggle="tooltip" title="Pašalinti"></i></a>
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<span class="custom-checkbox">
-												<input type="checkbox" id="checkbox1" name="options[]" value="1">
-												<label for="checkbox1"></label>
-											</span>
-										</td>
-										<td>W-13 Piso 1</td>
-										<td>Pastas A</td>
-										<td>16</td>
-										<td>Activo</td>
-										<td>
-											<a href="#redaguotiUžsakymą" class="edit" data-toggle="modal"><i class="fas fa-pen" data-toggle="tooltip" title="Editar"></i></a>
-											<a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="fas fa-trash" data-toggle="tooltip" title="Eliminar"></i></a>
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<span class="custom-checkbox">
-												<input type="checkbox" id="checkbox1" name="options[]" value="1">
-												<label for="checkbox1"></label>
-											</span>
-										</td>
-										<td>W-13 Piso 1</td>
-										<td>Pastas A</td>
-										<td>16</td>
-										<td>Activo</td>
-										<td>
-											<a href="#redaguotiUžsakymą" class="edit" data-toggle="modal"><i class="fas fa-pen" data-toggle="tooltip" title="Editar"></i></a>
-											<a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="fas fa-trash" data-toggle="tooltip" title="Eliminar"></i></a>
-										</td>
-									</tr>
-									<tr>
-									<td>
-										<span class="custom-checkbox">
-											<input type="checkbox" id="checkbox1" name="options[]" value="1">
-											<label for="checkbox1"></label>
-										</span>
-										</td>
-										<td>W-13 Piso 1</td>
-										<td>Pastas A</td>
-										<td>16</td>
-										<td>Activo</td>
-										<td>
-											<a href="#redaguotiUžsakymą" class="edit" data-toggle="modal"><i class="fas fa-pen" data-toggle="tooltip" title="Editar"></i></a>
-											<a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="fas fa-trash" data-toggle="tooltip" title="Eliminar"></i></a>
-										</td>
-									</tr>				
-									<tr>
-										<td>
-											<span class="custom-checkbox">
-												<input type="checkbox" id="checkbox1" name="options[]" value="1">
-												<label for="checkbox1"></label>
-											</span>
-										</td>
-										<td>W-13 Piso 1</td>
-										<td>Pastas A</td>
-										<td>16</td>
-										<td>Activo</td>
-										<td>
-											<a href="#redaguotiUžsakymą" class="edit" data-toggle="modal"><i class="fas fa-pen" data-toggle="tooltip" title="Editar"></i></a>
-											<a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="fas fa-trash" data-toggle="tooltip" title="Eliminar"></i></a>
-										</td>
-									</tr>
-								</tbody>
-								-->
 							</table>
 							<div class="clearfix">
 								<div class="hint-text">Numeris nuo <b>5</b> iki <b>25</b> </div>
@@ -291,7 +206,7 @@ include 'connect.php';
 							<div class="modal-content">
 								<form>
 									<div class="modal-header">						
-										<h4 class="modal-title">Nuevo Pabellón</h4>
+										<h4 class="modal-title">Pridėti naują</h4>
 										<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 									</div>
 									<div class="modal-body">					
@@ -339,7 +254,7 @@ include 'connect.php';
 							</div>
 							<div class="modal-footer">
 							<input type="button" class="btn btn-default" data-dismiss="modal" value="Atsaukti">
-							<input type="submit" class="btn btn-info" value="Pateikti" onclick="submitForm()">
+							<input type="submit" class="btn btn-info" name="edit_submit" value="Pateikti">
 							</div>
 						</form>
 						</div>
@@ -352,59 +267,82 @@ include 'connect.php';
 						$('#edit_id').val(id);
 						});
 					});
+
+					$(document).ready(function() {
+						$('.delete').click(function() {
+							var id = $(this).data('id');
+							$('#delete_id').val(id);
+						});
+					});
 					</script>
 										
 
 										<?php
-						// Assuming you have established a database connection earlier in your script
-						// ...
 						include 'connect.php';
+
 						if ($_SERVER["REQUEST_METHOD"] == "POST") {
-							if (isset($_POST["edit_id"]) && isset($_POST["selected_busena"])) {
-								$edit_id = $_POST["edit_id"];
-								$selected_busena = $_POST["selected_busena"];
+							if (isset($_POST["edit_submit"])) {
+								// Code for processing edit submission
+								if (isset($_POST["edit_id"]) && isset($_POST["selected_busena"])) {
+									$edit_id = $_POST["edit_id"];
+									$selected_busena = $_POST["selected_busena"];
 
-								// Update the 'busena' field in the 'uzsakymai' table
-								$updateSql = "UPDATE uzsakymai SET busena = '$selected_busena' WHERE id_uzsakymas = $edit_id";
+									// Update the 'busena' field in the 'uzsakymai' table
+									$updateSql = "UPDATE uzsakymai SET busena = '$selected_busena' WHERE id_uzsakymas = $edit_id";
 
-								if ($conn->query($updateSql) === TRUE) {
-									echo "Record updated successfully";
-								} else {
-									echo "Error updating record: " . $conn->error;
+									if ($conn->query($updateSql) === TRUE) {
+										echo "Record updated successfully";
+									} else {
+										echo "Error updating record: " . $conn->error;
+									}
+								}
+							} elseif (isset($_POST["delete_submit"])) {
+								// Code for processing delete submission
+								if (isset($_POST["delete_id"])) {
+									$delete_id = $_POST["delete_id"];
+
+									// Delete the record from the 'uzsakymai' table
+									$deleteSql = "DELETE FROM uzsakymai WHERE id_uzsakymas = $delete_id";
+
+									if ($conn->query($deleteSql) === TRUE) {
+										echo "Record deleted successfully";
+									} else {
+										echo "Error deleting record: " . $conn->error;
+									}
 								}
 							}
-							// Additional processing if needed...
 						}
 
 						// Your existing code for displaying the table goes here...
 						?>
 
 
+
+					<!-- Delete Modal HTML -->
 					<!-- Delete Modal HTML -->
 					<div id="deleteEmployeeModal" class="modal fade">
 						<div class="modal-dialog">
 							<div class="modal-content">
-								<form>
-									<div class="modal-header">						
+								<form action="uzsakymas.php" method="post">
+									<input type="hidden" name="delete_id" id="delete_id">
+									<div class="modal-header">
 										<h4 class="modal-title">Pašalinti užsakymą</h4>
 										<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 									</div>
-									<div class="modal-body">					
+									<div class="modal-body">
 										<p>Ar tikrai norite pašalinti užsakymą?</p>
 										<p class="text-warning"><small>Užsakymo nebus galima grąžinti.</small></p>
 									</div>
 									<div class="modal-footer">
 										<input type="button" class="btn btn-default" data-dismiss="modal" value="Atšaukti">
-										<input type="submit" class="btn btn-danger" value="Pašalinti">
+										<input type="submit" class="btn btn-danger" name="delete_submit" value="Pašalinti">
 									</div>
-<!--<div class="col-sm-6">
-<p>Spauskite norint apmokėti užsakymą</p>
-    <div class="col-sm-8" id="paypal-payment-button" style="width: 150px; height: 40px;"></div>
-</div>-->
 								</form>
 							</div>
 						</div>
-					</div>
+</div>
+
+
 				</div>
 
 
@@ -496,23 +434,3 @@ include 'connect.php';
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.7.0/dist/js/bootstrap.bundle.min.js"></script>
 
 
-
-		<script>
-					function submitForm() {
-						// Assuming you have a form with the id "myForm"
-						var formData = $("#redaguotiUžsakymą form").serialize();
-						$.ajax({
-							type: "POST",
-							url: "process_form.php",
-							data: formData,
-							success: function(response) {
-								// Handle the server response
-								//alert(response);  // You can replace this with any specific action
-								console.log(response);
-							},
-							error: function(error) {
-								console.log(error);
-							}
-						});
-					}
-				</script>
