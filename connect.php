@@ -1,8 +1,8 @@
 <?php
 // connect.php 
 $server = 'localhost';
-$username = 'stud';
-$password = 'stud';
+$username = 'root'; //as pakeiciau is stud jei jus esate VM tada stud 
+$password = '';//as pakeiciau is stud jei jus esate VM tada stud 
 $database = 'vartvald';
 $conn = mysqli_connect($server, $username, $password, $database);
 // Check connection 

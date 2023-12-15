@@ -1,11 +1,13 @@
 <?php
+include 'connect.php';
     session_start();      // index.php
 	// jei vartotojas prisijungęs rodomas demonstracinis meniu pagal jo rolę
 	// jei neprisijungęs - prisijungimo forma per include("login.php");
 	// toje formoje daugiau galimybių...
 	
 	include("include/functions.php"); 
-	include 'connect.php';
+	
+	
     ?>
 <!doctype html>
 
@@ -129,15 +131,25 @@
 								</thead>
 								<tbody>
 
-										<?php
+									<?php
+
+										$sql = "SELECT 
+										id_uzsakymas, 
+										busena,
+										sukurimo_data
+										FROM 
+										uzsakymai";
+
+										$result = mysqli_query($conn, $sql);
+
 										if ($result->num_rows > 0) {
 											while ($row = $result->fetch_assoc()) {
 												echo "<tr>";
 												echo "<td><span class='custom-checkbox'><input type='checkbox' id='checkbox1' name='options[]' value='1'><label for='checkbox1'></label></span></td>";
-												echo "<td>" . $row['Nr'] . "</td>";
-												echo "<td>" . $row['Pavadinimas'] . "</td>";
-												echo "<td>" . $row['Kur'] . "</td>";
-												echo "<td>" . $row['Statusas'] . "</td>";
+												echo "<td>" . $row['id_uzsakymas'] . "</td>";
+												echo "<td>" . $row['busena'] . "</td>";
+												echo "<td>" . $row['sukurimo_data'] . "</td>";
+												//echo "<td>" . $row['Statusas'] . "</td>";
 												echo "<td>
 														<a href='#redaguotiUžsakymą' class='edit' data-toggle='modal'><i class='fas fa-pen' data-toggle='tooltip' title='Redaguoti'></i></a>
 														<a href='#deleteEmployeeModal' class='delete' data-toggle='modal'><i class='fas fa-trash' data-toggle='tooltip' title='Pašalinti'></i></a>
@@ -151,7 +163,7 @@
 										$conn->close();
 										?>
 
-
+<!--
 
 
 									<tr>
@@ -235,6 +247,7 @@
 										</td>
 									</tr>
 								</tbody>
+								-->
 							</table>
 							<div class="clearfix">
 								<div class="hint-text">Numeris nuo <b>5</b> iki <b>25</b> </div>
