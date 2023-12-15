@@ -5,6 +5,7 @@
 	// toje formoje daugiau galimybių...
 	
 	include("include/functions.php"); 
+	include 'connect.php';
     ?>
 <!doctype html>
 
@@ -35,6 +36,7 @@
                 echo "</td></tr></table></div><br>";
            
 		  }
+		  
 ?>
 
 
@@ -126,6 +128,32 @@
 									</tr>
 								</thead>
 								<tbody>
+
+										<?php
+										if ($result->num_rows > 0) {
+											while ($row = $result->fetch_assoc()) {
+												echo "<tr>";
+												echo "<td><span class='custom-checkbox'><input type='checkbox' id='checkbox1' name='options[]' value='1'><label for='checkbox1'></label></span></td>";
+												echo "<td>" . $row['Nr'] . "</td>";
+												echo "<td>" . $row['Pavadinimas'] . "</td>";
+												echo "<td>" . $row['Kur'] . "</td>";
+												echo "<td>" . $row['Statusas'] . "</td>";
+												echo "<td>
+														<a href='#redaguotiUžsakymą' class='edit' data-toggle='modal'><i class='fas fa-pen' data-toggle='tooltip' title='Redaguoti'></i></a>
+														<a href='#deleteEmployeeModal' class='delete' data-toggle='modal'><i class='fas fa-trash' data-toggle='tooltip' title='Pašalinti'></i></a>
+													</td>";
+												echo "</tr>";
+											}
+										} else {
+											echo "<tr><td colspan='6'>0 results</td></tr>";
+										}
+
+										$conn->close();
+										?>
+
+
+
+
 									<tr>
 										<td>
 											<span class="custom-checkbox">
