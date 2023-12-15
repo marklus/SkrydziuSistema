@@ -122,16 +122,32 @@ include 'connect.php';
 												<label for="selectAll"></label>
 											</span>
 										</th>
-										<th>Nr</th>
+										<th>Nr.</th>
 										<th>Pavadinimas</th>
-										<th>Kur</th>
-										<th>Statusas</th>
+										<th>Sukurimo Data</th>
+										<th>Būsena</th>
 										<th>Veiksmai</th>
 									</tr>
 								</thead>
 								<tbody>
 
 									<?php
+
+									$id_uzsakymas = "id_uzsakymas";
+									$newBusena = "aktyvus";
+									$sukurimo_data = date("Y-m-d");
+
+		  						/////////////////////////////////////// Pasalinti veliau
+									//$insertSql = "INSERT INTO uzsakymai ( busena, sukurimo_data) VALUES ('$newBusena', '$sukurimo_data')";
+		  						//////////////////////////////////////
+									//if ($conn->query($insertSql) === TRUE) {
+										echo "New record added successfully";
+								//	} else {
+								//		echo "Error: " . $insertSql . "<br>" . $conn->error;
+								//	}
+
+
+
 
 										$sql = "SELECT 
 										id_uzsakymas, 
@@ -145,15 +161,21 @@ include 'connect.php';
 										if ($result->num_rows > 0) {
 											while ($row = $result->fetch_assoc()) {
 												echo "<tr>";
-												echo "<td><span class='custom-checkbox'><input type='checkbox' id='checkbox1' name='options[]' value='1'><label for='checkbox1'></label></span></td>";
+												echo "<td>
+												<span class='custom-checkbox'>
+													<input type='checkbox' class='checkbox' name='selected_items[]' value='{$row['id_uzsakymas']}'>
+													<label for='checkbox{$row['id_uzsakymas']}'></label>
+												</span>
+											  </td>";
 												echo "<td>" . $row['id_uzsakymas'] . "</td>";
-												echo "<td>" . $row['busena'] . "</td>";
+												echo "<td></td>";
 												echo "<td>" . $row['sukurimo_data'] . "</td>";
+												echo "<td>" . $row['busena'] . "</td>";
 												//echo "<td>" . $row['Statusas'] . "</td>";
 												echo "<td>
-														<a href='#redaguotiUžsakymą' class='edit' data-toggle='modal'><i class='fas fa-pen' data-toggle='tooltip' title='Redaguoti'></i></a>
-														<a href='#deleteEmployeeModal' class='delete' data-toggle='modal'><i class='fas fa-trash' data-toggle='tooltip' title='Pašalinti'></i></a>
-													</td>";
+													<a href='#redaguotiUžsakymą' class='edit' data-toggle='modal' data-id='{$row['id_uzsakymas']}'><i class='fas fa-pen' data-toggle='tooltip' title='Redaguoti'></i></a>
+													<a href='#deleteEmployeeModal' class='delete' data-toggle='modal'><i class='fas fa-trash' data-toggle='tooltip' title='Pašalinti'></i></a>
+												</td>";
 												echo "</tr>";
 											}
 										} else {
@@ -297,43 +319,67 @@ include 'connect.php';
 					</div>
 					<!-- Edit Modal HTML -->
 					<div id="redaguotiUžsakymą" class="modal fade">
-						<div class="modal-dialog">
-							<div class="modal-content">
-								<form>
-									<div class="modal-header">						
-										<h4 class="modal-title">Redaguoti informaciją</h4>
-										<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-									</div>
-									<div class="modal-body">					
-										<div class="form-group">
-											<label>Nr</label>
-											<input type="text" value="W-13 Piso 1" class="form-control" required>
-										</div>
-										<div class="form-group">
-											<label>Pastas</label>
-											<input type="email" value="Pastas A" class="form-control" required>
-										</div>
-										<div class="form-group">
-											<label>Vieta</label>
-											<input type="text" value="W-13 Piso 1" class="form-control" required>
-										</div>
-										<?php
-										echo
-										'<div class="form-group">
-											<label>Spauskite norėdami apmokėti užsakymą</label>
-											<div id="paypal-payment-button"> </div>
-										</div>' 
-										?>
-									</div>
-									<div class="modal-footer">
-										<input type="button" class="btn btn-default" data-dismiss="modal" value="Atsaukti">
-										<input type="submit" class="btn btn-info" value="Pateikti">
-									</div>
-									
-								</form>
+					<div class="modal-dialog">
+						<div class="modal-content">
+						<form action="uzsakymas.php" method="post">
+							<input type="hidden" name="edit_id" id="edit_id">
+							<div class="modal-header">
+							<h4 class="modal-title">Redaguoti informaciją</h4>
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 							</div>
+							<div class="modal-body">
+							<div class="form-group">
+								<label>Busena</label>
+								<input type="text" name="selected_busena" class="form-control" required>
+							</div>
+							<div class="form-group">
+								<label>Spauskite norėdami apmokėti užsakymą</label>
+								<div id="paypal-payment-button"> </div>
+							</div>
+							</div>
+							<div class="modal-footer">
+							<input type="button" class="btn btn-default" data-dismiss="modal" value="Atsaukti">
+							<input type="submit" class="btn btn-info" value="Pateikti" onclick="submitForm()">
+							</div>
+						</form>
 						</div>
 					</div>
+					</div>
+					<script>
+					$(document).ready(function() {
+						$('.edit').click(function() {
+						var id = $(this).data('id');
+						$('#edit_id').val(id);
+						});
+					});
+					</script>
+										
+
+										<?php
+						// Assuming you have established a database connection earlier in your script
+						// ...
+						include 'connect.php';
+						if ($_SERVER["REQUEST_METHOD"] == "POST") {
+							if (isset($_POST["edit_id"]) && isset($_POST["selected_busena"])) {
+								$edit_id = $_POST["edit_id"];
+								$selected_busena = $_POST["selected_busena"];
+
+								// Update the 'busena' field in the 'uzsakymai' table
+								$updateSql = "UPDATE uzsakymai SET busena = '$selected_busena' WHERE id_uzsakymas = $edit_id";
+
+								if ($conn->query($updateSql) === TRUE) {
+									echo "Record updated successfully";
+								} else {
+									echo "Error updating record: " . $conn->error;
+								}
+							}
+							// Additional processing if needed...
+						}
+
+						// Your existing code for displaying the table goes here...
+						?>
+
+
 					<!-- Delete Modal HTML -->
 					<div id="deleteEmployeeModal" class="modal fade">
 						<div class="modal-dialog">
@@ -446,3 +492,27 @@ include 'connect.php';
 		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 		<script src="https://unpkg.com/gijgo@1.9.11/js/gijgo.min.js" type="text/javascript"></script>
 		<link href="https://unpkg.com/gijgo@1.9.11/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+		<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.7.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+
+		<script>
+					function submitForm() {
+						// Assuming you have a form with the id "myForm"
+						var formData = $("#redaguotiUžsakymą form").serialize();
+						$.ajax({
+							type: "POST",
+							url: "process_form.php",
+							data: formData,
+							success: function(response) {
+								// Handle the server response
+								//alert(response);  // You can replace this with any specific action
+								console.log(response);
+							},
+							error: function(error) {
+								console.log(error);
+							}
+						});
+					}
+				</script>
