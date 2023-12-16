@@ -111,6 +111,7 @@ include 'connect.php';
 										<h2>Užsakymai <b>  </b></h2>
 									</div>
 									<div class="col-sm-6">
+										<a href="#addOrderModal" class="btn btn-success" data-toggle="modal"><i class="fas fa-plus-circle"></i><span>Pridėti Užsakymą</span></a>
 										<a href="#addTicketModal" class="btn btn-success" data-toggle="modal"><i class="fas fa-plus-circle"></i><span>Pridėti Bilietą</span></a>
 										<a href="#deleteTicketModal" class="btn btn-danger" data-toggle="modal"><i class="fas fa-minus-circle"></i><span>Pašalinti Bilietą</span></a>					
 										<input type="text" class="form-control" placeholder="Paieška">  
@@ -131,7 +132,9 @@ include 'connect.php';
 										</th>
 										<th>Nr.</th>
 										<th>Pavadinimas</th>
-										<th>Sukurimo Data</th>
+										<th>Užsakovas</th>
+										<th>Bilieto ID</th>
+										<th>Data</th>
 										<th>Būsena</th>
 										<th>Veiksmai</th>
 									</tr>
@@ -160,7 +163,8 @@ include 'connect.php';
 								busena,
 								sukurimo_data,
 								uzsakovo_name,
-								pavadinimas
+								pavadinimas,
+								id_bilietas
 								FROM 
 								uzsakymai
 								WHERE uzsakymai.uzsakovo_name = '$user'" );
@@ -172,7 +176,10 @@ include 'connect.php';
 										$sql = "SELECT 
 										id_uzsakymas, 
 										busena,
-										sukurimo_data
+										sukurimo_data,
+										id_bilietas,
+										pavadinimas,
+										uzsakovo_name
 										FROM 
 										uzsakymai";
 
@@ -189,6 +196,8 @@ include 'connect.php';
 											  </td>";
 												echo "<td>" . $row['id_uzsakymas'] . "</td>";
 												echo "<td>" . $row['pavadinimas'] . "</td>";
+												echo "<td>" . $row['uzsakovo_name'] . "</td>";
+												echo "<td>" . $row['id_bilietas'] . "</td>";
 												echo "<td>" . $row['sukurimo_data'] . "</td>";
 												echo "<td>" . $row['busena'] . "</td>";
 												//echo "<td>" . $row['Statusas'] . "</td>";
@@ -271,6 +280,35 @@ include 'connect.php';
 								<label>Pavadinimas</label>
 								<input type="text" name="selected_pavadinimas" class="form-control">
 							</div>
+							
+							<div class="form-group">
+									<label>Bilieto Id</label>
+									<select name="selected_bilietoId" class="form-control">
+										<?php
+										include 'connect.php';
+										// Check connection
+										if ($conn->connect_error) {
+											die("Nepavyko prisijungti: " . $conn->connect_error);
+										}
+
+										// Assuming 'bilietai' is your table name and 'id_bilietas' is the column you want to retrieve
+										$sql = "SELECT id_bilietas FROM bilietai";
+										$result = $conn->query($sql);
+
+										// Loop through the results to populate the dropdown
+										while ($row = $result->fetch_assoc()) {
+											$selected = ($row['id_bilietas'] == $selected_bilietoId) ? 'selected' : '';
+											echo "<option value='{$row['id_bilietas']}' $selected>{$row['id_bilietas']}</option>";
+										}
+
+										// Close the database connection
+										$conn->close();
+										?>
+									</select>
+								</div>
+
+
+
 							<div class="form-group">
 								<label>Spauskite norėdami apmokėti užsakymą</label>
 								<div id="paypal-payment-button"> </div>
@@ -292,7 +330,7 @@ include 'connect.php';
 						<form action="uzsakymas.php" method="post">
 							<input type="hidden" name="edit_id" id="edit_id">
 							<div class="modal-header">
-							<h4 class="modal-title">Redaguoti bilieto informaciją</h4>
+							<h4 class="modal-title">Pridėti bilietą</h4>
 							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 							</div>
 							<div class="modal-body">
@@ -300,10 +338,36 @@ include 'connect.php';
 								<label>Kaina</label>
 								<input type="text" name="selected_kaina" class="form-control">
 							</div>
-							<div class="form-group">
+						<!--	<div class="form-group">
 								<label>Skrydžio Id</label>
 								<input type="text" name="selected_skrydisId" class="form-control">
-							</div>
+							</div> -->
+								<div class="form-group">
+									<label>Skrydžio Id</label>
+									<select name="selected_skrydisId" class="form-control">
+										<?php
+										include 'connect.php';
+										// Check connection
+										if ($conn->connect_error) {
+											die("Nepavyko prisijungti: " . $conn->connect_error);
+										}
+
+										// Assuming 'skrydziai' is your table name and 'id_skrydis' is the column you want to retrieve
+										$sql = "SELECT id_skrydis FROM skrydziai";
+										$result = $conn->query($sql);
+
+										// Loop through the results to populate the dropdown
+										while ($row = $result->fetch_assoc()) {
+											$selected = ($row['id_skrydis'] == $selected_skrydisId) ? 'selected' : '';
+											echo "<option value='{$row['id_skrydis']}' $selected>{$row['id_skrydis']}</option>";
+										}
+
+										// Close the database connection
+										$conn->close();
+										?>
+									</select>
+								</div>
+
 
 							<div class="form-group">
 								<label>Vartai</label>
@@ -313,6 +377,78 @@ include 'connect.php';
 							<div class="modal-footer">
 							<input type="button" class="btn btn-default" data-dismiss="modal" value="Atsaukti">
 							<input type="submit" class="btn btn-info" name="add_submit" value="Pateikti">
+							</div>
+						</form>
+						</div>
+					</div>
+					</div>
+
+
+
+
+					<div id="addOrderModal" class="modal fade">
+					<div class="modal-dialog">
+						<div class="modal-content">
+						<form action="uzsakymas.php" method="post">
+							<input type="hidden" name="edit_id" id="edit_id">
+							<div class="modal-header">
+							<h4 class="modal-title">Pridėti Užsakymą</h4>
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							</div>
+							<div class="modal-body">
+
+							<div class="form-group">
+								<label>Užsakovas</label>
+								<input type="text" name="selected_uzsakovas" class="form-control">
+							</div>
+							<div class="form-group">
+								<label>Pavadinimas</label>
+								<input type="text" name="selected_pavadinimas" class="form-control">
+							</div>
+							<div class="form-group">
+								<label>Data</label>
+								<input type="date" name="selected_data" class="form-control">
+							</div>
+							
+						<!--	<div class="form-group">
+								<label>Skrydžio Id</label>
+								<input type="text" name="selected_skrydisId" class="form-control">
+							</div> -->
+								<div class="form-group">
+									<label>Bilieto Id</label>
+									<select name="selected_bilietasId" class="form-control">
+										<?php
+										include 'connect.php';
+										// Check connection
+										if ($conn->connect_error) {
+											die("Nepavyko prisijungti: " . $conn->connect_error);
+										}
+
+										// Assuming 'skrydziai' is your table name and 'id_skrydis' is the column you want to retrieve
+										$sql = "SELECT id_bilietas FROM bilietai";
+										$result = $conn->query($sql);
+
+										// Loop through the results to populate the dropdown
+										while ($row = $result->fetch_assoc()) {
+											$selected = ($row['id_bilietas'] == $selected_bilietasId) ? 'selected' : '';
+											echo "<option value='{$row['id_bilietas']}' $selected>{$row['id_bilietas']}</option>";
+										}
+
+										// Close the database connection
+										$conn->close();
+										?>
+									</select>
+								</div>
+
+
+							<div class="form-group">
+								<label>Busena</label>
+								<input type="text" name="selected_busena" class="form-control">
+							</div>
+							</div>
+							<div class="modal-footer">
+							<input type="button" class="btn btn-default" data-dismiss="modal" value="Atsaukti">
+							<input type="submit" class="btn btn-info" name="add_order_submit" value="Pateikti">
 							</div>
 						</form>
 						</div>
@@ -343,17 +479,18 @@ include 'connect.php';
 						if ($_SERVER["REQUEST_METHOD"] == "POST") {
 							if (isset($_POST["edit_submit"])) {
 								// Code for processing edit submission
-								if (isset($_POST["edit_id"]) && (isset($_POST["selected_busena"]) || isset($_POST["selected_pavadinimas"]))) {
+								if (isset($_POST["edit_id"]) && (isset($_POST["selected_busena"]) || isset($_POST["selected_bilietasId"])|| isset($_POST["selected_bilietasId"]))) {
 
 									$edit_id = $_POST["edit_id"];
 									$selected_busena = $_POST["selected_busena"];
 									$selected_pavadinimas = $_POST["selected_pavadinimas"];
+									$selected_bilietoId = $_POST["selected_bilietoId"];
 
 									// Update the 'busena' field in the 'uzsakymai' table
 									//$updateSql = "UPDATE uzsakymai SET busena = '$selected_busena' WHERE id_uzsakymas = $edit_id";
 
 									$updateSql = "UPDATE uzsakymai 
-									SET busena = '$selected_busena', pavadinimas = '$selected_pavadinimas' 
+									SET busena = '$selected_busena', pavadinimas = '$selected_pavadinimas', id_bilietas = '$selected_bilietoId'
 									WHERE id_uzsakymas = $edit_id";
 
 									if ($conn->query($updateSql) === TRUE) {
@@ -369,6 +506,22 @@ include 'connect.php';
 
 									// Delete the record from the 'uzsakymai' table
 									$deleteSql = "DELETE FROM uzsakymai WHERE id_uzsakymas = $delete_id";
+
+									if ($conn->query($deleteSql) === TRUE) {
+										echo "Įrašas sėkmingai pašalintas";
+									} else {
+										echo "Įvyko klaida naikinant duomenis:: " . $conn->error;
+									}
+								}
+							}
+
+							elseif (isset($_POST["delete_ticket_submit"])) {
+								// Code for processing delete submission
+								if (isset($_POST["selected_bilietasId"])) {
+									$selected_bilietasId = $_POST["selected_bilietasId"];
+
+									// Delete the record from the 'uzsakymai' table
+									$deleteSql = "DELETE FROM bilietai WHERE id_bilietas = $selected_bilietasId";
 
 									if ($conn->query($deleteSql) === TRUE) {
 										echo "Įrašas sėkmingai pašalintas";
@@ -394,7 +547,29 @@ include 'connect.php';
 					  
 
 									if ($conn->query($insertSql) === TRUE) {
-										echo "Talpinimas sėkmingas";
+										echo "Bilieto talpinimas sėkmingas";
+									} else {
+										echo "Įvyko klaida talpinant duomenis: " . $conn->error;
+									}
+								}
+							}
+
+							elseif (isset($_POST["add_order_submit"])) {
+								// Code for processing edit submission
+								if (isset($_POST["selected_pavadinimas"]) || isset($_POST["selected_data"]) || isset($_POST["selected_bilietasId"]) || isset($_POST["selected_busena"]) || isset($_POST["selected_uzsakovas"])) {
+
+									$selected_uzsakovas = $_POST["selected_uzsakovas"];
+									$selected_pavadinimas = $_POST["selected_pavadinimas"];
+									$selected_data = $_POST["selected_data"];
+									$selected_bilietasId = $_POST["selected_bilietasId"];
+									$selected_busena = $_POST["selected_busena"];
+
+									$insertSql = "INSERT INTO uzsakymai (pavadinimas, uzsakovo_name, sukurimo_data, id_bilietas, busena)
+									VALUES ('$selected_pavadinimas', '$selected_uzsakovas', '$selected_data', '$selected_bilietasId', '$selected_busena')";
+					  
+
+									if ($conn->query($insertSql) === TRUE) {
+										echo "Užsakymo talpinimas sėkmingas";
 									} else {
 										echo "Įvyko klaida talpinant duomenis: " . $conn->error;
 									}
@@ -409,11 +584,38 @@ include 'connect.php';
 
 					<!-- Delete Modal HTML -->
 					<!-- Delete Modal HTML -->
-					<div id="deleteEmployeeModal" class="modal fade">
+					<div id="deleteTicketModal" class="modal fade">
 						<div class="modal-dialog">
 							<div class="modal-content">
 								<form action="uzsakymas.php" method="post">
-									<input type="hidden" name="delete_id" id="delete_id">
+									<input type="hidden" name="delete_ticket_id" id="delete_ticket_id">
+
+									<div class="form-group">
+									<label>Bilieto Id</label>
+									<select name="selected_bilietasId" class="form-control">
+										<?php
+										include 'connect.php';
+										// Check connection
+										if ($conn->connect_error) {
+											die("Nepavyko prisijungti: " . $conn->connect_error);
+										}
+
+										// Assuming 'skrydziai' is your table name and 'id_skrydis' is the column you want to retrieve
+										$sql = "SELECT id_bilietas FROM bilietai";
+										$result = $conn->query($sql);
+
+										// Loop through the results to populate the dropdown
+										while ($row = $result->fetch_assoc()) {
+											$selected = ($row['id_bilietas'] == $selected_bilietasId) ? 'selected' : '';
+											echo "<option value='{$row['id_bilietas']}' $selected>{$row['id_bilietas']}</option>";
+										}
+
+										// Close the database connection
+										$conn->close();
+										?>
+									</select>
+
+								</div>
 									<div class="modal-header">
 										<h4 class="modal-title">Pašalinti užsakymą</h4>
 										<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -424,7 +626,7 @@ include 'connect.php';
 									</div>
 									<div class="modal-footer">
 										<input type="button" class="btn btn-default" data-dismiss="modal" value="Atšaukti">
-										<input type="submit" class="btn btn-danger" name="delete_submit" value="Pašalinti">
+										<input type="submit" class="btn btn-danger" name="delete_ticket_submit" value="Pašalinti">
 									</div>
 								</form>
 							</div>
@@ -436,7 +638,7 @@ include 'connect.php';
 						<div class="modal-dialog">
 							<div class="modal-content">
 								<form action="uzsakymas.php" method="post">
-									<input type="hidden" name="delete_id" id="delete_id">
+									<input type="hidden" name="delete_ticket_id" id="delete_ticket_id">
 									<div class="modal-header">
 										<h4 class="modal-title">Pašalinti bilietą</h4>
 										<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
