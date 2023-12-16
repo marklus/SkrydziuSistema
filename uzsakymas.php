@@ -111,8 +111,8 @@ include 'connect.php';
 										<h2>Užsakymai <b>  </b></h2>
 									</div>
 									<div class="col-sm-6">
-									<!--	<a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i class="fas fa-plus-circle"></i><span>Pridėti</span></a>
-										<a href="#deleteEmployeeModal" class="btn btn-danger" data-toggle="modal"><i class="fas fa-minus-circle"></i><span>Pašalinti</span></a>		-->				
+										<a href="#addTicketModal" class="btn btn-success" data-toggle="modal"><i class="fas fa-plus-circle"></i><span>Pridėti Bilietą</span></a>
+										<a href="#deleteTicketModal" class="btn btn-danger" data-toggle="modal"><i class="fas fa-minus-circle"></i><span>Pašalinti Bilietą</span></a>					
 										<input type="text" class="form-control" placeholder="Paieška">  
 									</div>
 								</div>
@@ -284,6 +284,42 @@ include 'connect.php';
 						</div>
 					</div>
 					</div>
+
+
+					<div id="addTicketModal" class="modal fade">
+					<div class="modal-dialog">
+						<div class="modal-content">
+						<form action="uzsakymas.php" method="post">
+							<input type="hidden" name="edit_id" id="edit_id">
+							<div class="modal-header">
+							<h4 class="modal-title">Redaguoti bilieto informaciją</h4>
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							</div>
+							<div class="modal-body">
+							<div class="form-group">
+								<label>Kaina</label>
+								<input type="text" name="selected_kaina" class="form-control">
+							</div>
+							<div class="form-group">
+								<label>Skrydžio Id</label>
+								<input type="text" name="selected_skrydisId" class="form-control">
+							</div>
+
+							<div class="form-group">
+								<label>Vartai</label>
+								<input type="text" name="selected_vartai" class="form-control">
+							</div>
+							</div>
+							<div class="modal-footer">
+							<input type="button" class="btn btn-default" data-dismiss="modal" value="Atsaukti">
+							<input type="submit" class="btn btn-info" name="add_submit" value="Pateikti">
+							</div>
+						</form>
+						</div>
+					</div>
+					</div>
+
+
 					<script>
 					$(document).ready(function() {
 						$('.edit').click(function() {
@@ -341,6 +377,29 @@ include 'connect.php';
 									}
 								}
 							}
+
+							elseif (isset($_POST["add_submit"])) {
+								// Code for processing edit submission
+								if (isset($_POST["selected_kaina"]) || isset($_POST["selected_skrydisId"]) || isset($_POST["selected_vartai"])) {
+
+									$selected_kaina = $_POST["selected_kaina"];
+									$selected_skrydisId = $_POST["selected_skrydisId"];
+									$selected_vartai = $_POST["selected_vartai"];
+
+									// Update the 'busena' field in the 'uzsakymai' table
+									//$updateSql = "UPDATE uzsakymai SET busena = '$selected_busena' WHERE id_uzsakymas = $edit_id";
+
+									$insertSql = "INSERT INTO bilietai (kaina, skrydis_id, vartai)
+									VALUES ('$selected_kaina', '$selected_skrydisId', '$selected_vartai')";
+					  
+
+									if ($conn->query($insertSql) === TRUE) {
+										echo "Talpinimas sėkmingas";
+									} else {
+										echo "Įvyko klaida talpinant duomenis: " . $conn->error;
+									}
+								}
+							}
 						}
 
 						// Your existing code for displaying the table goes here...
@@ -370,7 +429,30 @@ include 'connect.php';
 								</form>
 							</div>
 						</div>
-</div>
+					</div>
+
+
+					<div id="deleteTicketModal" class="modal fade">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<form action="uzsakymas.php" method="post">
+									<input type="hidden" name="delete_id" id="delete_id">
+									<div class="modal-header">
+										<h4 class="modal-title">Pašalinti bilietą</h4>
+										<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+									</div>
+									<div class="modal-body">
+										<p>Ar tikrai norite pašalinti bilietą?</p>
+										<p class="text-warning"><small>bilieto nebus galima grąžinti.</small></p>
+									</div>
+									<div class="modal-footer">
+										<input type="button" class="btn btn-default" data-dismiss="modal" value="Atšaukti">
+										<input type="submit" class="btn btn-danger" name="delete_ticket_submit" value="Pašalinti">
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
 
 
 				</div>
