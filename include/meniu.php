@@ -51,14 +51,14 @@ $role="";
 							
 							?>  
 						</li>
-						<li class="nav-item">
+					<!--	<li class="nav-item">
 							<a class="nav-link" href="bilietas.php" ><i class="fa fa-list-alt"></i>
 								Bilietai <span class="sr-only"></span></a>
-						</li>
-						<!--<li class="nav-item">
+						</li>-->
+						<li class="nav-item">
 							<a class="nav-link" href="darbuotojas.php" ><i class="fa fa-list-alt"></i>
 								Darbuotojai <span class="sr-only"></span></a>
-						</li>-->
+						</li>
 						<li class="nav-item">
 							<a class="nav-link" href="pamaina.php" ><i class="fa fa-list-alt"></i>
 								Pamainos <span class="sr-only"></span></a>

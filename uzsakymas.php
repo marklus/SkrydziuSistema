@@ -6,7 +6,14 @@ include 'connect.php';
 	// toje formoje daugiau galimybių...
 	
 	include("include/functions.php"); 
-	
+	if (!isset($_SESSION['prev']) || ($_SESSION['prev'] != "index"))
+	{ header("Location:logout.php");exit;}
+
+
+	$userid = mysqli_real_escape_string($conn, $_SESSION['userid']);
+
+	$uname=$_SESSION['user'];
+	$user=$_SESSION['user'];
 	
     ?>
 <!doctype html>
@@ -104,9 +111,9 @@ include 'connect.php';
 										<h2>Užsakymai <b>  </b></h2>
 									</div>
 									<div class="col-sm-6">
-										<a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i class="fas fa-plus-circle"></i><span>Pridėti</span></a>
-										<a href="#deleteEmployeeModal" class="btn btn-danger" data-toggle="modal"><i class="fas fa-minus-circle"></i><span>Pašalinti</span></a>						
-										<input type="text" class="form-control" placeholder="Paieška">
+									<!--	<a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i class="fas fa-plus-circle"></i><span>Pridėti</span></a>
+										<a href="#deleteEmployeeModal" class="btn btn-danger" data-toggle="modal"><i class="fas fa-minus-circle"></i><span>Pašalinti</span></a>		-->				
+										<input type="text" class="form-control" placeholder="Paieška">  
 									</div>
 								</div>
 							</div>
@@ -141,14 +148,27 @@ include 'connect.php';
 									//$insertSql = "INSERT INTO uzsakymai ( busena, sukurimo_data) VALUES ('$newBusena', '$sukurimo_data')";
 		  						//////////////////////////////////////
 									//if ($conn->query($insertSql) === TRUE) {
-										echo "New record added successfully";
+									//	echo "New record added successfully";
 								//	} else {
 								//		echo "Error: " . $insertSql . "<br>" . $conn->error;
 								//	}
 
+								if ($userlevel == $user_roles[DEFAULT_LEVEL] ) {
 
+								$result = $conn->query("SELECT 
+								id_uzsakymas, 
+								busena,
+								sukurimo_data,
+								uzsakovo_name,
+								pavadinimas
+								FROM 
+								uzsakymai
+								WHERE uzsakymai.uzsakovo_name = '$user'" );
 
+								//echo "Vardas  " . $user . "<br>" ;
+								}
 
+								if ($userlevel == $user_roles[ADMIN_LEVEL] ) {
 										$sql = "SELECT 
 										id_uzsakymas, 
 										busena,
@@ -157,7 +177,7 @@ include 'connect.php';
 										uzsakymai";
 
 										$result = mysqli_query($conn, $sql);
-
+								}
 										if ($result->num_rows > 0) {
 											while ($row = $result->fetch_assoc()) {
 												echo "<tr>";
@@ -168,7 +188,7 @@ include 'connect.php';
 												</span>
 											  </td>";
 												echo "<td>" . $row['id_uzsakymas'] . "</td>";
-												echo "<td></td>";
+												echo "<td>" . $row['pavadinimas'] . "</td>";
 												echo "<td>" . $row['sukurimo_data'] . "</td>";
 												echo "<td>" . $row['busena'] . "</td>";
 												//echo "<td>" . $row['Statusas'] . "</td>";
@@ -245,7 +265,11 @@ include 'connect.php';
 							<div class="modal-body">
 							<div class="form-group">
 								<label>Busena</label>
-								<input type="text" name="selected_busena" class="form-control" required>
+								<input type="text" name="selected_busena" class="form-control">
+							</div>
+							<div class="form-group">
+								<label>Pavadinimas</label>
+								<input type="text" name="selected_pavadinimas" class="form-control">
 							</div>
 							<div class="form-group">
 								<label>Spauskite norėdami apmokėti užsakymą</label>
@@ -283,17 +307,23 @@ include 'connect.php';
 						if ($_SERVER["REQUEST_METHOD"] == "POST") {
 							if (isset($_POST["edit_submit"])) {
 								// Code for processing edit submission
-								if (isset($_POST["edit_id"]) && isset($_POST["selected_busena"])) {
+								if (isset($_POST["edit_id"]) && (isset($_POST["selected_busena"]) || isset($_POST["selected_pavadinimas"]))) {
+
 									$edit_id = $_POST["edit_id"];
 									$selected_busena = $_POST["selected_busena"];
+									$selected_pavadinimas = $_POST["selected_pavadinimas"];
 
 									// Update the 'busena' field in the 'uzsakymai' table
-									$updateSql = "UPDATE uzsakymai SET busena = '$selected_busena' WHERE id_uzsakymas = $edit_id";
+									//$updateSql = "UPDATE uzsakymai SET busena = '$selected_busena' WHERE id_uzsakymas = $edit_id";
+
+									$updateSql = "UPDATE uzsakymai 
+									SET busena = '$selected_busena', pavadinimas = '$selected_pavadinimas' 
+									WHERE id_uzsakymas = $edit_id";
 
 									if ($conn->query($updateSql) === TRUE) {
-										echo "Record updated successfully";
+										echo "Pakeitimas sėkmingas";
 									} else {
-										echo "Error updating record: " . $conn->error;
+										echo "Įvyko klaida keičiant duomenis: " . $conn->error;
 									}
 								}
 							} elseif (isset($_POST["delete_submit"])) {
@@ -305,9 +335,9 @@ include 'connect.php';
 									$deleteSql = "DELETE FROM uzsakymai WHERE id_uzsakymas = $delete_id";
 
 									if ($conn->query($deleteSql) === TRUE) {
-										echo "Record deleted successfully";
+										echo "Įrašas sėkmingai pašalintas";
 									} else {
-										echo "Error deleting record: " . $conn->error;
+										echo "Įvyko klaida naikinant duomenis:: " . $conn->error;
 									}
 								}
 							}
