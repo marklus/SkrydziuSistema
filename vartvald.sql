@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 16, 2023 at 08:50 PM
+-- Generation Time: Dec 16, 2023 at 10:41 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -30,8 +30,17 @@ SET time_zone = "+00:00";
 CREATE TABLE `bilietai` (
   `kaina` varchar(255) NOT NULL,
   `id_bilietas` int(11) NOT NULL,
-  `skrydis_id` int(11) DEFAULT NULL
+  `skrydis_id` int(11) DEFAULT NULL,
+  `vartai` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `bilietai`
+--
+
+INSERT INTO `bilietai` (`kaina`, `id_bilietas`, `skrydis_id`, `vartai`) VALUES
+('150', 1, 1, 'B'),
+('150', 2, 1, 'B');
 
 -- --------------------------------------------------------
 
@@ -170,11 +179,11 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`username`, `password`, `userid`, `userlevel`, `email`, `timestamp`) VALUES
 ('Administratorius', '16c354b68848cdbd8f54a226a0a55b21', 'a2fe399900de341c39c632244eaf8483', 9, 'demo@ktu.lt', '2018-02-16 16:51:21'),
-('rimas', 'c2acd92812ef99acd3dcdbb746b9a434', '689e5b2971577d707becb97405ede951', 9, 'rimas@litnet.lt', '2020-05-02 16:32:38'),
-('jonas', '64067822105b320085d18e386f57d89a', '9c5ddd54107734f7d18335a5245c286b', 255, 'rimas@litnet.lt', '2017-05-09 17:10:37'),
+('rimas', 'c2acd92812ef99acd3dcdbb746b9a434', '689e5b2971577d707becb97405ede951', 5, 'rimas@litnet.lt', '2020-05-02 16:32:38'),
+('jonas', '64067822105b320085d18e386f57d89a', '9c5ddd54107734f7d18335a5245c286b', 4, 'rimas@litnet.lt', '2017-05-09 17:10:37'),
 ('pranas', '16c354b68848cdbd8f54a226a0a55b21', 'aa69001f0ba493bed7dddfd1cdb06591', 4, 'pranas@ltu.ee', '2018-02-16 16:03:41'),
-('kazkas', '8dd1fa8efce5ce24e25de13642d50757', '82acd1bd17e35dfa775cb3de263c3322', 9, 'kazkas@gmail.com', '2023-12-15 19:14:15'),
-('kazkas1', '8dd1fa8efce5ce24e25de13642d50757', '4ee066023b6404ca11e61ef55de610f2', 4, 'kazkas@gmail.com', '2023-12-15 19:14:03'),
+('kazkas', '8dd1fa8efce5ce24e25de13642d50757', '82acd1bd17e35dfa775cb3de263c3322', 9, 'kazkas@gmail.com', '2023-12-16 20:28:47'),
+('kazkas1', '8dd1fa8efce5ce24e25de13642d50757', '4ee066023b6404ca11e61ef55de610f2', 4, 'kazkas@gmail.com', '2023-12-16 20:29:04'),
 ('juozis', '8dd1fa8efce5ce24e25de13642d50757', 'a23af5e0c7330ddb77841d1c0f609cc2', 4, 'juozis@gmail.com', '2023-10-25 17:48:20');
 
 -- --------------------------------------------------------
@@ -186,20 +195,22 @@ INSERT INTO `users` (`username`, `password`, `userid`, `userlevel`, `email`, `ti
 CREATE TABLE `uzsakymai` (
   `sukurimo_data` date NOT NULL,
   `busena` varchar(255) NOT NULL,
-  `id_uzsakymas` int(11) NOT NULL
+  `id_uzsakymas` int(11) NOT NULL,
+  `uzsakovo_name` varchar(255) DEFAULT NULL,
+  `pavadinimas` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `uzsakymai`
 --
 
-INSERT INTO `uzsakymai` (`sukurimo_data`, `busena`, `id_uzsakymas`) VALUES
-('2023-12-15', '', 1),
-('2023-12-15', 'keista', 2),
-('2023-12-15', 'sdasfdfgffd', 3),
-('2023-12-15', 'sumoketa', 5),
-('2023-12-15', 'Taip veikia123', 6),
-('2023-12-15', 'neaktyvus', 7);
+INSERT INTO `uzsakymai` (`sukurimo_data`, `busena`, `id_uzsakymas`, `uzsakovo_name`, `pavadinimas`) VALUES
+('2023-12-15', '', 1, NULL, ''),
+('2023-12-15', 'keista', 2, NULL, ''),
+('2023-12-15', 'sdasfdfgffd', 3, NULL, ''),
+('2023-12-15', 'sumoketa', 5, NULL, ''),
+('2023-12-15', 'busena1', 6, 'kazkas1', 'pavadinimas1'),
+('2023-12-15', 'neaktyvus', 7, NULL, '');
 
 -- --------------------------------------------------------
 
@@ -325,7 +336,7 @@ ALTER TABLE `vietos_lektuve`
 -- AUTO_INCREMENT for table `bilietai`
 --
 ALTER TABLE `bilietai`
-  MODIFY `id_bilietas` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_bilietas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `darbuotojai`
