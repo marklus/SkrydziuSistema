@@ -1,5 +1,6 @@
 <?php
 
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PhpMailer\PhpMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
@@ -12,25 +13,24 @@ $mail = new PHPMailer;
 
 // Connection settingai
 $mail->isSMTP();
-$mail->Host = 'smtp-mail.outlook.com';
+$mail->Host = 'smtp-mail.outlook.com'; // Max 300 žinučių per dieną, max 100 skirtingų gavėjų
 $mail->SMTPAuth = true;
-$mail->Username = 'vartvald2023@outlook.com';
-$mail->Password = 'xwe449#123!@';
-$mail->Port = 587;
-$mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+$mail->Username = 'vartvald2023@outlook.com'; // outlooko username
+$mail->Password = 'xwe449#123!@';   // acc pass
+$mail->Port = 587;  // šitas visada same
+$mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS; // outlookui tls
 
-// Siuntejas
+// Siuntėjas
 $mail->setFrom('vartvald2023@outlook.com', 'vartvald2023');
 
-// Gavejas, pakeist i darbuotoju e-mail
+// Gavėjas, pakeist į darbuotojų ar savo testinį paštą, bus spam folderi
 $mail->addAddress('example@gmail.com');
 
-
-// Antraste
+// Antraštė
 $mail->isHTML(true);
 $mail->Subject = 'Email from localhost';
 
-// Zinute
+// Žinutė
 $bodyContent = '<h1>test mail </h1>';
 $mail->Body = $bodyContent;
 
