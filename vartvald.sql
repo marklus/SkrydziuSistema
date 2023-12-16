@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 16, 2023 at 10:41 PM
+-- Generation Time: Dec 17, 2023 at 12:32 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -40,7 +40,8 @@ CREATE TABLE `bilietai` (
 
 INSERT INTO `bilietai` (`kaina`, `id_bilietas`, `skrydis_id`, `vartai`) VALUES
 ('150', 1, 1, 'B'),
-('150', 2, 1, 'B');
+('150', 2, 1, 'B'),
+('150', 3, 2, 'A');
 
 -- --------------------------------------------------------
 
@@ -147,6 +148,14 @@ CREATE TABLE `skrydziai` (
   `id_skrydis` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `skrydziai`
+--
+
+INSERT INTO `skrydziai` (`planuojamas_isvykimo_laikas`, `planuojamas_atvykimo_laikas`, `skrydzio_trukme`, `isvykimo_vieta`, `atvykimo_vieta`, `realus_isvykimo_laikas`, `realus_atvykimo_laikas`, `id_skrydis`) VALUES
+('2023-12-01', '2023-12-01', '2h', 'Vilnius', 'Kaunas', '2023-12-01', '2023-12-01', 1),
+('2023-12-02', '2023-12-02', '2h', 'Šiauliai', 'Kaunas', '2023-12-02', '2023-12-02', 2);
+
 -- --------------------------------------------------------
 
 --
@@ -182,7 +191,7 @@ INSERT INTO `users` (`username`, `password`, `userid`, `userlevel`, `email`, `ti
 ('rimas', 'c2acd92812ef99acd3dcdbb746b9a434', '689e5b2971577d707becb97405ede951', 5, 'rimas@litnet.lt', '2020-05-02 16:32:38'),
 ('jonas', '64067822105b320085d18e386f57d89a', '9c5ddd54107734f7d18335a5245c286b', 4, 'rimas@litnet.lt', '2017-05-09 17:10:37'),
 ('pranas', '16c354b68848cdbd8f54a226a0a55b21', 'aa69001f0ba493bed7dddfd1cdb06591', 4, 'pranas@ltu.ee', '2018-02-16 16:03:41'),
-('kazkas', '8dd1fa8efce5ce24e25de13642d50757', '82acd1bd17e35dfa775cb3de263c3322', 9, 'kazkas@gmail.com', '2023-12-16 20:28:47'),
+('kazkas', '8dd1fa8efce5ce24e25de13642d50757', '82acd1bd17e35dfa775cb3de263c3322', 9, 'kazkas@gmail.com', '2023-12-16 23:00:45'),
 ('kazkas1', '8dd1fa8efce5ce24e25de13642d50757', '4ee066023b6404ca11e61ef55de610f2', 4, 'kazkas@gmail.com', '2023-12-16 20:29:04'),
 ('juozis', '8dd1fa8efce5ce24e25de13642d50757', 'a23af5e0c7330ddb77841d1c0f609cc2', 4, 'juozis@gmail.com', '2023-10-25 17:48:20');
 
@@ -197,20 +206,17 @@ CREATE TABLE `uzsakymai` (
   `busena` varchar(255) NOT NULL,
   `id_uzsakymas` int(11) NOT NULL,
   `uzsakovo_name` varchar(255) DEFAULT NULL,
-  `pavadinimas` varchar(255) NOT NULL
+  `pavadinimas` varchar(255) NOT NULL,
+  `id_bilietas` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `uzsakymai`
 --
 
-INSERT INTO `uzsakymai` (`sukurimo_data`, `busena`, `id_uzsakymas`, `uzsakovo_name`, `pavadinimas`) VALUES
-('2023-12-15', '', 1, NULL, ''),
-('2023-12-15', 'keista', 2, NULL, ''),
-('2023-12-15', 'sdasfdfgffd', 3, NULL, ''),
-('2023-12-15', 'sumoketa', 5, NULL, ''),
-('2023-12-15', 'busena1', 6, 'kazkas1', 'pavadinimas1'),
-('2023-12-15', 'neaktyvus', 7, NULL, '');
+INSERT INTO `uzsakymai` (`sukurimo_data`, `busena`, `id_uzsakymas`, `uzsakovo_name`, `pavadinimas`, `id_bilietas`) VALUES
+('2023-12-01', 'Aktyvus', 1, 'kazkas', 'Naujas pavadinimas', 1),
+('2023-12-02', 'idomei bveikia', 2, 'kazkas1', 'gerai', 2);
 
 -- --------------------------------------------------------
 
@@ -336,7 +342,7 @@ ALTER TABLE `vietos_lektuve`
 -- AUTO_INCREMENT for table `bilietai`
 --
 ALTER TABLE `bilietai`
-  MODIFY `id_bilietas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_bilietas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `darbuotojai`
@@ -372,7 +378,7 @@ ALTER TABLE `pamainos`
 -- AUTO_INCREMENT for table `skrydziai`
 --
 ALTER TABLE `skrydziai`
-  MODIFY `id_skrydis` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_skrydis` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `skrydziu_imones`
@@ -384,7 +390,7 @@ ALTER TABLE `skrydziu_imones`
 -- AUTO_INCREMENT for table `uzsakymai`
 --
 ALTER TABLE `uzsakymai`
-  MODIFY `id_uzsakymas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id_uzsakymas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `valstybes`
