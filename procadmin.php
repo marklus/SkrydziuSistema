@@ -26,7 +26,7 @@ $db=mysqli_connect(DB_SERVER, DB_USER, DB_PASS, DB_NAME);
     </head>
     <body>
         <table class="center" ><tr><td>
-            <center><img src="include/top.png"></center>
+            
 			</td></tr><tr><td><center><font size="5">Vartotojų įgaliojimų pakeitimas</font></center></td></tr></table> <br>
 		<form name="vartotojai" action="procadmindb.php" method="post">
 		<table class="center" style="width:60%; border-width: 2px; border-style: dotted;"><tr><td width="50%" >

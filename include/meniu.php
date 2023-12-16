@@ -46,7 +46,7 @@ $role="";
                             }
 							if ($userlevel == $user_roles[DEFAULT_LEVEL] ) {
                                 echo '<a class="nav-link" href="uzsakymas.php" ><i class="fa fa-list-alt"></i>
-								Užsakymai <span class="sr-only"></span></a>';
+								Mano užsakymai <span class="sr-only"></span></a>';
                             }
 							
 							?>  
