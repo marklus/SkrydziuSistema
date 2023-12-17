@@ -365,9 +365,42 @@ if (!empty($_SESSION['user']))     //Jei vartotojas prisijungęs, valom logino k
 					{
 						if (isset($_POST["delete_id"])) {
 							$delete_id = $_POST["delete_id"];
+							$originalValues = getOriginalValues($conn, $delete_id);
 
 							// Delete the record from the 'uzsakymai' table
 							$deleteSql = "DELETE FROM darbuotojai WHERE id_darbuotojas = $delete_id";
+
+							$mail = new PHPMailer;
+
+								// Connection settingai
+								$mail->isSMTP();
+								$mail->Host = 'smtp-mail.outlook.com'; // Max 300 žinučių per dieną, max 100 skirtingų gavėjų
+								$mail->SMTPAuth = true;
+								$mail->Username = 'vartvald2023@outlook.com'; // outlooko username
+								$mail->Password = 'xwe449#123!@';   // acc pass
+								$mail->Port = 587;  // šitas visada same
+								$mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS; // outlookui tls
+
+								// Siuntėjas
+								$mail->setFrom('vartvald2023@outlook.com', 'vartvald2023');
+
+								// Gavėjas, pakeist į darbuotojų ar savo testinį paštą, bus spam folderi
+								$mail->addAddress($originalValues['elektroninis_pastas']);
+
+								// Antraštė
+								$mail->isHTML(true);
+								$mail->Subject = 'Jusu paskyra buvo istrinta.';
+
+								// Žinutė
+								$bodyContent = '<b>Jusu paskyra buvo istrinta administratoriaus is skrydžiu sistemos</b>';
+								$mail->Body = $bodyContent;
+
+								// Print status
+								if ($mail->send()) {
+									echo 'Message sent';
+								} else {
+									echo 'Message sending failed ' . $mail->ErrorInfo;
+								}
 
 							if ($conn->query($deleteSql) === TRUE) {
 								echo "Įrašas sėkmingai pašalintas";
