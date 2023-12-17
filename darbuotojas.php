@@ -1,4 +1,24 @@
 <?php
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PhpMailer\PhpMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+require 'Email/Exception.php';
+require 'Email/PHPMailer.php';
+require 'Email/SMTP.php';
+
+function getOriginalValues($conn, $id)
+{
+    $sql = "SELECT * FROM darbuotojai WHERE id_darbuotojas = $id";
+    $result = mysqli_query($conn, $sql);
+
+    if ($result->num_rows > 0) {
+        return $result->fetch_assoc();
+    }
+
+    return false;
+}
+
 include 'connect.php';
 session_start();      // index.php
 // jei vartotojas prisijungęs rodomas demonstracinis meniu pagal jo rolę
@@ -357,14 +377,19 @@ if (!empty($_SESSION['user']))     //Jei vartotojas prisijungęs, valom logino k
 						}
 					}
 					else if (isset($_POST["edit_submit"])) {
-						// Get values from the form
+
 						$edit_id = $_POST["id"];
+
+						// Retrieve original values
+						$originalValues = getOriginalValues($conn, $edit_id);
+
+						// Get values from the form
 						$edit_vardas = $_POST["vardas"];
 						$edit_pavarde = $_POST["pavarde"];
 						$edit_gimimo_data = $_POST["gimimo_data"];
 						$edit_pastas = $_POST["elektroninis_pastas"];
 						$edit_pareigos = $_POST["pareigos"];
-				
+
 						// Construct and execute the update query
 						$updateSql = "UPDATE darbuotojai SET 
 							vardas = '$edit_vardas',
@@ -373,9 +398,58 @@ if (!empty($_SESSION['user']))     //Jei vartotojas prisijungęs, valom logino k
 							elektroninis_pastas = '$edit_pastas',
 							pareigos = '$edit_pareigos'
 							WHERE id_darbuotojas = $edit_id";
-				
+
+						$changesDetected = false;
 						if ($conn->query($updateSql) === TRUE) {
-							echo "Darbuotojo duomenys atnaujinti sėkmingai.";
+							// Initialize the email message
+							$emailMessage = "Your information has been updated. Changes:\n";
+
+							// Compare and append changes to the email message
+							foreach ($originalValues as $field => $value) {
+								// Exclude the 'id_darbuotojas' field from the comparison
+								if ($field !== 'id_darbuotojas' && $_POST[$field] != $value) {
+									$emailMessage .= "Field '$field' changed from '$value' to '{$_POST[$field]}'\n";
+									$changesDetected = true;  // Set the flag to true if changes are detected
+								}
+							}
+
+							if ($changesDetected == true)
+							{
+								$mail = new PHPMailer;
+
+								// Connection settingai
+								$mail->isSMTP();
+								$mail->Host = 'smtp-mail.outlook.com'; // Max 300 žinučių per dieną, max 100 skirtingų gavėjų
+								$mail->SMTPAuth = true;
+								$mail->Username = 'vartvald2023@outlook.com'; // outlooko username
+								$mail->Password = 'xwe449#123!@';   // acc pass
+								$mail->Port = 587;  // šitas visada same
+								$mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS; // outlookui tls
+
+								// Siuntėjas
+								$mail->setFrom('vartvald2023@outlook.com', 'vartvald2023');
+
+								// Gavėjas, pakeist į darbuotojų ar savo testinį paštą, bus spam folderi
+								$mail->addAddress($originalValues['elektroninis_pastas']);
+
+								// Antraštė
+								$mail->isHTML(true);
+								$mail->Subject = 'Atnaujinta informacija';
+
+								// Žinutė
+								$mail->Body = $emailMessage;
+
+								// Print status
+								if ($mail->send()) {
+									echo 'Message sent';
+								} else {
+									echo 'Message sending failed ' . $mail->ErrorInfo;
+								}
+
+							echo "Darbuotojo duomenys atnaujinti sėkmingai ir pranešimas išsiųstas paštu.";
+							}
+
+							
 						} else {
 							echo "Įvyko klaida atnaujinant darbuotojo duomenis: " . $conn->error;
 						}
