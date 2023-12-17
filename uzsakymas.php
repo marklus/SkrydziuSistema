@@ -117,20 +117,16 @@ include 'connect.php';
 						
 						<ul class="ui-tabs-nav">					
 							<li>
-								Pastas</a>
+								
 							</li>
 							<li>
-								<a class="ui-tabs-anchor">
-									<a class="ui-tabs-anchor">
-										<i class="fa fa-angle-right"></i>
-									Sąrąšas
-								</a>
+
 							</li>
 							<li>
-								<a class="ui-tabs-anchor">Bilietai</a>
+								
 							</li>
 							<li>
-								<a class="ui-tabs-anchor">Užsakymai</a>
+								
 							</li>
 						</ul>
 					</div>
@@ -145,7 +141,7 @@ include 'connect.php';
 										<a href="#addOrderModal" class="btn btn-success" data-toggle="modal"><i class="fas fa-plus-circle"></i><span>Pridėti Užsakymą</span></a>
 										<a href="#addTicketModal" class="btn btn-success" data-toggle="modal"><i class="fas fa-plus-circle"></i><span>Pridėti Bilietą</span></a>
 										<a href="#deleteTicketModal" class="btn btn-danger" data-toggle="modal"><i class="fas fa-minus-circle"></i><span>Pašalinti Bilietą</span></a>		
-										<input type="text" class="form-control" placeholder="Paieška">  
+
 										<a href="#SearchOrderModal" class="btn btn-success" data-toggle="modal"><i class="fas fa-plus-circle"></i><span>Atlikti paiešką</span></a>
 									</div>
 								</div>
@@ -236,7 +232,7 @@ include 'connect.php';
 												echo "<td>
 													<a href='#redaguotiUžsakymą' class='edit btn-edit' data-toggle='modal' data-id='{$row['id_uzsakymas']}'><i class='fas fa-pen' data-toggle='tooltip' title='Redaguoti'></i></a>
 													<a href='#deleteEmployeeModal' class='delete' data-toggle='modal' data-id='{$row['id_uzsakymas']}'><i class='fas fa-trash' data-toggle='tooltip' title='Pašalinti'></i></a>
-													<a href='#' class='btn-take' data-id='{$row['id_uzsakymas']}'><i class='fas fa-trash' data-toggle='tooltip' title='Take Order'></i></a>
+													<a href='#' class='btn-take' data-id='{$row['id_uzsakymas']}'><i class='fas fa-trash' data-toggle='tooltip' title='Paimti'></i></a>
 													</td>";
 												echo "</tr>";
 											}
@@ -512,13 +508,13 @@ include 'connect.php';
 						<div class="modal-content">
 						<form action="uzsakymas.php" method="post">
 							<div class="modal-header">
-							<h4 class="modal-title">Rasti užsakymą</h4>
-							<input type="text" name="search_id" id="search_id">
+							<h4 class="modal-title">Užsakymo paieška pagal pavadinimą</h4>
+							
 							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 							</div>
 							<div class="modal-body">
 
-
+							<input type="text" name="search_id" id="search_id" placeholder="Rašyti čia">
 							
 
 							</div>
@@ -662,33 +658,31 @@ include 'connect.php';
 								// Fetch and display rows containing the search word
 								$sql = "SELECT * FROM uzsakymai WHERE pavadinimas LIKE '%$search_word%'";
 								$result = $conn->query($sql);
+							//	echo "SQL Query: " . $sql . "<br>";
+							//	echo "Number of Rows: " . $result->num_rows . "<br>";
+							if ($result->num_rows > 0) {
+								echo "<ul>"; // Start your unordered list
+								echo "Paieškos rezultatai";
+								while ($row = $result->fetch_assoc()) {
+									echo "<li>";
+									echo "ID: " . $row['id_uzsakymas'] . "<br>";
+									echo "Pavadinimas: " . $row['pavadinimas'] . "<br>";
+									echo "Užsakovo vardas: " . $row['uzsakovo_name'] . "<br>";
+									echo "ID bilieto: " . $row['id_bilietas'] . "<br>";
+									echo "Sukūrimo data: " . $row['sukurimo_data'] . "<br>";
+									echo "Būsena: " . $row['busena'] . "<br>";
 							
-								if ($result->num_rows > 0) {
-									while($row = $result->fetch_assoc()) {
-										echo "<tr>";
-										echo "<td>
-										<span class='custom-checkbox'>
-											<input type='checkbox' class='checkbox' name='selected_items[]' value='{$row['id_uzsakymas']}'>
-											<label for='checkbox{$row['id_uzsakymas']}'></label>
-										</span>
-									  </td>";
-										echo "<td>" . $row['id_uzsakymas'] . "</td>";
-										echo "<td>" . $row['pavadinimas'] . "</td>";
-										echo "<td>" . $row['uzsakovo_name'] . "</td>";
-										echo "<td>" . $row['id_bilietas'] . "</td>";
-										echo "<td>" . $row['sukurimo_data'] . "</td>";
-										echo "<td>" . $row['busena'] . "</td>";
-
-										echo "<td>
-											<a href='#redaguotiUžsakymą' class='edit btn-edit' data-toggle='modal' data-id='{$row['id_uzsakymas']}'><i class='fas fa-pen' data-toggle='tooltip' title='Redaguoti'></i></a>
-											<a href='#deleteEmployeeModal' class='delete' data-toggle='modal' data-id='{$row['id_uzsakymas']}'><i class='fas fa-trash' data-toggle='tooltip' title='Pašalinti'></i></a>
-											<a href='#' class='btn-take' data-id='{$row['id_uzsakymas']}'><i class='fas fa-trash' data-toggle='tooltip' title='Take Order'></i></a>
-											</td>";
-										echo "</tr>";
-									}
-								} else {
-									echo "Neubo rasta užsakymų tokiu pavadinimu.";
+									echo "<a href='#redaguotiUžsakymą' class='edit btn-edit' data-toggle='modal' data-id='{$row['id_uzsakymas']}'><i class='fas fa-pen' data-toggle='tooltip' title='Redaguoti'></i></a>";
+									echo "<a href='#deleteEmployeeModal' class='delete' data-toggle='modal' data-id='{$row['id_uzsakymas']}'><i class='fas fa-trash' data-toggle='tooltip' title='Pašalinti'></i></a>";
+									echo "<a href='#' class='btn-take' data-id='{$row['id_uzsakymas']}'><i class='fas fa-trash' data-toggle='tooltip' title='Paimti'></i></a>";
+							
+									echo "</li>";
 								}
+							
+								echo "</ul>"; // End your unordered list
+							} else {
+								echo "Nebuvo rasta užsakymų tokiu pavadinimu.";
+							}
 							}
 						}
 
@@ -844,7 +838,7 @@ include 'connect.php';
 			exit();
 		} else {
 			// Redirect or handle the case where edit_id is not present
-			header("uzsakymai.php");
+		//	header("uzsakymai.php");
 			exit();
 		}
 		?>
