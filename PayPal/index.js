@@ -23,7 +23,7 @@ paypal.Buttons({
 
     },
     onCancel: function(data) {
-        window.location.replace("http://localhost:3000/paypal/Oncancel.php")
+        window.location.replace("http://localhost:3000/paypal/Oncancel.php?phpValue1=" + encodeURIComponent(phpValue1))
     }
 }).render('#paypal-payment-button');
 

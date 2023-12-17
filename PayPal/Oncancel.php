@@ -23,6 +23,24 @@
 </main>
 <p>Būsite nukreipti į užsakymų puslapį po 3 sekundžių...</p>
 
+
+<?php $phpValue1 = $_GET['phpValue1'];
+echo $phpValue1; 
+
+    include '../connect.php';
+
+    if ($conn->connect_error) {
+        die("Nepavyko prisijungti: " . $conn->connect_error);
+    }
+    // SQL query with prepared statement
+    $sql = "UPDATE uzsakymai SET busena = 'Nepavyko Apmokėti' WHERE id_uzsakymas = $phpValue1";
+
+    // Prepare the statement
+    $result = $conn->query($sql);
+
+
+?> 
+
 <script>
     // If you want to give users the option to cancel the redirection, you can use this script
     document.addEventListener('DOMContentLoaded', function() {
