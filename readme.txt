@@ -10,3 +10,8 @@ acc:
 sb-s4bmz28453555@personal.example.com
 password:
 patikra123
+
+
+Email api testavimui naudotas darbuotojo e-paštas:
+itprojdarbuotojas1@proton.me
+xwe449#123!@
