@@ -23,6 +23,10 @@
 </main>
 <p>Būsite nukreipti į užsakymų puslapį po 3sekundžių...</p>
 
+
+
+
+
 <script>
     // If you want to give users the option to cancel the redirection, you can use this script
     document.addEventListener('DOMContentLoaded', function() {
@@ -34,6 +38,7 @@
                 document.getElementById('countdown').innerText = countdown;
                 setTimeout(updateCountdown, 1000);
             } else {
+
                 window.location.href = '../uzsakymas.php';
             }
         }

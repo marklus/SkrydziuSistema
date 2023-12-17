@@ -77,7 +77,7 @@ include 'connect.php';
 
 					<!--accmokslui123654@proton.me-->
 		<script src="https://www.paypal.com/sdk/js?client-id=AS89FaARMRYphRAg5CfdpR7hmO1-UKCjWWXjkdvfkcnglK1Gtmzj0Zwearff0_EQNR7PycuDvRhd1dKb&disable-funding=credit,card"></script>
-		<script src="PayPal/index.js"></script>
+	<!--	<script src="PayPal/index.js"></script> -->
 
 		<div id="app" class="container-fluid h-100">
 			<section class="main container-fluid h-100">
@@ -202,7 +202,7 @@ include 'connect.php';
 												echo "<td>" . $row['busena'] . "</td>";
 												//echo "<td>" . $row['Statusas'] . "</td>";
 												echo "<td>
-													<a href='#redaguotiUžsakymą' class='edit' data-toggle='modal' data-id='{$row['id_uzsakymas']}'><i class='fas fa-pen' data-toggle='tooltip' title='Redaguoti'></i></a>
+													<a href='#redaguotiUžsakymą' class='edit btn-edit' data-toggle='modal' data-id='{$row['id_uzsakymas']}'><i class='fas fa-pen' data-toggle='tooltip' title='Redaguoti'></i></a>
 													<a href='#deleteEmployeeModal' class='delete' data-toggle='modal' data-id='{$row['id_uzsakymas']}'><i class='fas fa-trash' data-toggle='tooltip' title='Pašalinti'></i></a>
 												</td>";
 												echo "</tr>";
@@ -215,6 +215,7 @@ include 'connect.php';
 										?>
 
 							</table>
+
 							<div class="clearfix">
 								<div class="hint-text">Numeris nuo <b>5</b> iki <b>25</b> </div>
 								<ul class="pagination">
@@ -311,6 +312,11 @@ include 'connect.php';
 
 							<div class="form-group">
 								<label>Spauskite norėdami apmokėti užsakymą</label>
+								
+
+								
+								<label>Kaina sumokėti yra  </label>
+
 								<div id="paypal-payment-button"> </div>
 							</div>
 							</div>
@@ -322,6 +328,16 @@ include 'connect.php';
 						</div>
 					</div>
 					</div>
+
+
+
+
+					<?php $phpValue = "29"; ?>
+
+					<div id="phpValueContainer" data-php-value="<?php echo htmlspecialchars($phpValue); ?>"></div>
+
+
+
 
 
 					<div id="addTicketModal" class="modal fade">
@@ -583,6 +599,33 @@ include 'connect.php';
 
 
 					<!-- Delete Modal HTML -->
+					<div id="deleteEmployeeModal" class="modal fade">
+						<div class="modal-dialog">
+
+						
+							<div class="modal-content">
+							<div class="modal-header">
+										<h4 class="modal-title">Pašalinti užsakymą</h4>
+										<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+									</div>
+								<form action="uzsakymas.php" method="post">
+									<input type="hidden" name="delete_id" id="delete_id">
+
+									<div class="form-group">
+
+								</div>
+									<div class="modal-body">
+										<p>Ar tikrai norite pašalinti užsakymą?</p>
+										<p class="text-warning"><small>Užsakymo nebus galima grąžinti.</small></p>
+									</div>
+									<div class="modal-footer">
+										<input type="button" class="btn btn-default" data-dismiss="modal" value="Atšaukti">
+										<input type="submit" class="btn btn-danger" name="delete_submit" value="Pašalinti">
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
 					<!-- Delete Modal HTML -->
 					<div id="deleteTicketModal" class="modal fade">
 						<div class="modal-dialog">
@@ -634,6 +677,7 @@ include 'connect.php';
 							</div>
 						</div>
 					</div>
+
 
 
 					<div id="deleteTicketModal" class="modal fade">
@@ -748,5 +792,39 @@ include 'connect.php';
 		<link href="https://unpkg.com/gijgo@1.9.11/css/gijgo.min.css" rel="stylesheet" type="text/css" />
 		<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.7.0/dist/js/bootstrap.bundle.min.js"></script>
+		<script src="./PayPal/index.js"></script>
 
+		<script>
+    $(document).ready(function(){
+        // Handler for when the edit button is clicked
+        $('.btn-take').click(function(){
+            // Get the data-id attribute value
+            var orderId = $(this).data('id');
+            
+            // Redirect to uzsakymas.php with orderId as a query parameter
+            window.location.href = 'uzsakymas.php?edit_id=' + orderId;
+        });
+    });
+</script>
+
+<?php
+// Check if the edit_id parameter is present in the URL
+if(isset($_GET['edit_id'])) {
+    // Retrieve the edit_id value
+    $editId = $_GET['edit_id'];
+
+    // Now you can use $editId in your logic
+    // For example, you might perform other actions or validations
+
+    // ...
+
+    // Redirect or display a success message
+    header("uzsakymai.php");
+    exit();
+} else {
+    // Redirect or handle the case where edit_id is not present
+    header("uzsakymai.php");
+    exit();
+}
+?>
 

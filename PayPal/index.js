@@ -7,7 +7,8 @@ paypal.Buttons({
         return actions.order.create({
             purchase_units: [{
                 amount: {
-                    value: '0.1'
+                    value: phpValue
+                        //value: paymentAmount.toString()
                 }
             }]
         });
@@ -24,3 +25,5 @@ paypal.Buttons({
         window.location.replace("http://localhost:3000/paypal/Oncancel.php")
     }
 }).render('#paypal-payment-button');
+
+var phpValue = $('#phpValueContainer').data('php-value');
