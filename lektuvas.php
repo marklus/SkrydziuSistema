@@ -7,8 +7,6 @@ session_start();      // index.php
 include("include/functions.php");
 ?>
 <!doctype html>
-
-<link rel="stylesheet" type="text/css" href="stylesUzsakymas.css">
 <link rel="icon" href="./include/icon.ico" type="image/x-icon">
 
 
@@ -47,28 +45,14 @@ else {
 
     <meta charset="UTF-8">
     <title>Lėktuvo 3D modelis</title>
-    <style>
-        body {
-            margin: 500;
-        }
-
-        canvas {
-            display: block;
-        }
-
-        #container {
-        width: 50%; /* Set the width as a percentage of the window's width */
-        max-width: 600px; /* Adjusted maximum width for better visibility */
-        height: 600px; /* Set the height */
-        margin: auto; /* Center the container */
-        border: 100px solid lightblue; /* Optional: Add a border for visual reference */
-
-    }
-    </style>
+    <link rel="stylesheet" type="text/css" href="./include/styles.css">
+    
 </head>
 
 <body>
     <!-- Your HTML body content -->
+
+
     <div>
     </div>
     <div id="container">

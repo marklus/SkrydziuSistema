@@ -217,3 +217,23 @@ body {
         bottom: 100%;
     }
 }
+
+/* lektuvo 3d vaizdavimui */
+canvas {
+    display: block;
+}
+
+#container {
+    width: 50%;
+    /* Set the width as a percentage of the window's width */
+    max-width: 600px;
+    /* Adjusted maximum width for better visibility */
+    height: 600px;
+    /* Set the height */
+    margin: auto;
+    /* Center the container */
+    border: 100px solid lightblue;
+    /* Optional: Add a border for visual reference */
+}
+
+/* lektuvo 3d vaizdavimui pabaiga */
