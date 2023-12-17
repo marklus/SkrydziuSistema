@@ -33,12 +33,24 @@
 
     <!-- Your Three.js and OBJLoader-related code -->
     <script type="module">
-                import * as THREE from 'https://cdn.jsdelivr.net/npm/three@latest/build/three.module.js';
-        import { OBJLoader } from 'https://cdn.jsdelivr.net/npm/three@latest/examples/jsm/loaders/OBJLoader.js';
+        import * as THREE from 'https://cdn.jsdelivr.net/npm/three@latest/build/three.module.js';
+        import {
+            OBJLoader
+        } from 'https://cdn.jsdelivr.net/npm/three@latest/examples/jsm/loaders/OBJLoader.js';
+
+        import {
+            OrbitControls
+        } from 'https://cdn.jsdelivr.net/npm/three@latest/examples/jsm/controls/OrbitControls.js';
+
 
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         const renderer = new THREE.WebGLRenderer();
+        const controls = new OrbitControls(camera, renderer.domElement);
+
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5); // Soft white light
+scene.add(ambientLight);
+
         renderer.setSize(window.innerWidth, window.innerHeight);
         document.body.appendChild(renderer.domElement);
 
