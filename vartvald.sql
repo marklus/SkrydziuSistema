@@ -109,7 +109,7 @@ CREATE TABLE `lektuvu_modeliai` (
 
 CREATE TABLE `miestai` (
   `pavadinimas` varchar(255) DEFAULT NULL,
-  `id_miestas` int(11) NOT NULL
+  `ID_miestas` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -122,7 +122,8 @@ CREATE TABLE `oro_uostai` (
   `pavadinimas` varchar(255) DEFAULT NULL,
   `iata_oro_uosto_kodas` varchar(255) DEFAULT NULL,
   `reitingas` double NOT NULL,
-  `adresas` varchar(255) NOT NULL
+  `adresas` varchar(255) NOT NULL,
+  `id_miestas` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -351,6 +352,12 @@ ALTER TABLE `vietos_lektuve`
   ADD PRIMARY KEY (`id_vieta_lektuve`);
 
 --
+-- Indexes for table `oro_uostai`
+--
+ALTER TABLE `oro_uostai`
+  ADD KEY (`iata_oro_uosto_kodas`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -425,6 +432,12 @@ ALTER TABLE `vietos`
 --
 ALTER TABLE `vietos_lektuve`
   MODIFY `id_vieta_lektuve` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `oro_uostai`
+--
+ALTER TABLE `oro_uostai`
+  MODIFY `id_miestas` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables
