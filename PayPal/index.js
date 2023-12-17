@@ -16,7 +16,8 @@ paypal.Buttons({
     onApprove: function(data, actions) {
         return actions.order.capture().then(function(details) {
             console.log(details)
-            window.location.replace("http://localhost:3000/paypal/success.php")
+
+            window.location.replace("http://localhost:3000/paypal/success.php?phpValue1=" + encodeURIComponent(phpValue1));
 
         })
 
@@ -27,3 +28,4 @@ paypal.Buttons({
 }).render('#paypal-payment-button');
 
 var phpValue = $('#phpValueContainer').data('php-value');
+var phpValue1 = $('#phpValueContainer1').data('php-value1');

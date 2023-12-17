@@ -48,10 +48,11 @@ include 'connect.php';
 		//  $editId = $_GET['edit_id'];
 		  //echo "<p>Edit ID: $editId</p>";
 
-		  $editId = $_GET['edit_id'];
+		  $editId = @$_GET['edit_id'];
 		//  echo "<p>Edit ID: $editId</p>";
 
 
+		
 		 
 		$sql = "SELECT uzsakymai.id_uzsakymas, bilietai.kaina
         FROM uzsakymai
@@ -367,7 +368,7 @@ include 'connect.php';
 
 					
 					<div id="phpValueContainer" data-php-value="<?php echo htmlspecialchars($kaina); ?>"></div>
-
+					<div id="phpValueContainer1" data-php-value1="<?php echo htmlspecialchars($editId); ?>"></div>
 
 
 

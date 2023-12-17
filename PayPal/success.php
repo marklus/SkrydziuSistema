@@ -15,17 +15,21 @@
 <body>
 <main id="cart-main">
 
+
     <div class="site-title text-center">
         <div><img src="./assets/checked.png" alt=""></div>
         <h1 class="font-title">Apmokėjimas pavyko!</h1>
     </div>
 
+
 </main>
 <p>Būsite nukreipti į užsakymų puslapį po 3sekundžių...</p>
 
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
 
-
+<?php $phpValue1 = $_GET['phpValue1'];
+echo $phpValue1;  ?> 
 
 <script>
     // If you want to give users the option to cancel the redirection, you can use this script
@@ -38,13 +42,14 @@
                 document.getElementById('countdown').innerText = countdown;
                 setTimeout(updateCountdown, 1000);
             } else {
-
+                
                 window.location.href = '../uzsakymas.php';
             }
         }
-
+        
         updateCountdown();
     });
+    
 </script>
 
 </body>
