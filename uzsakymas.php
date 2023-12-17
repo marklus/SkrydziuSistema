@@ -45,6 +45,13 @@ include 'connect.php';
                 echo "</td></tr></table></div><br>";
            
 		  }
+		//  $editId = $_GET['edit_id'];
+		  //echo "<p>Edit ID: $editId</p>";
+
+		  $editId = $_GET['edit_id'];
+		  echo "<p>Edit ID: $editId</p>";
+
+		  
 		  
 ?>
 
@@ -335,7 +342,8 @@ include 'connect.php';
 
 					<?php $phpValue = "29"; ?>
 
-					<div id="phpValueContainer" data-php-value="<?php echo htmlspecialchars($phpValue); ?>"></div>
+					
+					<div id="phpValueContainer" data-php-value="<?php echo htmlspecialchars($editId); ?>"></div>
 
 
 
