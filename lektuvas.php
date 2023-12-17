@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
     <!-- Your head content here -->
+    <link rel="icon" href="./include/icon.ico" type="image/x-icon">
+
     <meta charset="UTF-8">
     <title>Simple Three.js Scene</title>
     <style>
