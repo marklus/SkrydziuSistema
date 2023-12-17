@@ -75,6 +75,7 @@ if (!empty($_SESSION['user']))     //Jei vartotojas prisijungęs, valom logino k
 
 <head>
 	<!-- Required meta tags -->
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -357,6 +358,49 @@ if (!empty($_SESSION['user']))     //Jei vartotojas prisijungęs, valom logino k
 
 						if ($conn->query($insertSql) === TRUE) {
 							echo "Naujas darbuotojas pridėtas sėkmingai.";
+
+							$mail = new PHPMailer;
+							$mail->CharSet = 'UTF-8';
+							$mail->isSMTP();
+							$mail->Host = 'smtp-mail.outlook.com'; // Max 300 žinučių per dieną, max 100 skirtingų gavėjų
+							$mail->SMTPAuth = true;
+							$mail->Username = 'vartvald2023@outlook.com'; // outlooko username
+							$mail->Password = 'xwe449#123!@';   // acc pass
+							$mail->Port = 587;  // šitas visada same
+							$mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS; // outlookui tls
+
+							// Siuntėjas
+							$mail->setFrom('vartvald2023@outlook.com', 'vartvald2023');
+
+							// Gavėjas, pakeist į darbuotojų ar savo testinį paštą, bus spam folderi
+							$mail->addAddress($pastas);
+
+							// Antraštė
+							$mail->isHTML(true);
+							$mail->Subject = 'Nauja paskyra užregistruota.';
+
+							// Žinutė
+							$bodyContent = '<p>Sveiki,</p>';
+							$bodyContent .= '<p>Nauja paskyra buvo sėkmingai užregistruota. Jūsų pateikti duomenys:</p>';
+							$bodyContent .= '<ul>';
+							$bodyContent .= '<li><strong>Vardas:</strong> ' . $vardas . '</li>';
+							$bodyContent .= '<li><strong>Pavarde:</strong> ' . $pavarde . '</li>';
+							$bodyContent .= '<li><strong>Gimimo data:</strong> ' . $gimimoData . '</li>';
+							$bodyContent .= '<li><strong>Elektroninis pastas:</strong> ' . $pastas . '</li>';
+							$bodyContent .= '<li><strong>Pareigos:</strong> ' . $pareigos . '</li>';
+							$bodyContent .= '</ul>';
+							$bodyContent .= '<p>Ačiū, kad prisijungėte!</p>';
+					
+							$mail->Body = $bodyContent;
+
+							// Print status
+							if ($mail->send()) {
+								echo 'Message sent';
+							} else {
+								echo 'Message sending failed ' . $mail->ErrorInfo;
+							}
+
+
 						} else {
 							echo "Įvyko klaida pridedant naują darbuotoją: " . $conn->error;
 						}
@@ -370,9 +414,11 @@ if (!empty($_SESSION['user']))     //Jei vartotojas prisijungęs, valom logino k
 							// Delete the record from the 'uzsakymai' table
 							$deleteSql = "DELETE FROM darbuotojai WHERE id_darbuotojas = $delete_id";
 
-							$mail = new PHPMailer;
-
+							if ($conn->query($deleteSql) === TRUE) {
+								echo "Įrašas sėkmingai pašalintas";
 								// Connection settingai
+								$mail = new PHPMailer;
+								$mail->CharSet = 'UTF-8';
 								$mail->isSMTP();
 								$mail->Host = 'smtp-mail.outlook.com'; // Max 300 žinučių per dieną, max 100 skirtingų gavėjų
 								$mail->SMTPAuth = true;
@@ -389,10 +435,10 @@ if (!empty($_SESSION['user']))     //Jei vartotojas prisijungęs, valom logino k
 
 								// Antraštė
 								$mail->isHTML(true);
-								$mail->Subject = 'Jusu paskyra buvo istrinta.';
+								$mail->Subject = 'Jūsų paskyra buvo ištrinta.';
 
 								// Žinutė
-								$bodyContent = '<b>Jusu paskyra buvo istrinta administratoriaus is skrydžiu sistemos</b>';
+								$bodyContent = '<b>Jūsų paskyra buvo ištrinta administratoriaus is skrydžiu sistemos</b>';
 								$mail->Body = $bodyContent;
 
 								// Print status
@@ -401,9 +447,6 @@ if (!empty($_SESSION['user']))     //Jei vartotojas prisijungęs, valom logino k
 								} else {
 									echo 'Message sending failed ' . $mail->ErrorInfo;
 								}
-
-							if ($conn->query($deleteSql) === TRUE) {
-								echo "Įrašas sėkmingai pašalintas";
 							} else {
 								echo "Įvyko klaida naikinant duomenis:: " . $conn->error;
 							}
@@ -435,22 +478,26 @@ if (!empty($_SESSION['user']))     //Jei vartotojas prisijungęs, valom logino k
 						$changesDetected = false;
 						if ($conn->query($updateSql) === TRUE) {
 							// Initialize the email message
-							$emailMessage = "Your information has been updated. Changes:\n";
-
+							$bodyContent = '<p>Sveiki,</p>';
+							$bodyContent = "<p>Jūsų informacija buvo atnaujinta. Pakeitimai:</p>";
+							$bodyContent .= '<ul>';
 							// Compare and append changes to the email message
 							foreach ($originalValues as $field => $value) {
 								// Exclude the 'id_darbuotojas' field from the comparison
 								if ($field !== 'id_darbuotojas' && $_POST[$field] != $value) {
-									$emailMessage .= "Field '$field' changed from '$value' to '{$_POST[$field]}'\n";
+									$bodyContent .= "<li><strong>$field:</strong> $value ➔ {$_POST[$field]}</li>";
 									$changesDetected = true;  // Set the flag to true if changes are detected
 								}
 							}
+							$bodyContent .= '</ul>';
+
 
 							if ($changesDetected == true)
 							{
 								$mail = new PHPMailer;
 
 								// Connection settingai
+								$mail->CharSet = 'UTF-8';
 								$mail->isSMTP();
 								$mail->Host = 'smtp-mail.outlook.com'; // Max 300 žinučių per dieną, max 100 skirtingų gavėjų
 								$mail->SMTPAuth = true;
@@ -470,7 +517,7 @@ if (!empty($_SESSION['user']))     //Jei vartotojas prisijungęs, valom logino k
 								$mail->Subject = 'Atnaujinta informacija';
 
 								// Žinutė
-								$mail->Body = $emailMessage;
+								$mail->Body = $bodyContent;
 
 								// Print status
 								if ($mail->send()) {
