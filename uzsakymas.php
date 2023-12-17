@@ -113,7 +113,7 @@ include 'connect.php';
 									<div class="col-sm-6">
 										<a href="#addOrderModal" class="btn btn-success" data-toggle="modal"><i class="fas fa-plus-circle"></i><span>Pridėti Užsakymą</span></a>
 										<a href="#addTicketModal" class="btn btn-success" data-toggle="modal"><i class="fas fa-plus-circle"></i><span>Pridėti Bilietą</span></a>
-										<a href="#deleteTicketModal" class="btn btn-danger" data-toggle="modal"><i class="fas fa-minus-circle"></i><span>Pašalinti Bilietą</span></a>					
+										<a href="#deleteTicketModal" class="btn btn-danger" data-toggle="modal"><i class="fas fa-minus-circle"></i><span>Pašalinti Bilietą</span></a>		
 										<input type="text" class="form-control" placeholder="Paieška">  
 									</div>
 								</div>
@@ -204,7 +204,8 @@ include 'connect.php';
 												echo "<td>
 													<a href='#redaguotiUžsakymą' class='edit btn-edit' data-toggle='modal' data-id='{$row['id_uzsakymas']}'><i class='fas fa-pen' data-toggle='tooltip' title='Redaguoti'></i></a>
 													<a href='#deleteEmployeeModal' class='delete' data-toggle='modal' data-id='{$row['id_uzsakymas']}'><i class='fas fa-trash' data-toggle='tooltip' title='Pašalinti'></i></a>
-												</td>";
+													<a href='#' class='btn-take' data-id='{$row['id_uzsakymas']}'><i class='fas fa-trash' data-toggle='tooltip' title='Take Order'></i></a>
+													</td>";
 												echo "</tr>";
 											}
 										} else {
@@ -807,24 +808,24 @@ include 'connect.php';
     });
 </script>
 
-<?php
-// Check if the edit_id parameter is present in the URL
-if(isset($_GET['edit_id'])) {
-    // Retrieve the edit_id value
-    $editId = $_GET['edit_id'];
+		<?php
+		// Check if the edit_id parameter is present in the URL
+		if(isset($_GET['edit_id'])) {
+			// Retrieve the edit_id value
+			$editId = $_GET['edit_id'];
 
-    // Now you can use $editId in your logic
-    // For example, you might perform other actions or validations
+			// Now you can use $editId in your logic
+			// For example, you might perform other actions or validations
 
-    // ...
+			// ...
 
-    // Redirect or display a success message
-    header("uzsakymai.php");
-    exit();
-} else {
-    // Redirect or handle the case where edit_id is not present
-    header("uzsakymai.php");
-    exit();
-}
-?>
+			// Redirect or display a success message
+			header("uzsakymai.php");
+			exit();
+		} else {
+			// Redirect or handle the case where edit_id is not present
+			header("uzsakymai.php");
+			exit();
+		}
+		?>
 
