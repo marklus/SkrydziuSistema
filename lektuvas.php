@@ -19,7 +19,7 @@
         {
             "imports": {
                 "three": "https://unpkg.com/three@0.149.0/build/three.module.js",
-                "three/addons/": "https://unpkg.com/three@<v0.149.0>/examples/jsm/"
+                "three/addons/": "https://unpkg.com/three@0.149.0/examples/jsm/"
             }
         }
     </script>
@@ -31,6 +31,7 @@
 
 // Import Three.js modules
         import * as THREE from 'three';
+        import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
 
         // Create a scene
         const scene = new THREE.Scene();
