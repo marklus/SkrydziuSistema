@@ -9,6 +9,7 @@ include("include/functions.php");
 <!doctype html>
 
 <link rel="stylesheet" type="text/css" href="stylesUzsakymas.css">
+<link rel="icon" href="./include/icon.ico" type="image/x-icon">
 
 
 <?php
