@@ -49,9 +49,32 @@ include 'connect.php';
 		  //echo "<p>Edit ID: $editId</p>";
 
 		  $editId = $_GET['edit_id'];
-		  echo "<p>Edit ID: $editId</p>";
+		//  echo "<p>Edit ID: $editId</p>";
 
-		  
+
+		 
+		$sql = "SELECT uzsakymai.id_uzsakymas, bilietai.kaina
+        FROM uzsakymai
+        JOIN bilietai ON uzsakymai.id_bilietas = bilietai.id_bilietas
+        WHERE uzsakymai.id_uzsakymas = '$editId';";
+
+			$result = mysqli_query($conn, $sql);
+
+			if ($result) {
+				// Fetch associative array
+				while ($row = mysqli_fetch_assoc($result)) {
+					$id_uzsakymas = $row['id_uzsakymas'];
+					$kaina = $row['kaina'];
+			
+					// Now you can use $id_uzsakymas and $kaina as needed
+					//echo "ID Uzsakymas: $id_uzsakymas, Kaina: $kaina<br>";
+				}
+			
+				// Free result set
+				mysqli_free_result($result);
+			} else {
+				// Handle the error, e.g., echo mysqli_error($conn);
+			}
 		  
 ?>
 
@@ -343,7 +366,7 @@ include 'connect.php';
 					<?php $phpValue = "29"; ?>
 
 					
-					<div id="phpValueContainer" data-php-value="<?php echo htmlspecialchars($editId); ?>"></div>
+					<div id="phpValueContainer" data-php-value="<?php echo htmlspecialchars($kaina); ?>"></div>
 
 
 
