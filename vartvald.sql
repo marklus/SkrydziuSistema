@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 17, 2023 at 12:32 AM
--- Server version: 10.4.28-MariaDB
--- PHP Version: 8.0.28
+-- Generation Time: Dec 17, 2023 at 11:57 AM
+-- Server version: 10.4.27-MariaDB
+-- PHP Version: 8.2.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -57,6 +57,13 @@ CREATE TABLE `darbuotojai` (
   `pareigos` varchar(255) NOT NULL,
   `id_darbuotojas` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `darbuotojai`
+--
+
+INSERT INTO `darbuotojai` (`vardas`, `pavarde`, `gimimo_data`, `elektroninis_pastas`, `pareigos`, `id_darbuotojas`) VALUES
+('Vardas', 'Pavard', '2023-12-01', 'itprojdarbuotojas1@proton.me', 'pilotas', 1);
 
 -- --------------------------------------------------------
 
@@ -126,7 +133,7 @@ CREATE TABLE `oro_uostai` (
 CREATE TABLE `pamainos` (
   `pradzios_laikas` date NOT NULL,
   `pabaigos_laikas` date NOT NULL,
-  `darbuotojo_id` varchar(255) NOT NULL,
+  `darbuotojo_id` int(11) NOT NULL,
   `statusas` varchar(255) NOT NULL,
   `id_pamaina` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -290,7 +297,8 @@ ALTER TABLE `miestai`
 -- Indexes for table `pamainos`
 --
 ALTER TABLE `pamainos`
-  ADD PRIMARY KEY (`id_pamaina`);
+  ADD PRIMARY KEY (`id_pamaina`),
+  ADD KEY `darbuotojo_id` (`darbuotojo_id`);
 
 --
 -- Indexes for table `skrydziai`
@@ -348,7 +356,7 @@ ALTER TABLE `bilietai`
 -- AUTO_INCREMENT for table `darbuotojai`
 --
 ALTER TABLE `darbuotojai`
-  MODIFY `id_darbuotojas` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_darbuotojas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `lektuvu_gamintojai`
@@ -409,6 +417,16 @@ ALTER TABLE `vietos`
 --
 ALTER TABLE `vietos_lektuve`
   MODIFY `id_vieta_lektuve` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `pamainos`
+--
+ALTER TABLE `pamainos`
+  ADD CONSTRAINT `darbuotojo_id` FOREIGN KEY (`darbuotojo_id`) REFERENCES `darbuotojai` (`id_darbuotojas`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
