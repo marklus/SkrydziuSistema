@@ -146,6 +146,7 @@ include 'connect.php';
 										<a href="#addTicketModal" class="btn btn-success" data-toggle="modal"><i class="fas fa-plus-circle"></i><span>Pridėti Bilietą</span></a>
 										<a href="#deleteTicketModal" class="btn btn-danger" data-toggle="modal"><i class="fas fa-minus-circle"></i><span>Pašalinti Bilietą</span></a>		
 										<input type="text" class="form-control" placeholder="Paieška">  
+										<a href="#SearchOrderModal" class="btn btn-success" data-toggle="modal"><i class="fas fa-plus-circle"></i><span>Atlikti paiešką</span></a>
 									</div>
 								</div>
 							</div>
@@ -353,7 +354,7 @@ include 'connect.php';
 							</div>
 							</div>
 							<div class="modal-footer">
-							<input type="button" class="btn btn-default" data-dismiss="modal" value="Atsaukti">
+							<input type="button" class="btn btn-default" data-dismiss="modal" value="Atšaukti">
 							<input type="submit" class="btn btn-info" name="edit_submit" value="Pateikti">
 							</div>
 						</form>
@@ -424,7 +425,7 @@ include 'connect.php';
 							</div>
 							</div>
 							<div class="modal-footer">
-							<input type="button" class="btn btn-default" data-dismiss="modal" value="Atsaukti">
+							<input type="button" class="btn btn-default" data-dismiss="modal" value="Atšaukti">
 							<input type="submit" class="btn btn-info" name="add_submit" value="Pateikti">
 							</div>
 						</form>
@@ -496,13 +497,40 @@ include 'connect.php';
 							</div>
 							</div>
 							<div class="modal-footer">
-							<input type="button" class="btn btn-default" data-dismiss="modal" value="Atsaukti">
+							<input type="button" class="btn btn-default" data-dismiss="modal" value="Atšaukti">
 							<input type="submit" class="btn btn-info" name="add_order_submit" value="Pateikti">
 							</div>
 						</form>
 						</div>
 					</div>
 					</div>
+
+
+
+					<div id="SearchOrderModal" class="modal fade">
+					<div class="modal-dialog">
+						<div class="modal-content">
+						<form action="uzsakymas.php" method="post">
+							<div class="modal-header">
+							<h4 class="modal-title">Rasti užsakymą</h4>
+							<input type="text" name="search_id" id="search_id">
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							</div>
+							<div class="modal-body">
+
+
+							
+
+							</div>
+							<div class="modal-footer">
+							<input type="button" class="btn btn-default" data-dismiss="modal" value="Atšaukti">
+							<input type="submit" class="btn btn-info" name="search_submit" value="Pateikti">
+							</div>
+						</form>
+						</div>
+					</div>
+					</div>
+
 
 
 					<script>
@@ -624,6 +652,44 @@ include 'connect.php';
 									}
 								}
 							}
+
+
+							elseif (isset($_POST["search_submit"])) {
+								// Code for processing edit submission
+	
+								$search_word = $_POST['search_id'];
+
+								// Fetch and display rows containing the search word
+								$sql = "SELECT * FROM uzsakymai WHERE pavadinimas LIKE '%$search_word%'";
+								$result = $conn->query($sql);
+							
+								if ($result->num_rows > 0) {
+									while($row = $result->fetch_assoc()) {
+										echo "<tr>";
+										echo "<td>
+										<span class='custom-checkbox'>
+											<input type='checkbox' class='checkbox' name='selected_items[]' value='{$row['id_uzsakymas']}'>
+											<label for='checkbox{$row['id_uzsakymas']}'></label>
+										</span>
+									  </td>";
+										echo "<td>" . $row['id_uzsakymas'] . "</td>";
+										echo "<td>" . $row['pavadinimas'] . "</td>";
+										echo "<td>" . $row['uzsakovo_name'] . "</td>";
+										echo "<td>" . $row['id_bilietas'] . "</td>";
+										echo "<td>" . $row['sukurimo_data'] . "</td>";
+										echo "<td>" . $row['busena'] . "</td>";
+
+										echo "<td>
+											<a href='#redaguotiUžsakymą' class='edit btn-edit' data-toggle='modal' data-id='{$row['id_uzsakymas']}'><i class='fas fa-pen' data-toggle='tooltip' title='Redaguoti'></i></a>
+											<a href='#deleteEmployeeModal' class='delete' data-toggle='modal' data-id='{$row['id_uzsakymas']}'><i class='fas fa-trash' data-toggle='tooltip' title='Pašalinti'></i></a>
+											<a href='#' class='btn-take' data-id='{$row['id_uzsakymas']}'><i class='fas fa-trash' data-toggle='tooltip' title='Take Order'></i></a>
+											</td>";
+										echo "</tr>";
+									}
+								} else {
+									echo "Neubo rasta užsakymų tokiu pavadinimu.";
+								}
+							}
 						}
 
 						// Your existing code for displaying the table goes here...
@@ -738,84 +804,6 @@ include 'connect.php';
 
 				</div>
 
-
-
-				<!-- <div style="height: 100px; background-color: rgba(255,0,0,0.1);">
-					<div class="h-25 d-inline-block" style="width: 120px; background-color: rgba(0,0,255,.1)">Height 25%</div>
-					<div class="h-50 d-inline-block" style="width: 120px; background-color: rgba(0,0,255,.1)">Height 50%</div>
-					<div class="h-75 d-inline-block" style="width: 120px; background-color: rgba(0,0,255,.1)">Height 75%</div>
-					<div class="h-100 d-inline-block" style="width: 120px; background-color: rgba(0,0,255,.1)">Height 100%</div>
-				</div>				 -->
-				<!-- <div class="title-bar-wrap d-table w-100">
-					<div class="page-title-wrapper d-table-cell align-top m-0 pt-2 pb-3 pl-2 pr-1">
-						<div class="title float-left font-weight-normal">Dashboard</div>
-					</div>
-				</div>
-				<div class="content-wrapper">
-					<div class="content-box">
-					<div class="content-box-title">
-						<h3>Buscar reserva</h3>
-						<i class="logo fas fa-search mr-2"></i>
-					</div>
-					<div class="col-md-10 mx-auto">
-							<form class="clearfix">
-								<div class="form-group row">
-									<div class="col-sm-6">
-										<label for="selectCamp">Pastas</label>
-										<select class="form-control" id="selectCamp">
-											<option>Pastas A</option>
-											<option>Pastas B</option>
-											<option>Pastas C</option>
-										</select>
-									</div>
-									<div class="col-sm-6">
-										<label for="selectModule">Modulo</label>
-										<select class="form-control" id="selectModule">
-											<option>Modulo A</option>
-											<option>Modulo B</option>
-											<option>Modulo C</option>
-										</select>
-									</div>
-								</div>
-								<div class="form-group row">
-									<div class="col-sm-6">
-										<label for="selectRoomType">Tipo de habitacion</label>
-										<select class="form-control" id="selectRoomType">
-											<option>Tipo 1</option>
-											<option>Tipo 2</option>
-										</select>
-									</div>
-									<div class="col-sm-6">
-										<label for="selectRoom">Habitacion</label>
-										<select class="form-control" id="selectRoom">
-											<option>Habitacion 1</option>
-											<option>Habitacion 2</option>
-											<option>Habitacion 3</option>
-										</select>
-									</div>
-								</div>
-								<div class="form-group row">
-									<div class="col-sm-6">
-										<label for="selectRoomStatus">Estado</label>
-										<select class="form-control" id="selectRoomStatus">
-											<option>Disponible</option>
-											<option>Ocupada</option>
-										</select>
-									</div>
-									<div class="col-sm-3">
-										<label for="inputCheckIn">Check In</label>
-										<input type="text" class="form-control" id="inputCheckIn"/>
-									</div>
-									<div class="col-sm-3">
-										<label for="inputCheckOut">Check Out</label>
-										<input type="text" class="form-control" id="inputCheckOut"/>
-									</div>
-								</div>
-								<button type="button" class="btn btn-primary px-4 float-right">Buscar</button>
-							</form>
-						</div>
-					</div>
-				</div> -->
 			</section>
 		</div>
 		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
