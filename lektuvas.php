@@ -9,18 +9,29 @@
     <title>Simple Three.js Scene</title>
     <style>
         body {
-            margin: 0;
+            margin: 500;
         }
 
         canvas {
             display: block;
+        }
+
+        /* Define the style for the container */
+        #container {
+            width: 100px;
+            height: 100px;
+            margin: auto; /* Center the container */
         }
     </style>
 </head>
 
 <body>
     <!-- Your HTML body content -->
+    <header>Lėktuvo 3d modelis :)</header>
 
+    <div id="container"></div>
+
+    
     <!-- Place the Import map at the top -->
     <script type="importmap">
         {
@@ -30,6 +41,8 @@
             }
         }
     </script>
+
+    <p>Šitas lėktuvas yra labai geras, labai gerai skrenda, dar nėra nukritęs. Rekomenduojame visiems nekrentančių lėktuvų mėgėjams.</p>
 
     <!-- Your Three.js and OBJLoader-related code -->
     <script type="module">
@@ -49,7 +62,7 @@
         const controls = new OrbitControls(camera, renderer.domElement);
 
         const ambientLight = new THREE.AmbientLight(0xffffff, 0.5); // Soft white light
-scene.add(ambientLight);
+        scene.add(ambientLight);
 
         renderer.setSize(window.innerWidth, window.innerHeight);
         document.body.appendChild(renderer.domElement);
@@ -58,6 +71,9 @@ scene.add(ambientLight);
         loader.load(
             '3dModels/Airplane1/11803_Airplane_v1_l1.obj',
             function(object) {
+
+
+
                 object.scale.set(0.001, 0.001, 0.001); // Scale down the object if it's too large
                 scene.add(object);
             },
