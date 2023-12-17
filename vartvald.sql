@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 17, 2023 at 11:57 AM
--- Server version: 10.4.27-MariaDB
--- PHP Version: 8.2.0
+-- Generation Time: Dec 17, 2023 at 04:52 PM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.0.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -41,7 +41,8 @@ CREATE TABLE `bilietai` (
 INSERT INTO `bilietai` (`kaina`, `id_bilietas`, `skrydis_id`, `vartai`) VALUES
 ('150', 1, 1, 'B'),
 ('150', 2, 1, 'B'),
-('150', 3, 2, 'A');
+('200', 5, 2, 'C'),
+('150', 7, 1, 'E');
 
 -- --------------------------------------------------------
 
@@ -63,7 +64,7 @@ CREATE TABLE `darbuotojai` (
 --
 
 INSERT INTO `darbuotojai` (`vardas`, `pavarde`, `gimimo_data`, `elektroninis_pastas`, `pareigos`, `id_darbuotojas`) VALUES
-('Vardas', 'Pavard', '2023-12-01', 'itprojdarbuotojas1@proton.me', 'pilotas', 1);
+('Jonas', 'Jonaitis', '2023-12-01', 'zayvon.kenrick@falkcia.com', 'pilotas', 1);
 
 -- --------------------------------------------------------
 
@@ -133,7 +134,7 @@ CREATE TABLE `oro_uostai` (
 CREATE TABLE `pamainos` (
   `pradzios_laikas` date NOT NULL,
   `pabaigos_laikas` date NOT NULL,
-  `darbuotojo_id` int(11) NOT NULL,
+  `darbuotojo_id` int(255) NOT NULL,
   `statusas` varchar(255) NOT NULL,
   `id_pamaina` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -198,7 +199,7 @@ INSERT INTO `users` (`username`, `password`, `userid`, `userlevel`, `email`, `ti
 ('rimas', 'c2acd92812ef99acd3dcdbb746b9a434', '689e5b2971577d707becb97405ede951', 5, 'rimas@litnet.lt', '2020-05-02 16:32:38'),
 ('jonas', '64067822105b320085d18e386f57d89a', '9c5ddd54107734f7d18335a5245c286b', 4, 'rimas@litnet.lt', '2017-05-09 17:10:37'),
 ('pranas', '16c354b68848cdbd8f54a226a0a55b21', 'aa69001f0ba493bed7dddfd1cdb06591', 4, 'pranas@ltu.ee', '2018-02-16 16:03:41'),
-('kazkas', '8dd1fa8efce5ce24e25de13642d50757', '82acd1bd17e35dfa775cb3de263c3322', 9, 'kazkas@gmail.com', '2023-12-16 23:00:45'),
+('kazkas', '8dd1fa8efce5ce24e25de13642d50757', '82acd1bd17e35dfa775cb3de263c3322', 9, 'kazkas@gmail.com', '2023-12-17 15:49:08'),
 ('kazkas1', '8dd1fa8efce5ce24e25de13642d50757', '4ee066023b6404ca11e61ef55de610f2', 4, 'kazkas@gmail.com', '2023-12-16 20:29:04'),
 ('juozis', '8dd1fa8efce5ce24e25de13642d50757', 'a23af5e0c7330ddb77841d1c0f609cc2', 4, 'juozis@gmail.com', '2023-10-25 17:48:20');
 
@@ -214,16 +215,21 @@ CREATE TABLE `uzsakymai` (
   `id_uzsakymas` int(11) NOT NULL,
   `uzsakovo_name` varchar(255) DEFAULT NULL,
   `pavadinimas` varchar(255) NOT NULL,
-  `id_bilietas` int(11) DEFAULT NULL
+  `id_bilietas` int(11) DEFAULT NULL,
+  `kaina` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `uzsakymai`
 --
 
-INSERT INTO `uzsakymai` (`sukurimo_data`, `busena`, `id_uzsakymas`, `uzsakovo_name`, `pavadinimas`, `id_bilietas`) VALUES
-('2023-12-01', 'Aktyvus', 1, 'kazkas', 'Naujas pavadinimas', 1),
-('2023-12-02', 'idomei bveikia', 2, 'kazkas1', 'gerai', 2);
+INSERT INTO `uzsakymai` (`sukurimo_data`, `busena`, `id_uzsakymas`, `uzsakovo_name`, `pavadinimas`, `id_bilietas`, `kaina`) VALUES
+('2023-12-01', 'Apmoketas', 1, 'kazkas', 'Lenkija-Lietuva', 6, NULL),
+('2023-12-02', 'Apmokėta', 2, 'kazkas1', 'Vilnius-Parzius', 1, NULL),
+('2023-12-04', 'Apmokėta', 5, 'kazkas1', 'Vilnius-Kaunas', 2, NULL),
+('2023-12-09', 'Apmokėta', 6, 'jonas', 'Ryga - Varšuva', 2, NULL),
+('2023-12-08', 'Aktyvus', 7, 'kazkas', 'gerai', 7, NULL),
+('2023-12-07', 'Apmokėta', 8, 'Jonas', 'Klaipėda - Kaunas', 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -267,7 +273,8 @@ CREATE TABLE `vietos_lektuve` (
 -- Indexes for table `bilietai`
 --
 ALTER TABLE `bilietai`
-  ADD PRIMARY KEY (`id_bilietas`);
+  ADD PRIMARY KEY (`id_bilietas`),
+  ADD KEY `fk_skrydis_id` (`skrydis_id`);
 
 --
 -- Indexes for table `darbuotojai`
@@ -322,7 +329,8 @@ ALTER TABLE `users`
 -- Indexes for table `uzsakymai`
 --
 ALTER TABLE `uzsakymai`
-  ADD PRIMARY KEY (`id_uzsakymas`);
+  ADD PRIMARY KEY (`id_uzsakymas`),
+  ADD KEY `fk_uzsakymai_bilietai` (`id_bilietas`);
 
 --
 -- Indexes for table `valstybes`
@@ -350,7 +358,7 @@ ALTER TABLE `vietos_lektuve`
 -- AUTO_INCREMENT for table `bilietai`
 --
 ALTER TABLE `bilietai`
-  MODIFY `id_bilietas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_bilietas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `darbuotojai`
@@ -398,7 +406,7 @@ ALTER TABLE `skrydziu_imones`
 -- AUTO_INCREMENT for table `uzsakymai`
 --
 ALTER TABLE `uzsakymai`
-  MODIFY `id_uzsakymas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_uzsakymas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `valstybes`
@@ -423,10 +431,22 @@ ALTER TABLE `vietos_lektuve`
 --
 
 --
+-- Constraints for table `bilietai`
+--
+ALTER TABLE `bilietai`
+  ADD CONSTRAINT `fk_skrydis_id` FOREIGN KEY (`skrydis_id`) REFERENCES `skrydziai` (`id_skrydis`);
+
+--
 -- Constraints for table `pamainos`
 --
 ALTER TABLE `pamainos`
   ADD CONSTRAINT `darbuotojo_id` FOREIGN KEY (`darbuotojo_id`) REFERENCES `darbuotojai` (`id_darbuotojas`);
+
+--
+-- Constraints for table `uzsakymai`
+--
+ALTER TABLE `uzsakymai`
+  ADD CONSTRAINT `fk_uzsakymai_bilietai` FOREIGN KEY (`id_bilietas`) REFERENCES `bilietai` (`id_bilietas`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
