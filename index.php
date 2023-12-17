@@ -11,6 +11,7 @@ include("include/functions.php");
 <html>
  <head>
         <meta http-equiv="X-UA-Compatible" content="IE=9; text/html; charset=utf-8">
+        <link rel="icon" href="./include/icon.ico" type="image/x-icon">
         <title>Demo projektas</title>
         <link rel="stylesheet" type="text/css" href="stylesUzsakymas.css">
 
