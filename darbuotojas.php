@@ -61,7 +61,7 @@ if (!empty($_SESSION['user']))     //Jei vartotojas prisijungęs, valom logino k
 	<!-- Bootstrap CSS -->
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
-	<link rel="stylesheet" href="main.css">
+	<!-- <link rel="stylesheet" href="main.css"> -->
 	<link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet">
 
 	<title>Darbuotojai</title>
@@ -194,50 +194,82 @@ if (!empty($_SESSION['user']))     //Jei vartotojas prisijungęs, valom logino k
 					</div>
 				</div>
 
-
 				<!-- Edit Modal HTML -->
 				<div id="redaguotiUžsakymą" class="modal fade">
 					<div class="modal-dialog">
 						<div class="modal-content">
-							<form method="post" action="">
+							<form method="post" action="" id="editForm">
 								<div class="modal-header">
 									<h4 class="modal-title">Redaguoti darbuotoją</h4>
 									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 								</div>
 								<div class="modal-body">
+									<!-- Add an ID field to store the selected user's ID -->
+									<input type="hidden" id="edit_id" name="id" name="darbuotojas_id">
+
 									<div class="form-group">
 										<label>Vardas</label>
-										<input type="text" name="vardas" class="form-control" required>
+										<input type="text" id="edit_vardas" name="vardas" class="form-control" required>
 									</div>
 									<div class="form-group">
 										<label>Pavardė</label>
-										<input type="text" name="pavarde" class="form-control" required>
+										<input type="text" id="edit_pavarde" name="pavarde" class="form-control" required>
 									</div>
 									<div class="form-group">
-    									<label for="gimimoData">Gimimo data</label>
-    									<input type="date" id="gimimo_data" name="gimimo_data" class="form-control" required>
+										<label for="gimimoData">Gimimo data</label>
+										<input type="date" id="edit_gimimo_data" name="gimimo_data" class="form-control" required>
 									</div>
 									<div class="form-group">
-    									<label for="pastas">Paštas</label>
-    									<input type="email" id="elektroninis_pastas" name="elektroninis_pastas" class="form-control" required>
+										<label for="pastas">Paštas</label>
+										<input type="email" id="edit_elektroninis_pastas" name="elektroninis_pastas" class="form-control" required>
 									</div>
 									<div class="form-group">
-    									<label for="pareigos">Pareigos</label>
-    										<select id="pareigos" name="pareigos" class="form-control" required>
-        										<option value="pilotas">Pilotas</option>
-        										<option value="palydovas">Palydovas</option>
-        										<option value="mechanikas">Mechanikas</option>
-    										</select>
+										<label for="pareigos">Pareigos</label>
+										<select id="edit_pareigos" name="pareigos" class="form-control" required>
+											<option value="pilotas">Pilotas</option>
+											<option value="palydovas">Palydovas</option>
+											<option value="mechanikas">Mechanikas</option>
+										</select>
 									</div>
 								</div>
 								<div class="modal-footer">
 									<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-									<input type="submit" class="btn btn-success" name="edit_submit" value="Add">
+									<input type="submit" class="btn btn-success" name="edit_submit" value="Update">
 								</div>
 							</form>
 						</div>
 					</div>
 				</div>
+
+				<script>
+					$(document).ready(function () {
+						$('.edit').click(function () {
+							var id = $(this).data('id');
+							// Fetch data using AJAX and populate the form fields
+							$.ajax({
+								url: 'darbuotojasEditRetriever.php', // Replace with your PHP script to fetch user data
+								type: 'POST',
+								data: {id: id},
+								dataType: 'json',
+								success: function (data) {
+									// Populate the form fields with fetched data
+									$('#edit_id').val(data.id_darbuotojas);
+									$('#edit_vardas').val(data.vardas);
+									$('#edit_pavarde').val(data.pavarde);
+									$('#edit_gimimo_data').val(data.gimimo_data);
+									$('#edit_elektroninis_pastas').val(data.elektroninis_pastas);
+									$('#edit_pareigos').val(data.pareigos);
+
+									// Show the edit modal
+									$('#redaguotiUžsakymą').modal('show');
+								},
+								error: function () {
+									alert('Error fetching user data');
+								}
+							});
+						});
+					});
+				</script>
 
 				<!-- Add modal HTML-->
 				<div id="addTicketModal" class="modal fade">
@@ -322,6 +354,30 @@ if (!empty($_SESSION['user']))     //Jei vartotojas prisijungęs, valom logino k
 							} else {
 								echo "Įvyko klaida naikinant duomenis:: " . $conn->error;
 							}
+						}
+					}
+					else if (isset($_POST["edit_submit"])) {
+						// Get values from the form
+						$edit_id = $_POST["id"];
+						$edit_vardas = $_POST["vardas"];
+						$edit_pavarde = $_POST["pavarde"];
+						$edit_gimimo_data = $_POST["gimimo_data"];
+						$edit_pastas = $_POST["elektroninis_pastas"];
+						$edit_pareigos = $_POST["pareigos"];
+				
+						// Construct and execute the update query
+						$updateSql = "UPDATE darbuotojai SET 
+							vardas = '$edit_vardas',
+							pavarde = '$edit_pavarde',
+							gimimo_data = '$edit_gimimo_data',
+							elektroninis_pastas = '$edit_pastas',
+							pareigos = '$edit_pareigos'
+							WHERE id_darbuotojas = $edit_id";
+				
+						if ($conn->query($updateSql) === TRUE) {
+							echo "Darbuotojo duomenys atnaujinti sėkmingai.";
+						} else {
+							echo "Įvyko klaida atnaujinant darbuotojo duomenis: " . $conn->error;
 						}
 					}
 				}
