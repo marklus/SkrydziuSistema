@@ -586,7 +586,13 @@ include 'connect.php';
 					<!-- Delete Modal HTML -->
 					<div id="deleteTicketModal" class="modal fade">
 						<div class="modal-dialog">
+
+						
 							<div class="modal-content">
+							<div class="modal-header">
+										<h4 class="modal-title">Pašalinti užsakymą</h4>
+										<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+									</div>
 								<form action="uzsakymas.php" method="post">
 									<input type="hidden" name="delete_ticket_id" id="delete_ticket_id">
 
@@ -616,10 +622,6 @@ include 'connect.php';
 									</select>
 
 								</div>
-									<div class="modal-header">
-										<h4 class="modal-title">Pašalinti užsakymą</h4>
-										<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-									</div>
 									<div class="modal-body">
 										<p>Ar tikrai norite pašalinti užsakymą?</p>
 										<p class="text-warning"><small>Užsakymo nebus galima grąžinti.</small></p>
