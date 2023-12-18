@@ -125,11 +125,11 @@ if (!empty($_SESSION['user']))     //Jei vartotojas prisijungęs, valom logino k
                         // Assuming you have a connection to your database ($conn)
 
                         $db=mysqli_connect(DB_SERVER, DB_USER, DB_PASS, DB_NAME);
-                        $sql = "SELECT * "
-                                . "FROM " . TBL_AIRPLANES ;
+//                        $sql = "SELECT * "
+//                                . "FROM " . TBL_AIRPLANES ;
                         // $result = mysqli_query($db, $sql);
 
-                        // $query = "SELECT * FROM TBL_AIRPLANES"; // Update this query based on your table structure
+                         $sql = "SELECT * FROM lektuvai"; // Update this query based on your table structure
                         $result = mysqli_query($db, $sql);
 
                         if ($result && mysqli_num_rows($result) > 0) {
@@ -145,7 +145,6 @@ if (!empty($_SESSION['user']))     //Jei vartotojas prisijungęs, valom logino k
                                 echo '<td>' . $row['pagaminimo_data'] . '</td>';
                                 echo '<td>' . $row['isigijimo_data'] . '</td>';
                                 echo '<td>' . ($row['wifi'] ? 'Yes' : 'No') . '</td>';
-                                echo '<td>' . $row['pavadinimas'] . '</td>';
                                 // Add additional columns here if needed
 
                                 echo '<td>';
