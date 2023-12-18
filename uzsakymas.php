@@ -138,10 +138,11 @@ include 'connect.php';
 										<h2>Užsakymai <b>  </b></h2>
 									</div>
 									<div class="col-sm-6">
-										<a href="#addOrderModal" class="btn btn-success" data-toggle="modal"><i class="fas fa-plus-circle"></i><span>Pridėti Užsakymą</span></a>
-										<a href="#addTicketModal" class="btn btn-success" data-toggle="modal"><i class="fas fa-plus-circle"></i><span>Pridėti Bilietą</span></a>
-										<a href="#deleteTicketModal" class="btn btn-danger" data-toggle="modal"><i class="fas fa-minus-circle"></i><span>Pašalinti Bilietą</span></a>		
-
+								<?php	if ($userlevel == $user_roles[ADMIN_LEVEL] ) {
+									echo'	<a href="#addOrderModal" class="btn btn-success" data-toggle="modal"><i class="fas fa-plus-circle"></i><span>Pridėti Užsakymą</span></a> ';
+									echo'	<a href="#addTicketModal" class="btn btn-success" data-toggle="modal"><i class="fas fa-plus-circle"></i><span>Pridėti Bilietą</span></a>';
+									echo'	<a href="#deleteTicketModal" class="btn btn-danger" data-toggle="modal"><i class="fas fa-minus-circle"></i><span>Pašalinti Bilietą</span></a>';		
+								}?>
 										<a href="#SearchOrderModal" class="btn btn-success" data-toggle="modal"><i class="fas fa-plus-circle"></i><span>Atlikti paiešką</span></a>
 									</div>
 								</div>
@@ -656,7 +657,15 @@ include 'connect.php';
 								$search_word = $_POST['search_id'];
 
 								// Fetch and display rows containing the search word
+								if ($userlevel == $user_roles[ADMIN_LEVEL] ) {
 								$sql = "SELECT * FROM uzsakymai WHERE pavadinimas LIKE '%$search_word%'";
+								}
+
+
+								elseif ($userlevel == $user_roles[DEFAULT_LEVEL] ) {
+									$sql = "SELECT * FROM uzsakymai WHERE pavadinimas LIKE '%$search_word%' AND uzsakymai.uzsakovo_name = '$user'";
+								}
+								
 								$result = $conn->query($sql);
 							//	echo "SQL Query: " . $sql . "<br>";
 							//	echo "Number of Rows: " . $result->num_rows . "<br>";
@@ -834,7 +843,7 @@ include 'connect.php';
 			// ...
 
 			// Redirect or display a success message
-			header("uzsakymai.php");
+		//	header("uzsakymai.php");
 			exit();
 		} else {
 			// Redirect or handle the case where edit_id is not present

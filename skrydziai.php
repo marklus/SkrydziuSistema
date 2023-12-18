@@ -138,9 +138,9 @@ include 'connect.php';
 										<h2>Skrydžiai <b>  </b></h2>
 									</div>
 									<div class="col-sm-6">
-										<a href="#addOrderModal" class="btn btn-success" data-toggle="modal"><i class="fas fa-plus-circle"></i><span>Pridėti Užsakymą</span></a>
-										<a href="#addTicketModal" class="btn btn-success" data-toggle="modal"><i class="fas fa-plus-circle"></i><span>Pridėti Bilietą</span></a>
-										<a href="#deleteTicketModal" class="btn btn-danger" data-toggle="modal"><i class="fas fa-minus-circle"></i><span>Pašalinti Bilietą</span></a>		
+										<a href="#addOrderModal" class="btn btn-success" data-toggle="modal"><i class="fas fa-plus-circle"></i><span>Pridėti Skrydį</span></a>
+										<a href="#addTicketModal" class="btn btn-success" data-toggle="modal"><i class="fas fa-plus-circle"></i><span>Pridėti Skrydį</span></a>
+										<a href="#deleteTicketModal" class="btn btn-danger" data-toggle="modal"><i class="fas fa-minus-circle"></i><span>Pašalinti Skrydį</span></a>		
 
 										<a href="#SearchOrderModal" class="btn btn-success" data-toggle="modal"><i class="fas fa-plus-circle"></i><span>Atlikti paiešką</span></a>
 									</div>
@@ -544,7 +544,7 @@ include 'connect.php';
 									$delete_id = $_POST["delete_id"];
 
 									// Delete the record from the 'uzsakymai' table
-									$deleteSql = "DELETE FROM uzsakymai WHERE id_uzsakymas = $delete_id";
+									$deleteSql = "DELETE FROM skrydziai WHERE id_skrydis = $delete_id";
 
 									if ($conn->query($deleteSql) === TRUE) {
 										echo "Įrašas sėkmingai pašalintas";
@@ -656,8 +656,7 @@ include 'connect.php';
 						?>
 
 
-
-					<!-- Delete Modal HTML -->
+	<!-- Delete Modal HTML -->
 					<div id="deleteEmployeeModal" class="modal fade">
 						<div class="modal-dialog">
 
@@ -667,7 +666,7 @@ include 'connect.php';
 										<h4 class="modal-title">Pašalinti užsakymą</h4>
 										<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 									</div>
-								<form action="uzsakymas.php" method="post">
+								<form action="skrydziai.php" method="post">
 									<input type="hidden" name="delete_id" id="delete_id">
 
 									<div class="form-group">
@@ -686,6 +685,7 @@ include 'connect.php';
 						</div>
 					</div>
 					<!-- Delete Modal HTML -->
+
 					<div id="deleteTicketModal" class="modal fade">
 						<div class="modal-dialog">
 
@@ -695,7 +695,7 @@ include 'connect.php';
 										<h4 class="modal-title">Pašalinti užsakymą</h4>
 										<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 									</div>
-								<form action="uzsakymas.php" method="post">
+								<form action="skrydziai.php" method="post">
 									<input type="hidden" name="delete_ticket_id" id="delete_ticket_id">
 
 									<div class="form-group">
@@ -742,7 +742,7 @@ include 'connect.php';
 					<div id="deleteTicketModal" class="modal fade">
 						<div class="modal-dialog">
 							<div class="modal-content">
-								<form action="uzsakymas.php" method="post">
+								<form action="skrydziai.php" method="post">
 									<input type="hidden" name="delete_ticket_id" id="delete_ticket_id">
 									<div class="modal-header">
 										<h4 class="modal-title">Pašalinti bilietą</h4>
@@ -783,7 +783,7 @@ include 'connect.php';
             var orderId = $(this).data('id');
             
             // Redirect to uzsakymas.php with orderId as a query parameter
-            window.location.href = 'uzsakymas.php?edit_id=' + orderId;
+            window.location.href = 'skrydziai.php?edit_id=' + orderId;
         });
     });
 </script>
