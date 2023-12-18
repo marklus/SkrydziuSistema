@@ -79,6 +79,9 @@ CREATE TABLE `lektuvai` (
   `wifi` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+
+
+
 -- --------------------------------------------------------
 
 --
@@ -100,6 +103,10 @@ CREATE TABLE `lektuvu_modeliai` (
   `pavadinimas` varchar(255) DEFAULT NULL,
   `id_lektuvu_modelis` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
+ALTER TABLE `lektuvu_modeliai`
+ADD COLUMN `kelias_iki_3d` VARCHAR(255) DEFAULT NULL;
 
 -- --------------------------------------------------------
 
@@ -465,3 +472,20 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+--- insert some airplane stuff :))
+
+INSERT INTO lektuvu_gamintojai (pavadinimas, id_lektuvu_gamintojas) 
+VALUES ('Boeing', 1);
+
+INSERT INTO lektuvu_modeliai (pavadinimas, id_lektuvu_modelis, kelias_iki_3d) 
+VALUES ('Model 737', 1, '3dModels/Airplane1/11803_Airplane_v1_l1.obj');
+
+INSERT INTO lektuvai (registracijos_numeris, pagaminimo_data, isigijimo_data, wifi) 
+VALUES ('ABC123', '2022-01-01', '2023-01-01', 1);
+
+INSERT INTO vietos (eile, keliones_patogumo_indeksas, id_vieta) 
+VALUES (1, 'A', 1);
+
+INSERT INTO vietos_lektuve (id_vieta_lektuve) 
+VALUES (1);

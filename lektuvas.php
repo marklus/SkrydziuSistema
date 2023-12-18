@@ -1,19 +1,67 @@
+<?php
+session_start();      // index.php
+// jei vartotojas prisijungęs rodomas demonstracinis meniu pagal jo rolę
+// jei neprisijungęs - prisijungimo forma per include("login.php");
+// toje formoje daugiau galimybių...
+
+include("include/functions.php");
+?>
+<!doctype html>
+<link rel="icon" href="./include/icon.ico" type="image/x-icon">
+
+
+<?php
+if (!empty($_SESSION['user']))     //Jei vartotojas prisijungęs, valom logino kintamuosius ir rodom meniu
+{                                  // Sesijoje nustatyti kintamieji su reiksmemis is DB
+    // $_SESSION['user'],$_SESSION['ulevel'],$_SESSION['userid'],$_SESSION['umail']
+
+    $_SESSION['prev']="index";
+
+    include("include/meniu.php"); //įterpiamas meniu pagal vartotojo rolę
+    ?>
+    <?php
+}
+else {
+
+    if (!isset($_SESSION['prev'])) inisession("full");             // nustatom sesijos kintamuju pradines reiksmes
+    else {if ($_SESSION['prev'] != "proclogin") inisession("part"); // nustatom pradines reiksmes formoms
+    }
+    // jei ankstesnis puslapis perdavė $_SESSION['message']
+    echo "<div align=\"center\">";echo "<font size=\"4\" color=\"#ff0000\">".$_SESSION['message'] . "<br></font>";
+
+    echo "<table class=\"center\"><tr><td>";
+    include("include/login.php");                    // prisijungimo forma
+    echo "</td></tr></table></div><br>";
+
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <!-- Your head content here -->
     <link rel="icon" href="./include/icon.ico" type="image/x-icon">
 
     <meta charset="UTF-8">
-    <title>Simple Three.js Scene</title>
-    <style>
-        body { margin: 0; }
-        canvas { display: block; }
-    </style>
+    <title>Lėktuvo 3D modelis</title>
+    <link rel="stylesheet" type="text/css" href="./include/styles.css">
+    
 </head>
+
 <body>
     <!-- Your HTML body content -->
 
+
+    <div>
+        
+    </div>
+    <div id="container">
+        <!-- <canvas id="rendererCanvas">lėktuviukas</canvas> -->
+    </div>
+<div>
+    <p>Šitas lėktuvas yra labai geras, labai gerai skrenda, dar nėra nukritęs. Rekomenduojame visiems nekrentančių lėktuvų mėgėjams.</p>
+</div>
     <!-- Place the Import map at the top -->
     <script type="importmap">
         {
@@ -24,49 +72,10 @@
         }
     </script>
 
+
     <!-- Your Three.js and OBJLoader-related code -->
-    <script type="module">
-        // Import and use Three.js and OBJLoader here
-        
+    <script src="./js/lektuvas/module.js" type="module"></script>
 
-// Import Three.js modules
-        import * as THREE from 'three';
-        import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
-
-        // Create a scene
-        const scene = new THREE.Scene();
-
-        // Create a camera
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        camera.position.z = 5;
-
-        // Create a renderer
-        const renderer = new THREE.WebGLRenderer();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        document.body.appendChild(renderer.domElement);
-
-        // Create a cube geometry and material
-        const geometry = new THREE.BoxGeometry();
-        const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-        const cube = new THREE.Mesh(geometry, material);
-        scene.add(cube);
-
-        // Animation/render loop
-        function animate() {
-            requestAnimationFrame(animate);
-
-            // Rotate the cube for visualization
-            cube.rotation.x += 0.01;
-            cube.rotation.y += 0.01;
-
-            renderer.render(scene, camera);
-        }
-
-        animate();
-
-
-
-
-    </script>
 </body>
+
 </html>
