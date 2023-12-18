@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 17, 2023 at 04:52 PM
--- Server version: 10.4.28-MariaDB
--- PHP Version: 8.0.28
+-- Generation Time: Dec 18, 2023 at 11:32 AM
+-- Server version: 10.4.27-MariaDB
+-- PHP Version: 8.2.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -79,9 +79,6 @@ CREATE TABLE `lektuvai` (
   `wifi` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-
-
-
 -- --------------------------------------------------------
 
 --
@@ -101,12 +98,9 @@ CREATE TABLE `lektuvu_gamintojai` (
 
 CREATE TABLE `lektuvu_modeliai` (
   `pavadinimas` varchar(255) DEFAULT NULL,
-  `id_lektuvu_modelis` int(11) NOT NULL
+  `id_lektuvu_modelis` int(11) NOT NULL,
+  `kelias_iki_3d` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
-
-ALTER TABLE `lektuvu_modeliai`
-ADD COLUMN `kelias_iki_3d` VARCHAR(255) DEFAULT NULL;
 
 -- --------------------------------------------------------
 
@@ -116,7 +110,7 @@ ADD COLUMN `kelias_iki_3d` VARCHAR(255) DEFAULT NULL;
 
 CREATE TABLE `miestai` (
   `pavadinimas` varchar(255) DEFAULT NULL,
-  `ID_miestas` int(11) NOT NULL
+  `id_miestas` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -144,7 +138,8 @@ CREATE TABLE `pamainos` (
   `pabaigos_laikas` date NOT NULL,
   `darbuotojo_id` int(255) NOT NULL,
   `statusas` varchar(255) NOT NULL,
-  `id_pamaina` int(11) NOT NULL
+  `id_pamaina` int(11) NOT NULL,
+  `skrydzio_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -309,11 +304,19 @@ ALTER TABLE `miestai`
   ADD PRIMARY KEY (`id_miestas`);
 
 --
+-- Indexes for table `oro_uostai`
+--
+ALTER TABLE `oro_uostai`
+  ADD PRIMARY KEY (`id_miestas`),
+  ADD KEY `iata_oro_uosto_kodas` (`iata_oro_uosto_kodas`);
+
+--
 -- Indexes for table `pamainos`
 --
 ALTER TABLE `pamainos`
   ADD PRIMARY KEY (`id_pamaina`),
-  ADD KEY `darbuotojo_id` (`darbuotojo_id`);
+  ADD KEY `darbuotojo_id` (`darbuotojo_id`),
+  ADD KEY `fk_skrydis` (`skrydzio_id`);
 
 --
 -- Indexes for table `skrydziai`
@@ -359,12 +362,6 @@ ALTER TABLE `vietos_lektuve`
   ADD PRIMARY KEY (`id_vieta_lektuve`);
 
 --
--- Indexes for table `oro_uostai`
---
-ALTER TABLE `oro_uostai`
-  ADD KEY (`iata_oro_uosto_kodas`);
-
---
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -396,6 +393,12 @@ ALTER TABLE `lektuvu_modeliai`
 -- AUTO_INCREMENT for table `miestai`
 --
 ALTER TABLE `miestai`
+  MODIFY `id_miestas` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `oro_uostai`
+--
+ALTER TABLE `oro_uostai`
   MODIFY `id_miestas` int(11) NOT NULL AUTO_INCREMENT;
 
 --
@@ -441,12 +444,6 @@ ALTER TABLE `vietos_lektuve`
   MODIFY `id_vieta_lektuve` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `oro_uostai`
---
-ALTER TABLE `oro_uostai`
-  MODIFY `id_miestas` int(11) NOT NULL AUTO_INCREMENT;
-
---
 -- Constraints for dumped tables
 --
 
@@ -460,13 +457,7 @@ ALTER TABLE `bilietai`
 -- Constraints for table `pamainos`
 --
 ALTER TABLE `pamainos`
-  ADD CONSTRAINT `darbuotojo_id` FOREIGN KEY (`darbuotojo_id`) REFERENCES `darbuotojai` (`id_darbuotojas`);
-
---
--- Constraints for table `uzsakymai`
---
-ALTER TABLE `uzsakymai`
-  ADD CONSTRAINT `fk_uzsakymai_bilietai` FOREIGN KEY (`id_bilietas`) REFERENCES `bilietai` (`id_bilietas`);
+  ADD CONSTRAINT `fk_skrydis` FOREIGN KEY (`skrydzio_id`) REFERENCES `skrydziai` (`id_skrydis`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

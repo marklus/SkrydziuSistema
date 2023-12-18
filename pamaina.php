@@ -110,7 +110,7 @@ if (!empty($_SESSION['user']))     //Jei vartotojas prisijungęs, valom logino k
 								<div class="col-sm-6">
 									<a href="#addTicketModal" class="btn btn-success" data-toggle="modal"><i class="fas fa-plus-circle"></i><span>Pridėti pamainą</span></a>
 									<a href="#deleteTicketModal" class="btn btn-danger" data-toggle="modal"><i class="fas fa-minus-circle"></i><span>Pašalinti pamainą</span></a>
-									<input type="text" class="form-control" placeholder="Paieška">
+									<a href="#SearchOrderModal" class="btn btn-success" data-toggle="modal"><i class="fas fa-plus-circle"></i><span>Atlikti paiešką</span></a>
 								</div>
 							</div>
 						</div>
@@ -124,6 +124,7 @@ if (!empty($_SESSION['user']))     //Jei vartotojas prisijungęs, valom logino k
 										</span>
 									</th>
 									<th>Priskirtas darbuotojo ID</th>
+									<th>Skrydzio ID</th>
 									<th>Pradžios laikas</th>
 									<th>Pabaigos laikas</th>
 									<th>Statusas</th>
@@ -138,13 +139,15 @@ if (!empty($_SESSION['user']))     //Jei vartotojas prisijungęs, valom logino k
 								$darbuotojo_id = "darbuotojo_id";
 								$statusas = "statusas";
 								$id_pamaina = "id_pamaina";
+								$skrydzio_id = "skrydzio_id";
 
 								$sql = "SELECT
 								id_pamaina,
 								pradzios_laikas, 
 								pabaigos_laikas,
 								darbuotojo_id,
-								statusas
+								statusas,
+								skrydzio_id
 								FROM 
 								pamainos";
 
@@ -160,6 +163,7 @@ if (!empty($_SESSION['user']))     //Jei vartotojas prisijungęs, valom logino k
 											</span>
 		  								</td>";
 										echo "<td>" . $row['darbuotojo_id'] . "</td>";
+										echo "<td>" . $row['skrydzio_id'] . "</td>";
 										echo "<td>" . $row['pradzios_laikas'] . "</td>";
 										echo "<td>" . $row['pabaigos_laikas'] . "</td>";
 										echo "<td>" . $row['statusas'] . "</td>";
@@ -329,6 +333,38 @@ if (!empty($_SESSION['user']))     //Jei vartotojas prisijungęs, valom logino k
 											?>
 										</select>
 									</div>
+
+									<div class="form-group">
+										<label for="pareigoss">Skrydžio ID</label>
+										<select id="skrydzio_id" name="skrydzio_id" class="form-control" required>
+											<?php
+											// Check connection
+											if ($conn->connect_error) {
+												die("Connection failed: " . $conn->connect_error);
+											}
+
+											// Query to fetch data from the skrydziai table
+											$sql = "SELECT id_skrydis FROM skrydziai";
+											$result = $conn->query($sql);
+
+											// Check if there are rows in the result
+											if ($result->num_rows > 0) {
+												// Output data of each row
+												while ($row = $result->fetch_assoc()) {
+													// Output an option element for each id_skrydis
+													echo '<option value="' . $row['id_skrydis'] . '">' . $row['id_skrydis'] . '</option>';
+												}
+											} else {
+												echo '<option value="">No data available</option>';
+											}
+
+											// Close the database connection
+											//$conn->close();
+											?>
+										</select>
+									</div>
+
+
 									<div class="form-group">
 										<label for="pradziosLaikas">Pradžios laikas</label>
 										<input type="date" id="pradzios_laikas" name="pradzios_laikas" class="form-control" required>
@@ -356,6 +392,30 @@ if (!empty($_SESSION['user']))     //Jei vartotojas prisijungęs, valom logino k
 					</div>
 				</div>
 
+				<div id="SearchOrderModal" class="modal fade">
+					<div class="modal-dialog">
+						<div class="modal-content">
+						<form action="pamaina.php" method="post">
+							<div class="modal-header">
+							<h4 class="modal-title">Pamainos paieška pagal skrydžio ID</h4>
+							
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							</div>
+							<div class="modal-body">
+
+							<input type="text" name="search_id" id="search_id" placeholder="Rašyti čia">
+							
+
+							</div>
+							<div class="modal-footer">
+							<input type="button" class="btn btn-default" data-dismiss="modal" value="Atšaukti">
+							<input type="submit" class="btn btn-info" name="search_submit" value="Pateikti">
+							</div>
+						</form>
+						</div>
+					</div>
+					</div>
+
 				<?php
 				include 'connect.php';
 
@@ -370,10 +430,11 @@ if (!empty($_SESSION['user']))     //Jei vartotojas prisijungęs, valom logino k
 						$pradzios_laikas = $_POST["pradzios_laikas"];
 						$pabaigos_laikas = $_POST["pabaigos_laikas"];
 						$statusas = $_POST["statusas"];
+						$skrydzio_id = $_POST["skrydzio_id"];
 
 						// Insert the values into the 'darbuotojai' table
-						$insertSql = "INSERT INTO pamainos (pradzios_laikas, pabaigos_laikas, darbuotojo_id, statusas)
-									VALUES ('$pradzios_laikas', '$pabaigos_laikas', '$darbuotojo_id', '$statusas')";
+						$insertSql = "INSERT INTO pamainos (pradzios_laikas, pabaigos_laikas, darbuotojo_id, statusas, skrydzio_id)
+									VALUES ('$pradzios_laikas', '$pabaigos_laikas', '$darbuotojo_id', '$statusas', '$skrydzio_id')";
 
 						if ($conn->query($insertSql) === TRUE) {
 							echo "Nauja pamaina pridėtas sėkmingai.";
@@ -419,10 +480,43 @@ if (!empty($_SESSION['user']))     //Jei vartotojas prisijungęs, valom logino k
 						if ($conn->query($updateSql) === TRUE) {
 							echo "Pamainos duomenys atnaujinti sėkmingai.";
 							}
-						} else {
-							echo "Įvyko klaida atnaujinant pamainos duomenis: " . $conn->error;
 						}
+					elseif (isset($_POST["search_submit"])) {
+						// Code for processing edit submission
+
+						$search_word = $_POST['search_id'];
+
+						// Fetch and display rows containing the search word
+						$sql = "SELECT * FROM pamainos WHERE skrydzio_id LIKE '%$search_word%'";
+						$result = $conn->query($sql);
+						//	echo "SQL Query: " . $sql . "<br>";
+						//	echo "Number of Rows: " . $result->num_rows . "<br>";
+						if ($result->num_rows > 0) {
+							echo "<ul>"; // Start your unordered list
+							echo "Paieškos rezultatai";
+							while ($row = $result->fetch_assoc()) {
+								echo "<li>";
+								echo "Pamainos ID: " . $row['id_pamaina'] . "<br>";
+								echo "Skrydžio ID: " . $row['skrydzio_id'] . "<br>";
+								echo "Darbuotojo ID: " . $row['darbuotojo_id'] . "<br>";
+								echo "Pradžios laikas: " . $row['pradzios_laikas'] . "<br>";
+								echo "Pabaigos laikas: " . $row['pabaigos_laikas'] . "<br>";
+								echo "Statusas: " . $row['statusas'] . "<br>";
+					
+								echo "<a href='#redaguotiUžsakymą' class='edit btn-edit' data-toggle='modal' data-id='{$row['id_pamaina']}'><i class='fas fa-pen' data-toggle='tooltip' title='Redaguoti'></i></a>";
+								echo "<a href='#deleteEmployeeModal' class='delete' data-toggle='modal' data-id='{$row['id_pamaina']}'><i class='fas fa-trash' data-toggle='tooltip' title='Pašalinti'></i></a>";
+								echo "<a href='#' class='btn-take' data-id='{$row['id_pamaina']}'><i class='fas fa-trash' data-toggle='tooltip' title='Paimti'></i></a>";
+					
+								echo "</li>";
+						}
+						echo "</ul>"; // End your unordered list
 					}
+				}
+				else {
+					echo "Nebuvo rasta užsakymų tokiu pavadinimu.";
+				}
+			}
+					
 				
 
 				// Your existing code for displaying the table goes here...

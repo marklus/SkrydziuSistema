@@ -126,7 +126,7 @@ if (!empty($_SESSION['user']))     //Jei vartotojas prisijungęs, valom logino k
 								<div class="col-sm-6">
 									<a href="#addTicketModal" class="btn btn-success" data-toggle="modal"><i class="fas fa-plus-circle"></i><span>Pridėti darbuotoją</span></a>
 									<a href="#deleteTicketModal" class="btn btn-danger" data-toggle="modal"><i class="fas fa-minus-circle"></i><span>Pašalinti darbuotoją</span></a>
-									<input type="text" class="form-control" placeholder="Paieška">
+									<a href="#SearchOrderModal" class="btn btn-success" data-toggle="modal"><i class="fas fa-plus-circle"></i><span>Atlikti paiešką</span></a>
 								</div>
 							</div>
 						</div>
@@ -336,6 +336,30 @@ if (!empty($_SESSION['user']))     //Jei vartotojas prisijungęs, valom logino k
 					</div>
 				</div>
 
+				<div id="SearchOrderModal" class="modal fade">
+					<div class="modal-dialog">
+						<div class="modal-content">
+						<form action="darbuotojas.php" method="post">
+							<div class="modal-header">
+							<h4 class="modal-title">Užsakymo paieška pagal pavadinimą</h4>
+							
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							</div>
+							<div class="modal-body">
+
+							<input type="text" name="search_id" id="search_id" placeholder="Rašyti čia">
+							
+
+							</div>
+							<div class="modal-footer">
+							<input type="button" class="btn btn-default" data-dismiss="modal" value="Atšaukti">
+							<input type="submit" class="btn btn-info" name="search_submit" value="Pateikti">
+							</div>
+						</form>
+						</div>
+					</div>
+					</div>
+
 				<?php
 				include 'connect.php';
 
@@ -532,6 +556,40 @@ if (!empty($_SESSION['user']))     //Jei vartotojas prisijungęs, valom logino k
 							
 						} else {
 							echo "Įvyko klaida atnaujinant darbuotojo duomenis: " . $conn->error;
+						}
+					}
+					elseif (isset($_POST["search_submit"])) {
+						// Code for processing edit submission
+
+						$search_word = $_POST['search_id'];
+
+						// Fetch and display rows containing the search word
+						$sql = "SELECT * FROM darbuotojai WHERE CONCAT(vardas, ' ', pavarde) LIKE '%$search_word%'";
+						$result = $conn->query($sql);
+						//	echo "SQL Query: " . $sql . "<br>";
+						//	echo "Number of Rows: " . $result->num_rows . "<br>";
+						if ($result->num_rows > 0) {
+						echo "<ul>"; // Start your unordered list
+						echo "Paieškos rezultatai";
+						while ($row = $result->fetch_assoc()) {
+							echo "<li>";
+							echo "ID: " . $row['id_darbuotojas'] . "<br>";
+							echo "Vardas: " . $row['vardas'] . "<br>";
+							echo "Pavarde: " . $row['pavarde'] . "<br>";
+							echo "Gimimo data: " . $row['gimimo_data'] . "<br>";
+							echo "E-pastas: " . $row['elektroninis_pastas'] . "<br>";
+							echo "Pareigos: " . $row['pareigos'] . "<br>";
+						
+							echo "<a href='#redaguotiUžsakymą' class='edit btn-edit' data-toggle='modal' data-id='{$row['id_darbuotojas']}'><i class='fas fa-pen' data-toggle='tooltip' title='Redaguoti'></i></a>";
+							echo "<a href='#deleteEmployeeModal' class='delete' data-toggle='modal' data-id='{$row['id_darbuotojas']}'><i class='fas fa-trash' data-toggle='tooltip' title='Pašalinti'></i></a>";
+							echo "<a href='#' class='btn-take' data-id='{$row['id_darbuotojas']}'><i class='fas fa-trash' data-toggle='tooltip' title='Paimti'></i></a>";
+						
+							echo "</li>";
+							}
+						
+							echo "</ul>"; // End your unordered list
+						} else {
+							echo "Nebuvo rasta darbuotojų tokiu pavadinimu.";
 						}
 					}
 				}
