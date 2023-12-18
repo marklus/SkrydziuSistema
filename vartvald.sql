@@ -105,8 +105,6 @@ CREATE TABLE `lektuvu_modeliai` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
-ALTER TABLE `lektuvu_modeliai`
-ADD COLUMN `kelias_iki_3d` VARCHAR(255) DEFAULT NULL;
 
 -- --------------------------------------------------------
 
@@ -268,8 +266,9 @@ CREATE TABLE `vietos` (
 -- Table structure for table `vietos_lektuve`
 --
 
+
 CREATE TABLE `vietos_lektuve` (
-  `id_vieta_lektuve` int(11) NOT NULL
+                                  `id_vieta_lektuve` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -332,12 +331,6 @@ ALTER TABLE `skrydziu_imones`
 ALTER TABLE `users`
   ADD PRIMARY KEY (`userid`);
 
---
--- Indexes for table `uzsakymai`
---
-ALTER TABLE `uzsakymai`
-  ADD PRIMARY KEY (`id_uzsakymas`),
-  ADD KEY `fk_uzsakymai_bilietai` (`id_bilietas`);
 
 --
 -- Indexes for table `valstybes`
@@ -409,13 +402,6 @@ ALTER TABLE `skrydziai`
 ALTER TABLE `skrydziu_imones`
   MODIFY `id_skrydziu_imone` int(11) NOT NULL AUTO_INCREMENT;
 
---
--- AUTO_INCREMENT for table `uzsakymai`
---
-ALTER TABLE `uzsakymai`
-  MODIFY `id_uzsakymas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
-
---
 -- AUTO_INCREMENT for table `valstybes`
 --
 ALTER TABLE `valstybes`
@@ -449,30 +435,72 @@ ALTER TABLE `bilietai`
 ALTER TABLE `pamainos`
   ADD CONSTRAINT `darbuotojo_id` FOREIGN KEY (`darbuotojo_id`) REFERENCES `darbuotojai` (`id_darbuotojas`);
 
---
--- Constraints for table `uzsakymai`
---
-ALTER TABLE `uzsakymai`
-  ADD CONSTRAINT `fk_uzsakymai_bilietai` FOREIGN KEY (`id_bilietas`) REFERENCES `bilietai` (`id_bilietas`);
-COMMIT;
+-- airplane changes
+
+ALTER TABLE `lektuvu_modeliai`
+    ADD COLUMN `kelias_iki_3d` VARCHAR(255) DEFAULT NULL;
+
+ALTER TABLE lektuvai
+    ADD COLUMN id_lektuvu_modelis INT(11) NOT NULL,
+ADD CONSTRAINT fk_lektuvai_lektuvu_modeliai
+    FOREIGN KEY (id_lektuvu_modelis)
+    REFERENCES lektuvu_modeliai (id_lektuvu_modelis);
+
+ALTER TABLE lektuvai
+    ADD COLUMN id_skrydziu_imone INT(11) NOT NULL,
+ADD CONSTRAINT fk_lektuvai_skrydziu_imones
+    FOREIGN KEY (id_skrydziu_imone)
+    REFERENCES skrydziu_imones (id_skrydziu_imone);
+
+ALTER TABLE lektuvu_modeliai
+    ADD COLUMN id_lektuvu_gamintojas INT(11) NOT NULL,
+ADD CONSTRAINT fk_lektuvu_modeliai_lektuvu_gamintojai
+    FOREIGN KEY (id_lektuvu_gamintojas)
+    REFERENCES lektuvu_gamintojai (id_lektuvu_gamintojas);
+
+ALTER TABLE vietos_lektuve
+    ADD COLUMN id_vietos INT(11) NOT NULL,
+    ADD COLUMN id_lektuvo INT(11) NOT NULL,
+    ADD CONSTRAINT fk_vietos_lektuve_vieta
+        FOREIGN KEY (id_vietos)
+        REFERENCES vietos (id_vieta),
+    ADD CONSTRAINT fk_vietos_lektuve_lektuvas
+        FOREIGN KEY (id_lektuvo)
+        REFERENCES lektuvai(id_lektuvu_modelis);
+
+
+-- some airplane stuff :))
+
+-- Inserting into lektuvu_gamintojai
+INSERT INTO lektuvu_gamintojai (pavadinimas, id_lektuvu_gamintojas)
+VALUES ('Boeing', 1);
+
+INSERT INTO skrydziu_imones (pavadinimas)
+VALUES ('New Airline');
+
+
+-- Inserting into lektuvu_modeliai
+INSERT INTO lektuvu_modeliai (pavadinimas, id_lektuvu_modelis, kelias_iki_3d, id_lektuvu_gamintojas)
+VALUES ('Model 737', 1, '3dModels/Airplane1/11803_Airplane_v1_l1.obj', 1);
+
+-- Inserting into vietos
+INSERT INTO vietos (eile, keliones_patogumo_indeksas)
+VALUES (1, 'A');
+
+-- Inserting into lektuvai
+INSERT INTO lektuvai (registracijos_numeris, pagaminimo_data, isigijimo_data, wifi, id_lektuvu_modelis, id_skrydziu_imone)
+VALUES ('ABC123', '2022-01-01', '2023-01-01', 1, 1, 1);
+
+-- Inserting into vietos
+INSERT INTO vietos ()
+VALUES ();
+
+-- Inserting into vietos_lektuve
+INSERT INTO vietos_lektuve (id_vietos, id_lektuvo)
+VALUES (1, 1);
+
+-- COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-
---- insert some airplane stuff :))
-
-INSERT INTO lektuvu_gamintojai (pavadinimas, id_lektuvu_gamintojas) 
-VALUES ('Boeing', 1);
-
-INSERT INTO lektuvu_modeliai (pavadinimas, id_lektuvu_modelis, kelias_iki_3d) 
-VALUES ('Model 737', 1, '3dModels/Airplane1/11803_Airplane_v1_l1.obj');
-
-INSERT INTO lektuvai (registracijos_numeris, pagaminimo_data, isigijimo_data, wifi) 
-VALUES ('ABC123', '2022-01-01', '2023-01-01', 1);
-
-INSERT INTO vietos (eile, keliones_patogumo_indeksas, id_vieta) 
-VALUES (1, 'A', 1);
-
-INSERT INTO vietos_lektuve (id_vieta_lektuve) 
-VALUES (1);
