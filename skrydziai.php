@@ -138,10 +138,7 @@ include 'connect.php';
 										<h2>Skrydžiai <b>  </b></h2>
 									</div>
 									<div class="col-sm-6">
-										<a href="#addOrderModal" class="btn btn-success" data-toggle="modal"><i class="fas fa-plus-circle"></i><span>Pridėti Skrydį</span></a>
-										<a href="#addTicketModal" class="btn btn-success" data-toggle="modal"><i class="fas fa-plus-circle"></i><span>Pridėti Skrydį</span></a>
-										<a href="#deleteTicketModal" class="btn btn-danger" data-toggle="modal"><i class="fas fa-minus-circle"></i><span>Pašalinti Skrydį</span></a>		
-
+										<a href="#addOrderModal" class="btn btn-success" data-toggle="modal"><i class="fas fa-plus-circle"></i><span>Pridėti Skrydį</span></a>		
 										<a href="#SearchOrderModal" class="btn btn-success" data-toggle="modal"><i class="fas fa-plus-circle"></i><span>Atlikti paiešką</span></a>
 									</div>
 								</div>
@@ -309,13 +306,16 @@ include 'connect.php';
 							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 							</div>
 							<div class="modal-body">
+
 							<div class="form-group">
-								<label>Laikas kiek truks skrydis</label>
+								<label>Pakeisti laiką kiek truks skrydis</label>
 								<input type="text" name="selected_laikas" class="form-control">
 							</div>
-
-
 							
+
+
+
+							</div>
 							<div class="modal-footer">
 							<input type="button" class="btn btn-default" data-dismiss="modal" value="Atšaukti">
 							<input type="submit" class="btn btn-info" name="edit_submit" value="Pateikti">
@@ -402,7 +402,7 @@ include 'connect.php';
 					<div id="addOrderModal" class="modal fade">
 					<div class="modal-dialog">
 						<div class="modal-content">
-						<form action="uzsakymas.php" method="post">
+						<form action="skrydziai.php" method="post">
 							<input type="hidden" name="edit_id" id="edit_id">
 							<div class="modal-header">
 							<h4 class="modal-title">Pridėti Užsakymą</h4>
@@ -410,54 +410,38 @@ include 'connect.php';
 							</div>
 							<div class="modal-body">
 
+
 							<div class="form-group">
-								<label>Užsakovas</label>
-								<input type="text" name="selected_uzsakovas" class="form-control">
+								<label>Atvykimo vieta</label>
+								<input type="text" name="selected_atvykimo_vieta" class="form-control">
 							</div>
 							<div class="form-group">
-								<label>Pavadinimas</label>
-								<input type="text" name="selected_pavadinimas" class="form-control">
+								<label>Išvykimo vieta</label>
+								<input type="text" name="selected_isvykimo_vieta" class="form-control">
+							</div>
+
+							<div class="form-group">
+								<label>Atvykimo Laikas</label>
+								<input type="date" name="selected_atvykimo_laikas" class="form-control">
 							</div>
 							<div class="form-group">
-								<label>Data</label>
-								<input type="date" name="selected_data" class="form-control">
+								<label>Išvykimo Laikas</label>
+								<input type="date" name="selected_isvykimo_laikas" class="form-control">
+							</div>
+							<div class="form-group">
+								<label>Realus atvykimo laikas</label>
+								<input type="date" name="selected_realus_atvykimo_laikas" class="form-control">
+							</div>
+							<div class="form-group">
+								<label>Realus išvykimo laikas</label>
+								<input type="date" name="selected_realus_isvykimo_laikas" class="form-control">
+							</div>
+
+							<div class="form-group">
+								<label>Trukmė</label>
+								<input type="text" name="selected_trukme" class="form-control">
 							</div>
 							
-						<!--	<div class="form-group">
-								<label>Skrydžio Id</label>
-								<input type="text" name="selected_skrydisId" class="form-control">
-							</div> -->
-								<div class="form-group">
-									<label>Bilieto Id</label>
-									<select name="selected_bilietasId" class="form-control">
-										<?php
-										include 'connect.php';
-										// Check connection
-										if ($conn->connect_error) {
-											die("Nepavyko prisijungti: " . $conn->connect_error);
-										}
-
-										// Assuming 'skrydziai' is your table name and 'id_skrydis' is the column you want to retrieve
-										$sql = "SELECT id_bilietas FROM bilietai";
-										$result = $conn->query($sql);
-
-										// Loop through the results to populate the dropdown
-										while ($row = $result->fetch_assoc()) {
-											$selected = ($row['id_bilietas'] == $selected_bilietasId) ? 'selected' : '';
-											echo "<option value='{$row['id_bilietas']}' $selected>{$row['id_bilietas']}</option>";
-										}
-
-										// Close the database connection
-										$conn->close();
-										?>
-									</select>
-								</div>
-
-
-							<div class="form-group">
-								<label>Busena</label>
-								<input type="text" name="selected_busena" class="form-control">
-							</div>
 							</div>
 							<div class="modal-footer">
 							<input type="button" class="btn btn-default" data-dismiss="modal" value="Atšaukti">
@@ -542,7 +526,7 @@ include 'connect.php';
 								// Code for processing delete submission
 								if (isset($_POST["delete_id"])) {
 									$delete_id = $_POST["delete_id"];
-
+									echo "Įrašas"  . $delete_id;
 									// Delete the record from the 'uzsakymai' table
 									$deleteSql = "DELETE FROM skrydziai WHERE id_skrydis = $delete_id";
 
@@ -595,16 +579,18 @@ include 'connect.php';
 
 							elseif (isset($_POST["add_order_submit"])) {
 								// Code for processing edit submission
-								if (isset($_POST["selected_pavadinimas"]) || isset($_POST["selected_data"]) || isset($_POST["selected_bilietasId"]) || isset($_POST["selected_busena"]) || isset($_POST["selected_uzsakovas"])) {
+								if (isset($_POST["selected_atvykimo_vieta"]) || isset($_POST["selected_isvykimo_vieta"]) || isset($_POST["selected_isvykimo_laikas"]) || isset($_POST["selected_atvykimo_laikas"]) || isset($_POST["selected_realus_atvykimo_laikas"])|| isset($_POST["selected_realus_isvykimo_laikas"]) || isset($_POST["selected_trukme"])) {
 
-									$selected_uzsakovas = $_POST["selected_uzsakovas"];
-									$selected_pavadinimas = $_POST["selected_pavadinimas"];
-									$selected_data = $_POST["selected_data"];
-									$selected_bilietasId = $_POST["selected_bilietasId"];
-									$selected_busena = $_POST["selected_busena"];
+									$selected_atvykimo_vieta = $_POST["selected_atvykimo_vieta"];
+									$selected_isvykimo_vieta = $_POST["selected_isvykimo_vieta"];
+									$selected_atvykimo_laikas = $_POST["selected_atvykimo_laikas"];
+									$selected_isvykimo_laikas = $_POST["selected_isvykimo_laikas"];
+									$selected_realus_atvykimo_laikas = $_POST["selected_realus_atvykimo_laikas"];
+									$selected_realus_isvykimo_laikas = $_POST["selected_realus_isvykimo_laikas"];
+									$selected_trukme = $_POST["selected_trukme"];
 
-									$insertSql = "INSERT INTO uzsakymai (pavadinimas, uzsakovo_name, sukurimo_data, id_bilietas, busena)
-									VALUES ('$selected_pavadinimas', '$selected_uzsakovas', '$selected_data', '$selected_bilietasId', '$selected_busena')";
+									$insertSql = "INSERT INTO skrydziai (atvykimo_vieta, isvykimo_vieta, planuojamas_atvykimo_laikas, planuojamas_isvykimo_laikas, realus_atvykimo_laikas, realus_isvykimo_laikas, skrydzio_trukme)
+									VALUES ('$selected_atvykimo_vieta', '$selected_isvykimo_vieta', '$selected_atvykimo_laikas', '$selected_isvykimo_laikas', '$selected_realus_atvykimo_laikas', '$selected_realus_isvykimo_laikas', '$selected_trukme')";
 					  
 
 									if ($conn->query($insertSql) === TRUE) {
@@ -655,8 +641,7 @@ include 'connect.php';
 						// Your existing code for displaying the table goes here...
 						?>
 
-
-	<!-- Delete Modal HTML -->
+					<!-- Delete Modal HTML -->
 					<div id="deleteEmployeeModal" class="modal fade">
 						<div class="modal-dialog">
 
@@ -667,7 +652,7 @@ include 'connect.php';
 										<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 									</div>
 								<form action="skrydziai.php" method="post">
-									<input type="hidden" name="delete_id" id="delete_id">
+									<input type="hidden" name="delete_id_plane" id="delete_id_plane">
 
 									<div class="form-group">
 
@@ -698,30 +683,7 @@ include 'connect.php';
 								<form action="skrydziai.php" method="post">
 									<input type="hidden" name="delete_ticket_id" id="delete_ticket_id">
 
-									<div class="form-group">
-									<label>Bilieto Id</label>
-									<select name="selected_bilietasId" class="form-control">
-										<?php
-										include 'connect.php';
-										// Check connection
-										if ($conn->connect_error) {
-											die("Nepavyko prisijungti: " . $conn->connect_error);
-										}
-
-										// Assuming 'skrydziai' is your table name and 'id_skrydis' is the column you want to retrieve
-										$sql = "SELECT id_bilietas FROM bilietai";
-										$result = $conn->query($sql);
-
-										// Loop through the results to populate the dropdown
-										while ($row = $result->fetch_assoc()) {
-											$selected = ($row['id_bilietas'] == $selected_bilietasId) ? 'selected' : '';
-											echo "<option value='{$row['id_bilietas']}' $selected>{$row['id_bilietas']}</option>";
-										}
-
-										// Close the database connection
-										$conn->close();
-										?>
-									</select>
+	
 
 								</div>
 									<div class="modal-body">
@@ -737,29 +699,6 @@ include 'connect.php';
 						</div>
 					</div>
 
-
-
-					<div id="deleteTicketModal" class="modal fade">
-						<div class="modal-dialog">
-							<div class="modal-content">
-								<form action="skrydziai.php" method="post">
-									<input type="hidden" name="delete_ticket_id" id="delete_ticket_id">
-									<div class="modal-header">
-										<h4 class="modal-title">Pašalinti bilietą</h4>
-										<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-									</div>
-									<div class="modal-body">
-										<p>Ar tikrai norite pašalinti bilietą?</p>
-										<p class="text-warning"><small>bilieto nebus galima grąžinti.</small></p>
-									</div>
-									<div class="modal-footer">
-										<input type="button" class="btn btn-default" data-dismiss="modal" value="Atšaukti">
-										<input type="submit" class="btn btn-danger" name="delete_ticket_submit" value="Pašalinti">
-									</div>
-								</form>
-							</div>
-						</div>
-					</div>
 
 
 				</div>
@@ -800,7 +739,7 @@ include 'connect.php';
 			// ...
 
 			// Redirect or display a success message
-			header("uzsakymai.php");
+			header("skrydziai.php");
 			exit();
 		} else {
 			// Redirect or handle the case where edit_id is not present
