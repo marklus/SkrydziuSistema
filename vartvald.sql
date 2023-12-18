@@ -437,6 +437,10 @@ ALTER TABLE `pamainos`
 
 -- airplane changes
 
+ALTER TABLE lektuvai
+    ADD INDEX idx_registracijos_numeris (registracijos_numeris);
+
+
 ALTER TABLE `lektuvu_modeliai`
     ADD COLUMN `kelias_iki_3d` VARCHAR(255) DEFAULT NULL;
 
@@ -460,13 +464,13 @@ ADD CONSTRAINT fk_lektuvu_modeliai_lektuvu_gamintojai
 
 ALTER TABLE vietos_lektuve
     ADD COLUMN id_vietos INT(11) NOT NULL,
-    ADD COLUMN id_lektuvo INT(11) NOT NULL,
+    ADD COLUMN id_lektuvo varchar(255) NOT NULL,
     ADD CONSTRAINT fk_vietos_lektuve_vieta
         FOREIGN KEY (id_vietos)
         REFERENCES vietos (id_vieta),
     ADD CONSTRAINT fk_vietos_lektuve_lektuvas
         FOREIGN KEY (id_lektuvo)
-        REFERENCES lektuvai(id_lektuvu_modelis);
+        REFERENCES lektuvai(registracijos_numeris);
 
 
 -- some airplane stuff :))
@@ -497,7 +501,7 @@ VALUES ();
 
 -- Inserting into vietos_lektuve
 INSERT INTO vietos_lektuve (id_vietos, id_lektuvo)
-VALUES (1, 1);
+VALUES (1, "ABC123");
 
 -- COMMIT;
 
