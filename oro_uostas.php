@@ -104,7 +104,7 @@ if (!empty($_SESSION['user']))     //Jei vartotojas prisijungęs, valom logino k
 								<div class="col-sm-6">
 									<a href="#addTicketModal" class="btn btn-success" data-toggle="modal"><i class="fas fa-plus-circle"></i><span>Pridėti oro uostą</span></a>
 									<a href="#deleteTicketModal" class="btn btn-danger" data-toggle="modal"><i class="fas fa-minus-circle"></i><span>Pašalinti oro uostą</span></a>
-									<input type="text" class="form-control" placeholder="Paieška">
+									<a href="#SearchOrderModal" class="btn btn-success" data-toggle="modal"><i class="fas fa-plus-circle"></i><span>Atlikti paiešką</span></a>
 								</div>
 							</div>
 						</div>
@@ -358,6 +358,30 @@ if (!empty($_SESSION['user']))     //Jei vartotojas prisijungęs, valom logino k
 						</div>
 					</div>
 				</div>
+				
+				<div id="SearchOrderModal" class="modal fade">
+					<div class="modal-dialog">
+						<div class="modal-content">
+						<form action="oro_uostas.php" method="post">
+							<div class="modal-header">
+							<h4 class="modal-title">Oro uosto paieška pagal jo pavadinimą</h4>
+							
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							</div>
+							<div class="modal-body">
+
+							<input type="text" name="search_id" id="search_id" placeholder="Rašyti čia">
+							
+
+							</div>
+							<div class="modal-footer">
+							<input type="button" class="btn btn-default" data-dismiss="modal" value="Atšaukti">
+							<input type="submit" class="btn btn-info" name="search_submit" value="Pateikti">
+							</div>
+						</form>
+						</div>
+					</div>
+				</div>
 
 				<?php
 				include 'connect.php';
@@ -425,9 +449,46 @@ if (!empty($_SESSION['user']))     //Jei vartotojas prisijungęs, valom logino k
 						if ($conn->query($updateSql) === TRUE) {
 							echo "Oro uosto duomenys atnaujinti sėkmingai.";
 							}
-						} else {
-							echo "Įvyko klaida atnaujinant oro uosto duomenis: " . $conn->error;
 						}
+					
+					elseif (isset($_POST["search_submit"])) {
+							// Code for processing edit submission
+	
+							$search_word = $_POST['search_id'];
+	
+							// Fetch and display rows containing the search word
+							$sql = "SELECT * FROM oro_uostai WHERE pavadinimas LIKE '%$search_word%'";
+							$result = $conn->query($sql);
+							//	echo "SQL Query: " . $sql . "<br>";
+							//	echo "Number of Rows: " . $result->num_rows . "<br>";
+							if ($result->num_rows > 0) {
+								echo "<ul>"; // Start your unordered list
+								echo "Paieškos rezultatai";
+								while ($row = $result->fetch_assoc()) {
+									echo "<li>";
+									echo "Pavadinimas: " . $row['pavadinimas'] . "<br>";
+									echo "IATA kodas: " . $row['iata_oro_uosto_kodas'] . "<br>";
+									#get miestas name from the miestai table from the id_miestas
+									$idMiestas = $row['id_miestas'];
+									$sqlMiestasName = "SELECT pavadinimas FROM miestai WHERE ID_miestas = $idMiestas";
+									$resultMiestasName = $conn->query($sqlMiestasName);
+									$miestasName = $resultMiestasName->fetch_assoc()['pavadinimas'];
+									echo "Miestas: " . $miestasName . "<br>";
+									echo "<a href='#' class='getWeather' data-miestas='$miestasName'>Oro sąlygos</a>" . "<br>";
+									echo "Reitingas: " . $row['reitingas'] . " / 5<br>";
+									echo "Adresas: " . $row['adresas'] . "<br>";
+						
+									echo "<a href='#redaguotiOroUosta' class='edit btn-edit' data-toggle='modal' data-id='{$row['iata_oro_uosto_kodas']}'><i class='fas fa-pen' data-toggle='tooltip' title='Redaguoti'></i></a>";
+									echo "<a href='#deleteEmployeeModal' class='delete' data-toggle='modal' data-id='{$row['iata_oro_uosto_kodas']}'><i class='fas fa-trash' data-toggle='tooltip' title='Pašalinti'></i></a>";
+						
+									echo "</li>";
+							}
+							echo "</ul>"; // End your unordered list
+						}
+					}
+					else {
+						echo "Nebuvo rasta užsakymų tokiu pavadinimu.";
+					}						
 					}
 				
 
