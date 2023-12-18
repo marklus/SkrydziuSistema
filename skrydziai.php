@@ -519,22 +519,21 @@ include 'connect.php';
 						if ($_SERVER["REQUEST_METHOD"] == "POST") {
 							if (isset($_POST["edit_submit"])) {
 								// Code for processing edit submission
-								if (isset($_POST["edit_id"]) && (isset($_POST["selected_busena"]) || isset($_POST["selected_bilietasId"])|| isset($_POST["selected_bilietasId"]))) {
+								if (isset($_POST["edit_id"]) && isset($_POST["selected_laikas"])) {
 
 									$edit_id = $_POST["edit_id"];
-									$selected_busena = $_POST["selected_busena"];
-									$selected_pavadinimas = $_POST["selected_pavadinimas"];
-									$selected_bilietoId = $_POST["selected_bilietoId"];
+									$selected_laikas = $_POST["selected_laikas"];
+
 
 									// Update the 'busena' field in the 'uzsakymai' table
 									//$updateSql = "UPDATE uzsakymai SET busena = '$selected_busena' WHERE id_uzsakymas = $edit_id";
 
-									$updateSql = "UPDATE uzsakymai 
-									SET busena = '$selected_busena', pavadinimas = '$selected_pavadinimas', id_bilietas = '$selected_bilietoId'
-									WHERE id_uzsakymas = $edit_id";
+									$updateSql = "UPDATE skrydziai 
+									SET skrydzio_trukme = '$selected_laikas'
+									WHERE id_skrydis = $edit_id";
 
 									if ($conn->query($updateSql) === TRUE) {
-										echo "Pakeitimas sėkmingas";
+										echo "Skrydžio pakeitimas sėkmingas";
 									} else {
 										echo "Įvyko klaida keičiant duomenis: " . $conn->error;
 									}
