@@ -107,7 +107,7 @@ if (!empty($_SESSION['user']))     //Jei vartotojas prisijungęs, valom logino k
                                     <h2>Lėktuvai <b> </b></h2>
                                 </div>
                                 <div class="col-sm-6">
-                                    <a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i class="fas fa-plus-circle"></i><span>Pridėti</span></a>
+                                    <a href="#addAirplaneModal" class="btn btn-success" data-toggle="modal"><i class="fas fa-plus-circle"></i><span>Pridėti</span></a>
                                     <a href="#deleteEmployeeModal" class="btn btn-danger" data-toggle="modal"><i class="fas fa-minus-circle"></i><span>Pašalinti</span></a>
                                     <input type="text" class="form-control" placeholder="Paieška">
                                 </div>
@@ -162,10 +162,6 @@ if (!empty($_SESSION['user']))     //Jei vartotojas prisijungęs, valom logino k
 
 
 
-
-
-
-
                         <div class="clearfix">
                             <div class="hint-text">Numeris nuo <b>5</b> iki <b>25</b> </div>
                             <ul class="pagination">
@@ -180,37 +176,98 @@ if (!empty($_SESSION['user']))     //Jei vartotojas prisijungęs, valom logino k
                         </div>
                     </div>
                 </div>
+
+
+
+
+
+
+
                 <!-- Edit Modal HTML  cia galima prideti uzsakyma-->
-                <div id="addEmployeeModal" class="modal fade">
+                <div id="addAirplaneModal" class="modal fade">
                     <div class="modal-dialog">
                         <div class="modal-content">
-                            <form>
+                            <form method="post" action="">
                                 <div class="modal-header">
-                                    <h4 class="modal-title">Nuevo Pabellón</h4>
+                                    <h4 class="modal-title">Pridėti naują lėktuvą</h4>
                                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                                 </div>
                                 <div class="modal-body">
                                     <div class="form-group">
-                                        <label>Nr</label>
-                                        <input type="text" class="form-control" required>
+                                        <label for="registracijos_numeris">Registracijos Numeris</label>
+                                        <input type="text" id="registracijos_numeris" name="registracijos_numeris" class="form-control" required>
                                     </div>
                                     <div class="form-group">
-                                        <label>Pastas</label>
-                                        <input type="email" class="form-control" required>
+                                        <label for="pagaminimo_data">Gamybos Data</label>
+                                        <input type="date" id="pagaminimo_data" name="pagaminimo_data" class="form-control" required>
                                     </div>
                                     <div class="form-group">
-                                        <label>Komentaras</label>
-                                        <textarea class="form-control" required></textarea>
+                                        <label for="isigijimo_data">Įsigijimo Data</label>
+                                        <input type="date" id="isigijimo_data" name="isigijimo_data" class="form-control" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="wifi">Wi-Fi Prieinamas</label>
+                                        <select id="wifi" name="wifi" class="form-control" required>
+                                            <option value="1">Taip</option>
+                                            <option value="0">Ne</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="id_lektuvu_modelis">Lėktuvo Modelio ID</label>
+                                        <input type="text" id="id_lektuvu_modelis" name="id_lektuvu_modelis" class="form-control" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="id_skrydziu_imone">Skrydžių Įmonės ID</label>
+                                        <input type="text" id="id_skrydziu_imone" name="id_skrydziu_imone" class="form-control" required>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-                                    <input type="submit" class="btn btn-success" value="Add">
+                                    <input type="button" class="btn btn-default" data-dismiss="modal" value="Atšaukti">
+                                    <input type="submit" class="btn btn-success" name="add_airplane" value="Pridėti">
                                 </div>
                             </form>
                         </div>
                     </div>
                 </div>
+
+                <?php
+                include 'connect.php';
+                error_log("Error message\n", 3, "/mypath/php.log");
+                if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+                    if (isset($_POST["add_airplane"])) {
+                        // Check if the form was submitted and the submit button is clicked
+
+                        // Get values from the form
+                        $registracijos_numeris = $_POST["registracijos_numeris"];
+                        $pagaminimo_data = $_POST["pagaminimo_data"];
+                        $isigijimo_data = $_POST["isigijimo_data"];
+                        $wifi = $_POST["wifi"];
+                        $id_lektuvu_modelis = $_POST["id_lektuvu_modelis"];
+                        $id_skrydziu_imone = $_POST["id_skrydziu_imone"];
+
+                        // Insert the values into the 'lektuvai' table
+                        $insertSql = "INSERT INTO lektuvai (registracijos_numeris, pagaminimo_data, isigijimo_data, wifi, id_lektuvu_modelis, id_skrydziu_imone)
+                        VALUES ('$registracijos_numeris', '$pagaminimo_data', '$isigijimo_data', '$wifi', '$id_lektuvu_modelis', '$id_skrydziu_imone')";
+
+                        if ($conn->query($insertSql) === TRUE) {
+                            echo "Naujas lėktuvas pridėtas sėkmingai.";
+
+                        } else {
+                            echo "Įvyko klaida pridedant naują lėktuvą: " . $conn->error;
+                        }
+                    }
+                    // Other operations like delete and edit can follow a similar structure...
+                }
+
+                // Your existing code for displaying the table goes here...
+                ?>
+
+
+
+
+
+
                 <!-- Edit Modal HTML -->
                 <div id="redaguotiUžsakymą" class="modal fade">
                     <div class="modal-dialog">
