@@ -457,9 +457,9 @@ include 'connect.php';
 					<div id="SearchOrderModal" class="modal fade">
 					<div class="modal-dialog">
 						<div class="modal-content">
-						<form action="uzsakymas.php" method="post">
+						<form action="skrydziai.php" method="post">
 							<div class="modal-header">
-							<h4 class="modal-title">Užsakymo paieška pagal pavadinimą</h4>
+							<h4 class="modal-title">Skrydžio paieška pagal Atvykimo vietą</h4>
 							
 							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 							</div>
@@ -608,7 +608,7 @@ include 'connect.php';
 								$search_word = $_POST['search_id'];
 
 								// Fetch and display rows containing the search word
-								$sql = "SELECT * FROM uzsakymai WHERE pavadinimas LIKE '%$search_word%'";
+								$sql = "SELECT * FROM skrydziai WHERE atvykimo_vieta LIKE '%$search_word%'";
 								$result = $conn->query($sql);
 							//	echo "SQL Query: " . $sql . "<br>";
 							//	echo "Number of Rows: " . $result->num_rows . "<br>";
@@ -616,18 +616,19 @@ include 'connect.php';
 								echo "<ul>"; // Start your unordered list
 								echo "Paieškos rezultatai";
 								while ($row = $result->fetch_assoc()) {
-									echo "<li>";
-									echo "ID: " . $row['id_uzsakymas'] . "<br>";
-									echo "Pavadinimas: " . $row['pavadinimas'] . "<br>";
-									echo "Užsakovo vardas: " . $row['uzsakovo_name'] . "<br>";
-									echo "ID bilieto: " . $row['id_bilietas'] . "<br>";
-									echo "Sukūrimo data: " . $row['sukurimo_data'] . "<br>";
-									echo "Būsena: " . $row['busena'] . "<br>";
+
+									"<li>";
+									echo "ID: " . $row['id_skrydis'] . "<br>";
+									echo "atvykimo_vieta: " . $row['atvykimo_vieta'] . "<br>";
+									echo "isvykimo_vieta: " . $row['isvykimo_vieta'] ."<br>";
+									echo "planuojamas_atvykimo_laikas: " . $row['planuojamas_atvykimo_laikas'] . "<br>";
+									echo "planuojamas_isvykimo_laikas: " . $row['planuojamas_isvykimo_laikas'] . "<br>";
+									echo "realus_atvykimo_laikas: " . $row['realus_atvykimo_laikas'] . "<br>";
+									echo "realus_isvykimo_laikas: " . $row['realus_isvykimo_laikas'] . "<br>";
+									echo "skrydzio_trukme: " . $row['skrydzio_trukme'] . "<br>";
 							
-									echo "<a href='#redaguotiSkrydį' class='edit btn-edit' data-toggle='modal' data-id='{$row['id_uzsakymas']}'><i class='fas fa-pen' data-toggle='tooltip' title='Redaguoti'></i></a>";
-									echo "<a href='#deleteEmployeeModal' class='delete' data-toggle='modal' data-id='{$row['id_uzsakymas']}'><i class='fas fa-trash' data-toggle='tooltip' title='Pašalinti'></i></a>";
-									echo "<a href='#' class='btn-take' data-id='{$row['id_uzsakymas']}'><i class='fas fa-trash' data-toggle='tooltip' title='Paimti'></i></a>";
-							
+									echo "<a href='#redaguotiSkrydį' class='edit btn-edit' data-toggle='modal' data-id='{$row['id_skrydis']}'><i class='fas fa-pen' data-toggle='tooltip' title='Redaguoti'></i></a>";
+									echo "<a href='#deleteEmployeeModal' class='delete' data-toggle='modal' data-id='{$row['id_skrydis']}'><i class='fas fa-trash' data-toggle='tooltip' title='Pašalinti'></i></a>";
 									echo "</li>";
 								}
 							
