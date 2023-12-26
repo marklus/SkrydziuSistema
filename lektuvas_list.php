@@ -173,7 +173,10 @@ echo '<table class="table table-striped table-hover>';
                             echo '<a href="#editAirplaneModal" class="edit" data-toggle="modal" data-id="' . $row['id'] . '"><i class="fas fa-pen" data-toggle="tooltip" title="Redaguoti"></i></a>';
 
 //                            echo '<a href="#deleteAirplaneModal" class="delete" data-toggle="modal"><i class="fas fa-trash" data-toggle="tooltip" title="Pašalinti"></i></a>';
-                            echo '<a href="#deleteAirplaneModal" class="delete" data-toggle="modal" onclick="setDeletionId(' . $row['registracijos_numeris'] . ')"><i class="fas fa-trash" data-toggle="tooltip" title="Pašalinti"></i></a>';
+//                            echo '<a href="#deleteAirplaneModal" class="delete" data-toggle="modal" onclick="setDeletionId(' . $row['registracijos_numeris'] . ')"><i class="fas fa-trash" data-toggle="tooltip" title="Pašalinti"></i></a>';
+                            echo '<a href="#deleteAirplaneModal" class="delete" data-toggle="modal" data-id="' . $row['registracijos_numeris'] . '"><i class="fas fa-trash" data-toggle="tooltip" title="Pašalinti"></i></a>';
+
+
                             echo '<a href="lektuvas.php?id=' . $row['registracijos_numeris'] . '">LĖKTUVO PERŽIŪRA</a>';
                             echo '</td>';
                             echo '</tr>';
@@ -322,17 +325,20 @@ echo '<table class="table table-striped table-hover>';
             //MODALAS TRYNIMO
             //**************************************************************************************************
             ?>
+
+
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
             <script>
-                // JavaScript function to set deletion ID in the modal
-                function setDeletionId(airplaneId) {
-                    // Set the airplane ID into the modal content
-                    document.getElementById('airplane_id_to_delete').textContent = airplaneId;
-                    // Set the airplane ID into the hidden input field for form submission
-                    document.getElementById('delete_registracijos_numeris').value = airplaneId;
-                }
-
-
+                $(document).ready(function() {
+                    $('.delete').click(function() {
+                        var id = $(this).data('id');
+                        // Set the airplane ID into the hidden input field for form submission
+                        $('#delete_registracijos_numeris').val(id);
+                    });
+                });
             </script>
+
+
             <div id="deleteAirplaneModal" class="modal fade">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -391,6 +397,18 @@ echo '<table class="table table-striped table-hover>';
             }
             ?>
             ?>
+
+<!--            <script>-->
+<!--                // JavaScript function to set deletion ID in the modal-->
+<!--                function setDeletionId(airplaneId) {-->
+<!--                    // Set the airplane ID into the modal content-->
+<!--                    document.getElementById('airplane_id_to_delete').textContent = airplaneId;-->
+<!--                    // Set the airplane ID into the hidden input field for form submission-->
+<!--                    document.getElementById('delete_registracijos_numeris').value = airplaneId;-->
+<!--                }-->
+<!---->
+<!---->
+<!--            </script>-->
 
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
