@@ -89,12 +89,7 @@ if (!empty($_SESSION['user']))     //Jei vartotojas prisijungęs, valom logino k
                 </ul>
             </div>
 
-            <!--            <div>-->
-            <!--                <p>Nepamirštamoms kelionėms galite rinktis bet kokius jūsų įgeidžius tenkinančią transporto priemonę!-->
-            <!--                    Turite mėgstamiausią skrydžių įmonę? Būtent *tas* lėktuvo modelis jums suteikė trokštamą komfortą?-->
-            <!--                    Išsirinkite geriausią!-->
-            <!--                </p>-->
-            <!--            </div>-->
+
             <div class="content-wrapper col">
                 <div class="table-wrapper">
                     <div class="table-title">
@@ -111,21 +106,53 @@ if (!empty($_SESSION['user']))     //Jei vartotojas prisijungęs, valom logino k
                             </div>
                         </div>
                     </div>
+                    <div>
+                        <p>Nepamirštamoms kelionėms galite rinktis bet kokius jūsų įgeidžius tenkinančią transporto priemonę!
+                            Turite mėgstamiausią skrydžių įmonę? Būtent *tas* lėktuvo modelis jums suteikė trokštamą komfortą?
+                            Išsirinkite geriausią!
+                        </p>
+                    </div>
 
 
                     <?php
-                    // Fetch airplane data from the database
-                    // Assuming you have a connection to your database ($conn)
+                    //**************************************************************************************************
+                    //LĖKTUVŲ SĄRAŠAS
+                    //**************************************************************************************************
+
 
                     $db = mysqli_connect(DB_SERVER, DB_USER, DB_PASS, DB_NAME);
-                    //                        $sql = "SELECT * "
-                    //                                . "FROM " . TBL_AIRPLANES ;
-                    // $result = mysqli_query($db, $sql);
+
 
                     $sql = "SELECT * FROM lektuvai"; // Update this query based on your table structure
                     $result = mysqli_query($db, $sql);
 
                     if ($result && mysqli_num_rows($result) > 0) {
+echo '<table class="table table-striped table-hover>';
+                        echo '<thead>';
+                        echo '<tr>';
+
+                        echo '<th>';
+                        echo '<span class="custom-checkbox">';
+                        echo '<input type="checkbox" id="selectAll">';
+                        echo '<label for="selectAll"></label>';
+                        echo '</span>';
+
+                        echo ' Pasirinkti visus ';
+
+                        echo '</th>';
+
+                        echo '<th>';
+                        echo '</th>';
+
+                        echo '<th>Registracijos Numeris</th>'; // Registration Number
+                        echo '<th>Gamybos Data</th>'; // Manufacture Date
+                        echo '<th>Įsigijimo Data</th>'; // Acquisition Date
+                        echo '<th>WiFi</th>'; // WiFi
+                        echo '<th>Veiksmai</th>'; // Actions
+
+                        echo '</tr>';
+                        echo '</thead>';
+
                         while ($row = mysqli_fetch_assoc($result)) {
                             echo '<tr>';
                             echo '<td>';
@@ -148,6 +175,7 @@ if (!empty($_SESSION['user']))     //Jei vartotojas prisijungęs, valom logino k
                             echo '</td>';
                             echo '</tr>';
                         }
+                        echo '</table>';
                     } else {
                         // Handle case when there are no airplanes in the database
                         echo '<tr><td colspan="7">No airplanes found</td></tr>';
@@ -225,12 +253,21 @@ if (!empty($_SESSION['user']))     //Jei vartotojas prisijungęs, valom logino k
             </div>
 
             <?php
+            //**************************************************************************************************
+            //MODALAI
+            //**************************************************************************************************
+
             include 'connect.php';
             if ($conn->connect_error) {
                 die("Nepavyko prisijungti: " . $conn->connect_error);
             }
             if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 if (isset($_POST["add_airplane"])) {
+                    //**************************************************************************************************
+                    //PRIDĖJIMAS
+                    //**************************************************************************************************
+
+
                     // Check if the form was submitted and the submit button is clicked
 
                     // Get values from the form
@@ -245,20 +282,23 @@ if (!empty($_SESSION['user']))     //Jei vartotojas prisijungęs, valom logino k
                     $insertSql = "INSERT INTO lektuvai (registracijos_numeris, pagaminimo_data, isigijimo_data, wifi, id_lektuvu_modelis, id_skrydziu_imone)
                         VALUES ('$registracijos_numeris', '$pagaminimo_data', '$isigijimo_data', '$wifi', '$id_lektuvu_modelis', '$id_skrydziu_imone')";
 
+                    echo "<div class='content-box'>";
                     if ($conn->query($insertSql) === true) {
                         echo "Naujas lėktuvas pridėtas sėkmingai.";
                     } else {
                         echo "Įvyko klaida pridedant naują lėktuvą: " . $conn->error;
                     }
+
+                    echo "</div>";
                 }
                 if (isset($_POST["edit_airplane"])) {
+                    //**************************************************************************************************
+                    //REDAGAVIMAS
+                    //**************************************************************************************************
+
                     if (isset($_POST["edit_airplane"])) {
                         // Get the registracijos_numeris from the submitted form
                         $airplane_id = $_POST["edit_registracijos_numeris"];
-
-                        // Rest of your code for other form fields and SQL update operation
-                        // Use $registracijos_numeris in your SQL query or other operations
-
 
                         $pagaminimo_data = $_POST["pagaminimo_data"];
                         $isigijimo_data = $_POST["isigijimo_data"];
@@ -276,10 +316,8 @@ if (!empty($_SESSION['user']))     //Jei vartotojas prisijungęs, valom logino k
                         WHERE id = $airplane_id";
                     }
                 }
-                // Other operations like delete and edit can follow a similar structure...
             }
 
-            // Your existing code for displaying the table goes here...
             ?>
 
 
@@ -340,68 +378,6 @@ if (!empty($_SESSION['user']))     //Jei vartotojas prisijungęs, valom logino k
             ?>
 
 
-            <!-- Edit Modal HTML -->
-            <div id="redaguotiUžsakymą" class="modal fade">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <form>
-                            <div class="modal-header">
-                                <h4 class="modal-title">Redaguoti informaciją</h4>
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="form-group">
-                                    <label>Nr</label>
-                                    <input type="text" value="W-13 Piso 1" class="form-control" required>
-                                </div>
-                                <div class="form-group">
-                                    <label>Pastas</label>
-                                    <input type="email" value="Pastas A" class="form-control" required>
-                                </div>
-                                <div class="form-group">
-                                    <label>Statusas</label>
-                                    <input type="text" value="W-13 Piso 1" class="form-control" required>
-                                </div>
-                                <div class="form-group">
-                                    <label>Vieta</label>
-                                    <input type="text" value="W-13 Piso 1" class="form-control" required>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <input type="button" class="btn btn-default" data-dismiss="modal" value="Atsaukti">
-                                <input type="submit" class="btn btn-info" value="Pateikti">
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <!-- Delete Modal HTML -->
-            <div id="deleteEmployeeModal" class="modal fade">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <form>
-                            <div class="modal-header">
-                                <h4 class="modal-title">Pašalinti užsakymą</h4>
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <p>Ar tikrai norite pašalinti užsakymą?</p>
-                                <p class="text-warning"><small>Užsakymo nebus galima grąžinti.</small></p>
-                            </div>
-                            <div class="modal-footer">
-                                <input type="button" class="btn btn-default" data-dismiss="modal" value="Atšaukti">
-                                <input type="submit" class="btn btn-danger" value="Pašalinti">
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </section>
-</div>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>
