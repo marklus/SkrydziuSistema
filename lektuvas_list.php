@@ -7,7 +7,6 @@ session_start();
 // toje formoje daugiau galimybių...
 
 include("include/functions.php");
-include 'add_airplane_modal.php';
 ?>
 <!doctype html>
 
