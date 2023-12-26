@@ -1,11 +1,13 @@
 <?php
 
-session_start();      // index.php
+session_start();
+// lėktuvų sąrašas lektuvas_list.php
 // jei vartotojas prisijungęs rodomas demonstracinis meniu pagal jo rolę
 // jei neprisijungęs - prisijungimo forma per include("login.php");
 // toje formoje daugiau galimybių...
 
 include("include/functions.php");
+include 'add_airplane_modal.php';
 ?>
 <!doctype html>
 
@@ -100,8 +102,6 @@ if (!empty($_SESSION['user']))     //Jei vartotojas prisijungęs, valom logino k
                             <div class="col-sm-6">
                                 <a href="#addAirplaneModal" class="btn btn-success" data-toggle="modal"><i
                                             class="fas fa-plus-circle"></i><span>Pridėti</span></a>
-                                <a href="#deleteEmployeeModal" class="btn btn-danger" data-toggle="modal"><i
-                                            class="fas fa-minus-circle"></i><span>Pašalinti</span></a>
                                 <input type="text" class="form-control" placeholder="Paieška">
                             </div>
                         </div>
@@ -164,13 +164,17 @@ echo '<table class="table table-striped table-hover>';
                             echo '<td>' . $row['registracijos_numeris'] . '</td>';
                             echo '<td>' . $row['pagaminimo_data'] . '</td>';
                             echo '<td>' . $row['isigijimo_data'] . '</td>';
-                            echo '<td>' . ($row['wifi'] ? 'Yes' : 'No') . '</td>';
+                            echo '<td>' . ($row['wifi'] ? 'Tiekiamas' : 'Nėra') . '</td>';
                             // Add additional columns here if needed
 /*                            <input type="hidden" id="edit_registracijos_numeris" name="edit_registracijos_numeris" value="<?php echo $registracijos_numeris; ?>">*/
 
                             echo '<td>';
-                            echo '<a href="#editAirplaneModal" class="edit" data-toggle="modal"><i class="fas fa-pen" data-toggle="tooltip" title="Redaguoti"></i></a>';
-                            echo '<a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="fas fa-trash" data-toggle="tooltip" title="Pašalinti"></i></a>';
+//                            echo '<a href="#editAirplaneModal" class="edit" data-toggle="modal"><i class="fas fa-pen" data-toggle="tooltip" title="Redaguoti"></i></a>';
+//                            echo '<a href="#editAirplaneModal" class="edit" data-toggle="modal" onclick="populateEditModal(' . json_encode($row) . ')"><i class="fas fa-pen" data-toggle="tooltip" title="Redaguoti"></i></a>';
+                            echo '<a href="#editAirplaneModal" class="edit" data-toggle="modal" data-id="' . $row['id'] . '"><i class="fas fa-pen" data-toggle="tooltip" title="Redaguoti"></i></a>';
+
+//                            echo '<a href="#deleteAirplaneModal" class="delete" data-toggle="modal"><i class="fas fa-trash" data-toggle="tooltip" title="Pašalinti"></i></a>';
+                            echo '<a href="#deleteAirplaneModal" class="delete" data-toggle="modal" onclick="setDeletionId(' . $row['registracijos_numeris'] . ')"><i class="fas fa-trash" data-toggle="tooltip" title="Pašalinti"></i></a>';
                             echo '<a href="lektuvas.php?id=' . $row['registracijos_numeris'] . '">LĖKTUVO PERŽIŪRA</a>';
                             echo '</td>';
                             echo '</tr>';
@@ -198,12 +202,15 @@ echo '<table class="table table-striped table-hover>';
                 </div>
             </div>
 
-
-            <!-- Edit Modal HTML  cia galima prideti uzsakyma-->
+            <?php
+            //**************************************************************************************************
+            //MODALAS PRIDĖJIMO
+            //**************************************************************************************************
+            ?>
             <div id="addAirplaneModal" class="modal fade">
                 <div class="modal-dialog">
                     <div class="modal-content">
-                        <form method="post" action="">
+                        <form method="post" action="./lektuvas_actions/handle_airplane_insertion.php">
                             <div class="modal-header">
                                 <h4 class="modal-title">Pridėti naują lėktuvą</h4>
                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;
@@ -233,14 +240,30 @@ echo '<table class="table table-striped table-hover>';
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="id_lektuvu_modelis">Lėktuvo Modelio ID</label>
-                                    <input type="text" id="id_lektuvu_modelis" name="id_lektuvu_modelis"
-                                           class="form-control" required>
+                                    <label for="id_lektuvu_modelis">Lėktuvo Modelis</label>
+                                    <select id="id_lektuvu_modelis" name="id_lektuvu_modelis" class="form-control" required>
+                                        <?php
+                                        $modelSql = "SELECT * FROM lektuvu_modeliai"; // Update with your table name
+                                        $modelResult = mysqli_query($db, $modelSql);
+
+                                        while ($modelRow = mysqli_fetch_assoc($modelResult)) {
+                                            echo '<option value="' . $modelRow['id_lektuvu_modelis'] . '">' . $modelRow['pavadinimas'] . '</option>';
+                                        }
+                                        ?>
+                                    </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="id_skrydziu_imone">Skrydžių Įmonės ID</label>
-                                    <input type="text" id="id_skrydziu_imone" name="id_skrydziu_imone"
-                                           class="form-control" required>
+                                    <label for="id_skrydziu_imone">Skrydžių Įmonė</label>
+                                    <select id="id_skrydziu_imone" name="id_skrydziu_imone" class="form-control" required>
+                                        <?php
+                                        $companySql = "SELECT * FROM skrydziu_imones"; // Update with your table name
+                                        $companyResult = mysqli_query($db, $companySql);
+
+                                        while ($companyRow = mysqli_fetch_assoc($companyResult)) {
+                                            echo '<option value="' . $companyRow['id_skrydziu_imone'] . '">' . $companyRow['pavadinimas'] . '</option>';
+                                        }
+                                        ?>
+                                    </select>
                                 </div>
                             </div>
                             <div class="modal-footer">
@@ -252,117 +275,38 @@ echo '<table class="table table-striped table-hover>';
                 </div>
             </div>
 
+
+
             <?php
             //**************************************************************************************************
-            //MODALAI
+            //MODALAS REDAGAVIMO
             //**************************************************************************************************
-
-            include 'connect.php';
-            if ($conn->connect_error) {
-                die("Nepavyko prisijungti: " . $conn->connect_error);
-            }
-            if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                if (isset($_POST["add_airplane"])) {
-                    //**************************************************************************************************
-                    //PRIDĖJIMAS
-                    //**************************************************************************************************
-
-
-                    // Check if the form was submitted and the submit button is clicked
-
-                    // Get values from the form
-                    $registracijos_numeris = $_POST["registracijos_numeris"];
-                    $pagaminimo_data = $_POST["pagaminimo_data"];
-                    $isigijimo_data = $_POST["isigijimo_data"];
-                    $wifi = $_POST["wifi"];
-                    $id_lektuvu_modelis = $_POST["id_lektuvu_modelis"];
-                    $id_skrydziu_imone = $_POST["id_skrydziu_imone"];
-
-                    // Insert the values into the 'lektuvai' table
-                    $insertSql = "INSERT INTO lektuvai (registracijos_numeris, pagaminimo_data, isigijimo_data, wifi, id_lektuvu_modelis, id_skrydziu_imone)
-                        VALUES ('$registracijos_numeris', '$pagaminimo_data', '$isigijimo_data', '$wifi', '$id_lektuvu_modelis', '$id_skrydziu_imone')";
-
-                    echo "<div class='content-box'>";
-                    if ($conn->query($insertSql) === true) {
-                        echo "Naujas lėktuvas pridėtas sėkmingai.";
-                    } else {
-                        echo "Įvyko klaida pridedant naują lėktuvą: " . $conn->error;
-                    }
-
-                    echo "</div>";
-                }
-                if (isset($_POST["edit_airplane"])) {
-                    //**************************************************************************************************
-                    //REDAGAVIMAS
-                    //**************************************************************************************************
-
-                    if (isset($_POST["edit_airplane"])) {
-                        // Get the registracijos_numeris from the submitted form
-                        $airplane_id = $_POST["edit_registracijos_numeris"];
-
-                        $pagaminimo_data = $_POST["pagaminimo_data"];
-                        $isigijimo_data = $_POST["isigijimo_data"];
-                        $wifi = $_POST["wifi"];
-                        $id_lektuvu_modelis = $_POST["id_lektuvu_modelis"];
-                        $id_skrydziu_imone = $_POST["id_skrydziu_imone"];
-
-
-                        $updateSql = "UPDATE lektuvai SET 
-                        pagaminimo_data = '$pagaminimo_data',
-                        isigijimo_data = '$isigijimo_data',
-                        wifi = '$wifi',
-                        id_lektuvu_modelis = '$id_lektuvu_modelis',
-                        id_skrydziu_imone = '$id_skrydziu_imone'
-                        WHERE id = $airplane_id";
-                    }
-                }
-            }
-
             ?>
-
-
-            <!-- Edit Modal HTML -->
             <div id="editAirplaneModal" class="modal fade">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <form method="post" action="">
                             <div class="modal-header">
                                 <h4 class="modal-title">Redaguoti lėktuvą</h4>
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;
-                                </button>
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                             </div>
                             <div class="modal-body">
-                                <!--                                    <div class="form-group">-->
-                                <!--                                        <label for="edit_registracijos_numeris">Registracijos Numeris</label>-->
-                                <!--                                        <input type="text" id="edit_registracijos_numeris" name="edit_registracijos_numeris" class="form-control" required>-->
-                                <!--                                    </div>-->
+                                <?php
+                                // Fetch data based on the registracijos_numeris passed
+                                $registracijos_numeris = $_GET['registracijos_numeris'] ?? null; // Get the identifier from the URL parameter
+                                // Assuming $db is your database connection
+                                if ($registracijos_numeris) {
+                                    // Perform database queries to fetch data based on the registracijos_numeris
+                                    $query = "SELECT * FROM lektuvai WHERE registracijos_numeris = '$registracijos_numeris'"; // Replace lektuvai with your actual table name
+                                    $result = mysqli_query($db, $query);
+                                    $edit_airplane_details = mysqli_fetch_assoc($result);
+                                }
+                                ?>
                                 <div class="form-group">
                                     <label for="edit_pagaminimo_data">Gamybos Data</label>
-                                    <input type="date" id="edit_pagaminimo_data" name="edit_pagaminimo_data"
-                                           class="form-control" required>
+                                    <input type="date" id="edit_pagaminimo_data" name="edit_pagaminimo_data" class="form-control" required value="<?php echo isset($edit_airplane_details['pagaminimo_data']) ? $edit_airplane_details['pagaminimo_data'] : ''; ?>">
                                 </div>
-                                <div class="form-group">
-                                    <label for="edit_isigijimo_data">Įsigijimo Data</label>
-                                    <input type="date" id="edit_isigijimo_data" name="edit_isigijimo_data"
-                                           class="form-control" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="edit_wifi">Wi-Fi Prieinamas</label>
-                                    <select id="edit_wifi" name="edit_wifi" class="form-control" required>
-                                        <option value="1">Taip</option>
-                                        <option value="0">Ne</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="edit_id_lektuvu_modelis">Lėktuvo Modelio ID</label>
-                                    <input type="text" id="edit_id_lektuvu_modelis" name="edit_id_lektuvu_modelis"
-                                           class="form-control" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="edit_id_skrydziu_imone">Skrydžių Įmonės ID</label>
-                                    <input type="text" id="edit_id_skrydziu_imone" name="edit_id_skrydziu_imone"
-                                           class="form-control" required>
-                                </div>
+                                <!-- Other form fields here -->
                             </div>
                             <div class="modal-footer">
                                 <input type="button" class="btn btn-default" data-dismiss="modal" value="Atšaukti">
@@ -373,8 +317,80 @@ echo '<table class="table table-striped table-hover>';
                 </div>
             </div>
 
+
+            <?php
+            //**************************************************************************************************
+            //MODALAS TRYNIMO
+            //**************************************************************************************************
+            ?>
+            <script>
+                // JavaScript function to set deletion ID in the modal
+                function setDeletionId(airplaneId) {
+                    // Set the airplane ID into the modal content
+                    document.getElementById('airplane_id_to_delete').textContent = airplaneId;
+                    // Set the airplane ID into the hidden input field for form submission
+                    document.getElementById('delete_registracijos_numeris').value = airplaneId;
+                }
+
+
+            </script>
+            <div id="deleteAirplaneModal" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <form action="./lektuvas_actions/handle_airplane_deletion.php" method="post">
+                            <input type="hidden" name="delete_registracijos_numeris" id="delete_registracijos_numeris">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Pašalinti lėktuvą</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Ar tikrai norite pašalinti lėktuvą <span id="airplane_id_to_delete"></span>?</p>
+                                <p class="text-warning"><small>Lėktuvo nebus galima grąžinti.</small></p>
+                            </div>
+                            <div class="modal-footer">
+                                <input type="button" class="btn btn-default" data-dismiss="modal" value="Atšaukti">
+                                <input type="submit" class="btn btn-danger" name="delete_airplane_submit" value="Pašalinti">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+
+
             <?php
             // Your PHP logic for handling the form submission and database operations goes here...
+            if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['delete_registracijos_numeris'])) {
+                // Establish a connection to your database (replace DB_SERVER, DB_USER, DB_PASS, and DB_NAME with your actual database credentials)
+//                $db = mysqli_connect(DB_SERVER, DB_USER, DB_PASS, DB_NAME);
+
+                // Get the airplane ID from the form submission
+                $registracijos_numeris = $_POST['delete_registracijos_numeris'];
+
+                // Sanitize the airplane ID to prevent SQL injection
+                $registracijos_numeris = mysqli_real_escape_string($db, $registracijos_numeris);
+
+                // Construct the SQL DELETE query
+                $sql = "DELETE FROM lektuvai WHERE registracijos_numeris = '$registracijos_numeris'";
+
+                // Execute the DELETE query
+                if (mysqli_query($db, $sql)) {
+                    // Deletion successful
+                    echo "Airplane deleted successfully";
+                    // Perform any other actions or redirects after successful deletion
+                } else {
+                    // Error in deletion
+                    echo "Error deleting airplane: " . mysqli_error($db);
+                }
+
+                // Close the database connection
+                mysqli_close($db);
+            } else {
+                // If there's an invalid request or airplane ID is not set
+                echo "Invalid request or airplane ID not set";
+            }
+            ?>
             ?>
 
 
