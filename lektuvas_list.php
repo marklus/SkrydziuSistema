@@ -164,17 +164,10 @@ echo '<table class="table table-striped table-hover>';
                             echo '<td>' . $row['pagaminimo_data'] . '</td>';
                             echo '<td>' . $row['isigijimo_data'] . '</td>';
                             echo '<td>' . ($row['wifi'] ? 'Tiekiamas' : 'Nėra') . '</td>';
-                            // Add additional columns here if needed
-/*                            <input type="hidden" id="edit_registracijos_numeris" name="edit_registracijos_numeris" value="<?php echo $registracijos_numeris; ?>">*/
 
                             echo '<td>';
-//                            echo '<a href="#editAirplaneModal" class="edit" data-toggle="modal"><i class="fas fa-pen" data-toggle="tooltip" title="Redaguoti"></i></a>';
-//                            echo '<a href="#editAirplaneModal" class="edit" data-toggle="modal" onclick="populateEditModal(' . json_encode($row) . ')"><i class="fas fa-pen" data-toggle="tooltip" title="Redaguoti"></i></a>';
-                            echo '<a href="#editAirplaneModal" class="edit" data-toggle="modal" data-id="' . $row['id'] . '"><i class="fas fa-pen" data-toggle="tooltip" title="Redaguoti"></i></a>';
-
-//                            echo '<a href="#deleteAirplaneModal" class="delete" data-toggle="modal"><i class="fas fa-trash" data-toggle="tooltip" title="Pašalinti"></i></a>';
-//                            echo '<a href="#deleteAirplaneModal" class="delete" data-toggle="modal" onclick="setDeletionId(' . $row['registracijos_numeris'] . ')"><i class="fas fa-trash" data-toggle="tooltip" title="Pašalinti"></i></a>';
-                            echo '<a href="#deleteAirplaneModal" class="delete" data-toggle="modal" data-id="' . $row['registracijos_numeris'] . '"><i class="fas fa-trash" data-toggle="tooltip" title="Pašalinti"></i></a>';
+                           echo '<a href="#editAirplaneModal" class="edit" data-toggle="modal" data-id="' . $row['id'] . '"><i class="fas fa-pen" data-toggle="tooltip" title="Redaguoti"></i></a>';
+                          echo '<a href="#deleteAirplaneModal" class="delete" data-toggle="modal" data-id="' . $row['registracijos_numeris'] . '"><i class="fas fa-trash" data-toggle="tooltip" title="Pašalinti"></i></a>';
 
 
                             echo '<a href="lektuvas.php?id=' . $row['registracijos_numeris'] . '">LĖKTUVO PERŽIŪRA</a>';
@@ -360,56 +353,6 @@ echo '<table class="table table-striped table-hover>';
                     </div>
                 </div>
             </div>
-
-
-
-
-            <?php
-            // Your PHP logic for handling the form submission and database operations goes here...
-            if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['delete_registracijos_numeris'])) {
-                // Establish a connection to your database (replace DB_SERVER, DB_USER, DB_PASS, and DB_NAME with your actual database credentials)
-//                $db = mysqli_connect(DB_SERVER, DB_USER, DB_PASS, DB_NAME);
-
-                // Get the airplane ID from the form submission
-                $registracijos_numeris = $_POST['delete_registracijos_numeris'];
-
-                // Sanitize the airplane ID to prevent SQL injection
-                $registracijos_numeris = mysqli_real_escape_string($db, $registracijos_numeris);
-
-                // Construct the SQL DELETE query
-                $sql = "DELETE FROM lektuvai WHERE registracijos_numeris = '$registracijos_numeris'";
-
-                // Execute the DELETE query
-                if (mysqli_query($db, $sql)) {
-                    // Deletion successful
-                    echo "Airplane deleted successfully";
-                    // Perform any other actions or redirects after successful deletion
-                } else {
-                    // Error in deletion
-                    echo "Error deleting airplane: " . mysqli_error($db);
-                }
-
-                // Close the database connection
-                mysqli_close($db);
-            } else {
-                // If there's an invalid request or airplane ID is not set
-                echo "Invalid request or airplane ID not set";
-            }
-            ?>
-            ?>
-
-<!--            <script>-->
-<!--                // JavaScript function to set deletion ID in the modal-->
-<!--                function setDeletionId(airplaneId) {-->
-<!--                    // Set the airplane ID into the modal content-->
-<!--                    document.getElementById('airplane_id_to_delete').textContent = airplaneId;-->
-<!--                    // Set the airplane ID into the hidden input field for form submission-->
-<!--                    document.getElementById('delete_registracijos_numeris').value = airplaneId;-->
-<!--                }-->
-<!---->
-<!---->
-<!--            </script>-->
-
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
