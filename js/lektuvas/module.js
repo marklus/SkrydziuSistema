@@ -18,7 +18,8 @@ import * as THREE from 'https://cdn.jsdelivr.net/npm/three@latest/build/three.mo
         const ambientLight = new THREE.AmbientLight(0xffffff, 0.5); // Soft white light
         scene.add(ambientLight);
 
-        // renderer.setSize(window.innerWidth, window.innerHeight);
+
+// renderer.setSize(window.innerWidth, window.innerHeight);
         // document.body.appendChild(renderer.domElement);
         const container = document.getElementById('container');
         const canvasWidth = container.offsetWidth - (2 * 100); // Considering left and right padding of 20px
