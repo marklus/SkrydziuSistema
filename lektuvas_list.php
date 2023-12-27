@@ -124,7 +124,14 @@ if (!empty($_SESSION['user']))     //Jei vartotojas prisijungęs, valom logino k
                     $db = mysqli_connect(DB_SERVER, DB_USER, DB_PASS, DB_NAME);
 
 
-                    $sql = "SELECT * FROM lektuvai"; // Update this query based on your table structure
+                    $sql = "SELECT lektuvai.*, 
+            skrydziu_imones.pavadinimas AS skrydzio_imone, 
+            lektuvu_modeliai.pavadinimas AS lektuvo_modelis,
+            lektuvu_gamintojai.pavadinimas AS lektuvo_gamintojas
+          FROM lektuvai
+          LEFT JOIN skrydziu_imones ON lektuvai.id_skrydziu_imone = skrydziu_imones.id_skrydziu_imone
+          LEFT JOIN lektuvu_modeliai ON lektuvai.id_lektuvu_modelis = lektuvu_modeliai.id_lektuvu_modelis
+          LEFT JOIN lektuvu_gamintojai ON lektuvu_modeliai.id_lektuvu_gamintojas = lektuvu_gamintojai.id_lektuvu_gamintojas";
                     $result = mysqli_query($db, $sql);
 
                     if ($result && mysqli_num_rows($result) > 0) {
@@ -149,6 +156,8 @@ if (!empty($_SESSION['user']))     //Jei vartotojas prisijungęs, valom logino k
                         echo '<th>Gamybos Data</th>'; // Manufacture Date
                         echo '<th>Įsigijimo Data</th>'; // Acquisition Date
                         echo '<th>WiFi</th>'; // WiFi
+                        echo '<th>Modelis</th>';
+                        echo '<th>Įmonė</th>';
                         echo '<th>Veiksmai</th>'; // Actions
 
                         echo '</tr>';
@@ -166,10 +175,17 @@ if (!empty($_SESSION['user']))     //Jei vartotojas prisijungęs, valom logino k
                             echo '<td>' . $row['pagaminimo_data'] . '</td>';
                             echo '<td>' . $row['isigijimo_data'] . '</td>';
                             echo '<td>' . ($row['wifi'] ? 'Tiekiamas' : 'Nėra') . '</td>';
+                            echo '<td>' . $row['lektuvo_modelis'], ", ", $row['lektuvo_gamintojas'] . '</td>';
+                            echo '<td>' . $row['skrydzio_imone'] . '</td>';
+
 
                             echo '<td>';
 //                            echo '<a href="#editAirplaneModal" class="edit" data-toggle="modal" data-id="' . $row['registracijos_numeris'] . '"><i class="fas fa-pen" data-toggle="tooltip" title="Redaguoti"></i></a>';
-                            echo '<a href="#editAirplaneModal" class="edit" data-toggle="modal" data-row=\'' . htmlspecialchars(json_encode($row), ENT_QUOTES, 'UTF-8') . '\'><i class="fas fa-pen" data-toggle="tooltip" title="Redaguoti"></i></a>';
+                            echo '<a href="#editAirplaneModal" class="edit" data-toggle="modal" data-row=\'' . htmlspecialchars(
+                                    json_encode($row),
+                                    ENT_QUOTES,
+                                    'UTF-8'
+                                ) . '\'><i class="fas fa-pen" data-toggle="tooltip" title="Redaguoti"></i></a>';
 
                             echo '<a href="#deleteAirplaneModal" class="delete" data-toggle="modal" data-id="' . $row['registracijos_numeris'] . '"><i class="fas fa-trash" data-toggle="tooltip" title="Pašalinti"></i></a>';
 
@@ -326,7 +342,8 @@ if (!empty($_SESSION['user']))     //Jei vartotojas prisijungęs, valom logino k
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <p>Ar tikrai norite pašalinti lėktuvą <span id="delete_registracijos_numeris_display"></span>?</p>
+                                <p>Ar tikrai norite pašalinti lėktuvą <span
+                                            id="delete_registracijos_numeris_display"></span>?</p>
                                 <p class="text-warning"><small>Lėktuvo nebus galima grąžinti.</small></p>
                             </div>
                             <div class="modal-footer">
