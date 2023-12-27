@@ -7,6 +7,10 @@ import * as THREE from 'https://cdn.jsdelivr.net/npm/three@latest/build/three.mo
             OrbitControls
         } from 'https://cdn.jsdelivr.net/npm/three@latest/examples/jsm/controls/OrbitControls.js';
 
+const params = new URLSearchParams(window.location.search);
+const modelPath = params.get('modelPath');
+
+
 
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -29,7 +33,7 @@ import * as THREE from 'https://cdn.jsdelivr.net/npm/three@latest/build/three.mo
 
         const loader = new OBJLoader();
         loader.load(
-            '3dModels/Airplane1/11803_Airplane_v1_l1.obj',
+            modelPath,
             function(object) {
 
 
