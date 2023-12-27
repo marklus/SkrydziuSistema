@@ -168,7 +168,9 @@ if (!empty($_SESSION['user']))     //Jei vartotojas prisijungęs, valom logino k
                             echo '<td>' . ($row['wifi'] ? 'Tiekiamas' : 'Nėra') . '</td>';
 
                             echo '<td>';
-                            echo '<a href="#editAirplaneModal" class="edit" data-toggle="modal" data-id="' . $row['registracijos_numeris'] . '"><i class="fas fa-pen" data-toggle="tooltip" title="Redaguoti"></i></a>';
+//                            echo '<a href="#editAirplaneModal" class="edit" data-toggle="modal" data-id="' . $row['registracijos_numeris'] . '"><i class="fas fa-pen" data-toggle="tooltip" title="Redaguoti"></i></a>';
+                            echo '<a href="#editAirplaneModal" class="edit" data-toggle="modal" data-row=\'' . htmlspecialchars(json_encode($row), ENT_QUOTES, 'UTF-8') . '\'><i class="fas fa-pen" data-toggle="tooltip" title="Redaguoti"></i></a>';
+
                             echo '<a href="#deleteAirplaneModal" class="delete" data-toggle="modal" data-id="' . $row['registracijos_numeris'] . '"><i class="fas fa-trash" data-toggle="tooltip" title="Pašalinti"></i></a>';
 
 
@@ -290,17 +292,6 @@ if (!empty($_SESSION['user']))     //Jei vartotojas prisijungęs, valom logino k
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <?php
-                                // Fetch data based on the registracijos_numeris passed
-                                $registracijos_numeris = $_GET['registracijos_numeris'] ?? null; // Get the identifier from the URL parameter
-                                // Assuming $db is your database connection
-                                if ($registracijos_numeris) {
-                                    // Perform database queries to fetch data based on the registracijos_numeris
-                                    $query = "SELECT * FROM lektuvai WHERE registracijos_numeris = '$registracijos_numeris'"; // Replace lektuvai with your actual table name
-                                    $result = mysqli_query($db, $query);
-                                    $edit_airplane_details = mysqli_fetch_assoc($result);
-                                }
-                                ?>
                                 <div class="form-group">
                                     <label for="edit_pagaminimo_data">Gamybos Data</label>
                                     <input type="date" id="edit_pagaminimo_data" name="edit_pagaminimo_data"
@@ -369,10 +360,13 @@ if (!empty($_SESSION['user']))     //Jei vartotojas prisijungęs, valom logino k
 
                     // Edit functionality
                     $('.edit').click(function () {
-                        var id = $(this).data('id');
-                        // Set the airplane ID into the hidden input field for edit form
-                        $('#edit_registracijos_numeris').val(id);
-                        // Perform other edit-related actions if needed
+                        var rowData = $(this).data('row'); // Retrieve the row data from the data attribute
+
+                        // Set values in the edit modal form fields
+                        $('#edit_registracijos_numeris').val(rowData['registracijos_numeris']);
+                        $('#edit_pagaminimo_data').val(rowData['pagaminimo_data']);
+                        // Set values for other form fields similarly
+
                     });
                 });
             </script>
