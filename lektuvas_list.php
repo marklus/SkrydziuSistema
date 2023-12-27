@@ -106,8 +106,10 @@ if (!empty($_SESSION['user']))     //Jei vartotojas prisijungęs, valom logino k
                         </div>
                     </div>
                     <div>
-                        <p>Nepamirštamoms kelionėms galite rinktis bet kokius jūsų įgeidžius tenkinančią transporto priemonę!
-                            Turite mėgstamiausią skrydžių įmonę? Būtent *tas* lėktuvo modelis jums suteikė trokštamą komfortą?
+                        <p>Nepamirštamoms kelionėms galite rinktis bet kokius jūsų įgeidžius tenkinančią transporto
+                            priemonę!
+                            Turite mėgstamiausią skrydžių įmonę? Būtent *tas* lėktuvo modelis jums suteikė trokštamą
+                            komfortą?
                             Išsirinkite geriausią!
                         </p>
                     </div>
@@ -126,7 +128,7 @@ if (!empty($_SESSION['user']))     //Jei vartotojas prisijungęs, valom logino k
                     $result = mysqli_query($db, $sql);
 
                     if ($result && mysqli_num_rows($result) > 0) {
-echo '<table class="table table-striped table-hover>';
+                        echo '<table class="table table-striped table-hover>';
                         echo '<thead>';
                         echo '<tr>';
 
@@ -166,8 +168,8 @@ echo '<table class="table table-striped table-hover>';
                             echo '<td>' . ($row['wifi'] ? 'Tiekiamas' : 'Nėra') . '</td>';
 
                             echo '<td>';
-                           echo '<a href="#editAirplaneModal" class="edit" data-toggle="modal" data-id="' . $row['id'] . '"><i class="fas fa-pen" data-toggle="tooltip" title="Redaguoti"></i></a>';
-                          echo '<a href="#deleteAirplaneModal" class="delete" data-toggle="modal" data-id="' . $row['registracijos_numeris'] . '"><i class="fas fa-trash" data-toggle="tooltip" title="Pašalinti"></i></a>';
+                            echo '<a href="#editAirplaneModal" class="edit" data-toggle="modal" data-id="' . $row['registracijos_numeris'] . '"><i class="fas fa-pen" data-toggle="tooltip" title="Redaguoti"></i></a>';
+                            echo '<a href="#deleteAirplaneModal" class="delete" data-toggle="modal" data-id="' . $row['registracijos_numeris'] . '"><i class="fas fa-trash" data-toggle="tooltip" title="Pašalinti"></i></a>';
 
 
                             echo '<a href="lektuvas.php?id=' . $row['registracijos_numeris'] . '">LĖKTUVO PERŽIŪRA</a>';
@@ -236,7 +238,8 @@ echo '<table class="table table-striped table-hover>';
                                 </div>
                                 <div class="form-group">
                                     <label for="id_lektuvu_modelis">Lėktuvo Modelis</label>
-                                    <select id="id_lektuvu_modelis" name="id_lektuvu_modelis" class="form-control" required>
+                                    <select id="id_lektuvu_modelis" name="id_lektuvu_modelis" class="form-control"
+                                            required>
                                         <?php
                                         $modelSql = "SELECT * FROM lektuvu_modeliai"; // Update with your table name
                                         $modelResult = mysqli_query($db, $modelSql);
@@ -249,7 +252,8 @@ echo '<table class="table table-striped table-hover>';
                                 </div>
                                 <div class="form-group">
                                     <label for="id_skrydziu_imone">Skrydžių Įmonė</label>
-                                    <select id="id_skrydziu_imone" name="id_skrydziu_imone" class="form-control" required>
+                                    <select id="id_skrydziu_imone" name="id_skrydziu_imone" class="form-control"
+                                            required>
                                         <?php
                                         $companySql = "SELECT * FROM skrydziu_imones"; // Update with your table name
                                         $companyResult = mysqli_query($db, $companySql);
@@ -271,7 +275,6 @@ echo '<table class="table table-striped table-hover>';
             </div>
 
 
-
             <?php
             //**************************************************************************************************
             //MODALAS REDAGAVIMO
@@ -283,7 +286,8 @@ echo '<table class="table table-striped table-hover>';
                         <form method="post" action="">
                             <div class="modal-header">
                                 <h4 class="modal-title">Redaguoti lėktuvą</h4>
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;
+                                </button>
                             </div>
                             <div class="modal-body">
                                 <?php
@@ -299,7 +303,9 @@ echo '<table class="table table-striped table-hover>';
                                 ?>
                                 <div class="form-group">
                                     <label for="edit_pagaminimo_data">Gamybos Data</label>
-                                    <input type="date" id="edit_pagaminimo_data" name="edit_pagaminimo_data" class="form-control" required value="<?php echo isset($edit_airplane_details['pagaminimo_data']) ? $edit_airplane_details['pagaminimo_data'] : ''; ?>">
+                                    <input type="date" id="edit_pagaminimo_data" name="edit_pagaminimo_data"
+                                           class="form-control" required value="<?php
+                                    echo isset($edit_airplane_details['pagaminimo_data']) ? $edit_airplane_details['pagaminimo_data'] : ''; ?>">
                                 </div>
                                 <!-- Other form fields here -->
                             </div>
@@ -318,50 +324,67 @@ echo '<table class="table table-striped table-hover>';
             //MODALAS TRYNIMO
             //**************************************************************************************************
             ?>
-
-
-            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-            <script>
-                $(document).ready(function() {
-                    $('.delete').click(function() {
-                        var id = $(this).data('id');
-                        // Set the airplane ID into the hidden input field for form submission
-                        $('#delete_registracijos_numeris').val(id);
-                    });
-                });
-            </script>
-
-
             <div id="deleteAirplaneModal" class="modal fade">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <form action="./lektuvas_actions/handle_airplane_deletion.php" method="post">
                             <input type="hidden" name="delete_registracijos_numeris" id="delete_registracijos_numeris">
                             <div class="modal-header">
-                                <h4 class="modal-title">Pašalinti lėktuvą</h4>
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title">Pašalinti lėktuvą </h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;
+                                </button>
                             </div>
                             <div class="modal-body">
-                                <p>Ar tikrai norite pašalinti lėktuvą <span id="airplane_id_to_delete"></span>?</p>
+                                <p>Ar tikrai norite pašalinti lėktuvą <span id="delete_registracijos_numeris_display"></span>?</p>
                                 <p class="text-warning"><small>Lėktuvo nebus galima grąžinti.</small></p>
                             </div>
                             <div class="modal-footer">
                                 <input type="button" class="btn btn-default" data-dismiss="modal" value="Atšaukti">
-                                <input type="submit" class="btn btn-danger" name="delete_airplane_submit" value="Pašalinti">
+                                <input type="submit" class="btn btn-danger" name="delete_airplane_submit"
+                                       value="Pašalinti">
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
 
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
-        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
-        crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
-        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
-        crossorigin="anonymous"></script>
-<script src="https://unpkg.com/gijgo@1.9.11/js/gijgo.min.js" type="text/javascript"></script>
-<link href="https://unpkg.com/gijgo@1.9.11/css/gijgo.min.css" rel="stylesheet" type="text/css"/>
+
+            <?php
+            //**************************************************************************************************
+            //JQUERIES MODALAMS DUOMENIMS GAUTI
+            //**************************************************************************************************
+            ?>
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script>
+                $(document).ready(function () {
+                    // Delete functionality
+                    $('.delete').click(function () {
+                        var id = $(this).data('id');
+                        // Set the airplane ID into the hidden input field for form submission
+                        $('#delete_registracijos_numeris').val(id);
+                        $('#delete_registracijos_numeris_display').text(id);
+
+                        // Perform other delete-related actions if needed
+                    });
+
+                    // Edit functionality
+                    $('.edit').click(function () {
+                        var id = $(this).data('id');
+                        // Set the airplane ID into the hidden input field for edit form
+                        $('#edit_registracijos_numeris').val(id);
+                        // Perform other edit-related actions if needed
+                    });
+                });
+            </script>
+
+            <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+                    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+                    crossorigin="anonymous"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+                    integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+                    crossorigin="anonymous"></script>
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+                    integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+                    crossorigin="anonymous"></script>
+            <script src="https://unpkg.com/gijgo@1.9.11/js/gijgo.min.js" type="text/javascript"></script>
+            <link href="https://unpkg.com/gijgo@1.9.11/css/gijgo.min.css" rel="stylesheet" type="text/css"/>
