@@ -125,13 +125,15 @@ if (!empty($_SESSION['user']))     //Jei vartotojas prisijungęs, valom logino k
 
 
                     $sql = "SELECT lektuvai.*, 
-            skrydziu_imones.pavadinimas AS skrydzio_imone, 
-            lektuvu_modeliai.pavadinimas AS lektuvo_modelis,
-            lektuvu_gamintojai.pavadinimas AS lektuvo_gamintojas
-          FROM lektuvai
-          LEFT JOIN skrydziu_imones ON lektuvai.id_skrydziu_imone = skrydziu_imones.id_skrydziu_imone
-          LEFT JOIN lektuvu_modeliai ON lektuvai.id_lektuvu_modelis = lektuvu_modeliai.id_lektuvu_modelis
-          LEFT JOIN lektuvu_gamintojai ON lektuvu_modeliai.id_lektuvu_gamintojas = lektuvu_gamintojai.id_lektuvu_gamintojas";
+                skrydziu_imones.id_skrydziu_imone AS skrydzio_imone_id,
+                lektuvu_modeliai.id_lektuvu_modelis AS lektuvo_modelis_id,
+                skrydziu_imones.pavadinimas AS skrydzio_imone, 
+                lektuvu_modeliai.pavadinimas AS lektuvo_modelis,
+                lektuvu_gamintojai.pavadinimas AS lektuvo_gamintojas
+            FROM lektuvai
+            LEFT JOIN skrydziu_imones ON lektuvai.id_skrydziu_imone = skrydziu_imones.id_skrydziu_imone
+            LEFT JOIN lektuvu_modeliai ON lektuvai.id_lektuvu_modelis = lektuvu_modeliai.id_lektuvu_modelis
+            LEFT JOIN lektuvu_gamintojai ON lektuvu_modeliai.id_lektuvu_gamintojas = lektuvu_gamintojai.id_lektuvu_gamintojas";
                     $result = mysqli_query($db, $sql);
 
                     if ($result && mysqli_num_rows($result) > 0) {
@@ -259,11 +261,13 @@ if (!empty($_SESSION['user']))     //Jei vartotojas prisijungęs, valom logino k
                                     <select id="id_lektuvu_modelis" name="id_lektuvu_modelis" class="form-control"
                                             required>
                                         <?php
-                                        $modelSql = "SELECT * FROM lektuvu_modeliai"; // Update with your table name
+                                        $modelSql = "SELECT lm.id_lektuvu_modelis, lm.pavadinimas AS modelis, lg.pavadinimas AS gamintojas
+             FROM lektuvu_modeliai AS lm
+             LEFT JOIN lektuvu_gamintojai AS lg ON lm.id_lektuvu_gamintojas = lg.id_lektuvu_gamintojas"; // Update with your table name
                                         $modelResult = mysqli_query($db, $modelSql);
 
                                         while ($modelRow = mysqli_fetch_assoc($modelResult)) {
-                                            echo '<option value="' . $modelRow['id_lektuvu_modelis'] . '">' . $modelRow['pavadinimas'] . '</option>';
+                                            echo '<option value="' . $modelRow['id_lektuvu_modelis'] . '">' . $modelRow['modelis'], ", ", $modelRow['gamintojas'] . '</option>';
                                         }
                                         ?>
                                     </select>
@@ -307,14 +311,66 @@ if (!empty($_SESSION['user']))     //Jei vartotojas prisijungęs, valom logino k
                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;
                                 </button>
                             </div>
+
                             <div class="modal-body">
+                                <div class="form-group">
+                                    <label for="edit_registracijos_numeris">Registracijos Numeris</label>
+                                    <input type="text" id="edit_registracijos_numeris" name="edit_registracijos_numeris"
+                                           class="form-control" required readonly>
+                                </div>
                                 <div class="form-group">
                                     <label for="edit_pagaminimo_data">Gamybos Data</label>
                                     <input type="date" id="edit_pagaminimo_data" name="edit_pagaminimo_data"
                                            class="form-control" required value="<?php
                                     echo isset($edit_airplane_details['pagaminimo_data']) ? $edit_airplane_details['pagaminimo_data'] : ''; ?>">
                                 </div>
-                                <!-- Other form fields here -->
+
+                                <div class="form-group">
+                                    <label for="edit_isigijimo_data">Įsigijimo Data</label>
+                                    <input type="date" id="edit_isigijimo_data" name="edit_isigijimo_data"
+                                           class="form-control" required value="<?php
+                                    echo isset($edit_airplane_details['pagaminimo_data']) ? $edit_airplane_details['pagaminimo_data'] : ''; ?>">
+                                </div>
+                                <div class="form-group">
+                                    <label for="edit_wifi">Wi-Fi Prieinamas</label>
+                                    <select id="edit_wifi" name="edit_wifi" class="form-control" required>
+                                        <option value="1">Taip</option>
+                                        <option value="0">Ne</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="edit_id_lektuvu_modelis">Lėktuvo Modelis</label>
+                                    <select id="edit_id_lektuvu_modelis" name="edit_id_lektuvu_modelis" class="form-control" required>
+                                        <?php
+                                        $modelSql = "SELECT lm.id_lektuvu_modelis, lm.pavadinimas AS modelis, lg.pavadinimas AS gamintojas
+                     FROM lektuvu_modeliai AS lm
+                     LEFT JOIN lektuvu_gamintojai AS lg ON lm.id_lektuvu_gamintojas = lg.id_lektuvu_gamintojas"; // Update with your table name
+                                        $modelResult = mysqli_query($db, $modelSql);
+
+                                        while ($modelRow = mysqli_fetch_assoc($modelResult)) {
+                                            echo '<option value="' . $modelRow['id_lektuvu_modelis'] . '">' . $modelRow['modelis'] . ', ' . $modelRow['gamintojas'] . '</option>';
+                                        }
+                                        ?>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="edit_id_skrydziu_imone">Skrydžių Įmonė</label>
+                                    <select id="edit_id_skrydziu_imone" name="edit_id_skrydziu_imone" class="form-control"
+                                            required>
+                                        <?php
+                                        $companySql = "SELECT * FROM skrydziu_imones"; // Update with your table name
+                                        $companyResult = mysqli_query($db, $companySql);
+
+                                        while ($companyRow = mysqli_fetch_assoc($companyResult)) {
+                                            echo '<option value="' . $companyRow['id_skrydziu_imone'] . '">' . $companyRow['pavadinimas'] . '</option>';
+                                        }
+                                        ?>
+                                    </select>
+                                </div>
+
+
                             </div>
                             <div class="modal-footer">
                                 <input type="button" class="btn btn-default" data-dismiss="modal" value="Atšaukti">
@@ -382,6 +438,11 @@ if (!empty($_SESSION['user']))     //Jei vartotojas prisijungęs, valom logino k
                         // Set values in the edit modal form fields
                         $('#edit_registracijos_numeris').val(rowData['registracijos_numeris']);
                         $('#edit_pagaminimo_data').val(rowData['pagaminimo_data']);
+                        $('#edit_isigijimo_data').val(rowData['isigijimo_data']);
+                        $('#edit_wifi').val(rowData['wifi']);
+                        $('#edit_id_lektuvu_modelis').val(rowData['lektuvo_modelis_id']); // Set selected value for the dropdown
+                        $('#edit_id_skrydziu_imone').val(rowData['skrydzio_imone_id']); // Set selected value for the dropdown
+
                         // Set values for other form fields similarly
 
                     });
