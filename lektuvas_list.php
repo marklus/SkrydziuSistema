@@ -305,7 +305,7 @@ if (!empty($_SESSION['user']))     //Jei vartotojas prisijungęs, valom logino k
             <div id="editAirplaneModal" class="modal fade">
                 <div class="modal-dialog">
                     <div class="modal-content">
-                        <form method="post" action="">
+                        <form action="./lektuvas_actions/handle_airplane_edit.php" method="post">
                             <div class="modal-header">
                                 <h4 class="modal-title">Redaguoti lėktuvą</h4>
                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;
