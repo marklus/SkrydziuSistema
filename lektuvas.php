@@ -152,9 +152,13 @@ if ($stmt) {
                 }
             </script>
             <!-- Your Three.js and OBJLoader-related code -->
-<!--            <script src="./js/lektuvas/module.js" type="module"></script>-->
+
+            <script>
+                window.modelPath = "<?php echo rawurlencode($modelPath); ?>";
+            </script>
+            <script src="./js/lektuvas/module.js" type="module"></script>
 <!--            <script src="--><?php //= $modelPath ?><!--" type="module"></script>-->
-            <script src="./js/lektuvas/module.js?modelPath=<?php echo urlencode($modelPath); ?>" type="module"></script>
+<!--            <script src="./js/lektuvas/module.js?modelPath=--><?php //echo urlencode($modelPath); ?><!--" type="module"></script>-->
 
 
         <?php } else { ?>

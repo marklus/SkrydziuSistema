@@ -7,8 +7,10 @@ import * as THREE from 'https://cdn.jsdelivr.net/npm/three@latest/build/three.mo
             OrbitControls
         } from 'https://cdn.jsdelivr.net/npm/three@latest/examples/jsm/controls/OrbitControls.js';
 
-const params = new URLSearchParams(window.location.search);
-const modelPath = params.get('modelPath');
+document.addEventListener('DOMContentLoaded', function() {
+    // const modelPath = window.modelPath;
+    const modelPath = decodeURIComponent(window.modelPath);
+    // console.log('Model Path:', modelPath);
 
 
 
@@ -33,7 +35,8 @@ const modelPath = params.get('modelPath');
 
         const loader = new OBJLoader();
         loader.load(
-            modelPath,
+            modelPath
+            ,
             function(object) {
 
 
@@ -61,3 +64,4 @@ const modelPath = params.get('modelPath');
         }
 
         animate();
+});
