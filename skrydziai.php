@@ -235,6 +235,9 @@ include 'connect.php';
 												echo "<td>
 													<a href='#redaguotiSkrydį' class='edit btn-edit' data-toggle='modal' data-id='{$row['id_skrydis']}'><i class='fas fa-pen' data-toggle='tooltip' title='Redaguoti'></i></a>
 													<a href='#deleteEmployeeModal' class='delete' data-toggle='modal' data-id='{$row['id_skrydis']}'><i class='fas fa-trash' data-toggle='tooltip' title='Pašalinti'></i></a>
+													<a href='#' class='' data-toggle='modal' data-id='{$row['id_skrydis']}' onclick='redirectToFlightRadar()'><i class='fas fa-trash' data-toggle='tooltip' title='Pašalinti'></i></a>
+
+													
 													</td>";
 												echo "</tr>";
 											}
@@ -261,7 +264,11 @@ include 'connect.php';
 							</div>
 						</div>
 					</div>
-
+					<script>
+function redirectToFlightRadar() {
+    window.location.href = 'https://www.flightradar24.com/54.71,23.22/8';
+}
+</script>
 					
 					<!-- Edit Modal HTML  cia galima prideti uzsakyma-->
 					<div id="addEmployeeModal" class="modal fade">
