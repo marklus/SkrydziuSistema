@@ -126,7 +126,22 @@ if (!empty($_SESSION['user']))     //Jei vartotojas prisijungęs, valom logino k
                     $db = mysqli_connect(DB_SERVER, DB_USER, DB_PASS, DB_NAME);
 
 
-                    $sql = "SELECT lektuvai.*, 
+
+                    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["search_airplane"])) {
+                        // Retrieve search query
+                        $search_query = $_POST["search_query"];
+
+                        // Perform search across multiple fields in the 'lektuvai' table
+                        $sql = "SELECT * FROM lektuvai WHERE 
+        registracijos_numeris LIKE '%$search_query%' OR
+        pagaminimo_data LIKE '%$search_query%' OR
+        isigijimo_data LIKE '%$search_query%' OR
+        id_lektuvu_modelis LIKE '%$search_query%' OR
+        id_skrydziu_imone LIKE '%$search_query%'";
+                    }
+                    else
+                    {
+                        $sql = "SELECT lektuvai.*, 
                 skrydziu_imones.id_skrydziu_imone AS skrydzio_imone_id,
                 lektuvu_modeliai.id_lektuvu_modelis AS lektuvo_modelis_id,
                 skrydziu_imones.pavadinimas AS skrydzio_imone, 
@@ -136,6 +151,8 @@ if (!empty($_SESSION['user']))     //Jei vartotojas prisijungęs, valom logino k
             LEFT JOIN skrydziu_imones ON lektuvai.id_skrydziu_imone = skrydziu_imones.id_skrydziu_imone
             LEFT JOIN lektuvu_modeliai ON lektuvai.id_lektuvu_modelis = lektuvu_modeliai.id_lektuvu_modelis
             LEFT JOIN lektuvu_gamintojai ON lektuvu_modeliai.id_lektuvu_gamintojas = lektuvu_gamintojai.id_lektuvu_gamintojas";
+
+                    }
                     $result = mysqli_query($db, $sql);
 
                     if ($result && mysqli_num_rows($result) > 0) {
@@ -422,7 +439,7 @@ if (!empty($_SESSION['user']))     //Jei vartotojas prisijungęs, valom logino k
             <div id="SearchAirplaneModal" class="modal fade">
                 <div class="modal-dialog">
                     <div class="modal-content">
-                        <form action="./lektuvas_actions/handle_airplane_search.php" method="post"> <!-- Update the action attribute -->
+                        <form action="./lektuvas_list.php" method="post"> <!-- Update the action attribute -->
                             <div class="modal-header">
                                 <h4 class="modal-title">Lėktuvo paieška pagal kelis kriterijus</h4>
                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -435,7 +452,7 @@ if (!empty($_SESSION['user']))     //Jei vartotojas prisijungęs, valom logino k
                             </div>
                             <div class="modal-footer">
                                 <input type="button" class="btn btn-default" data-dismiss="modal" value="Atšaukti">
-                                <input type="submit" class="btn btn-info" name="search_submit" value="Ieškoti">
+                                <input type="submit" class="btn btn-info" name="search_airplane" value="Ieškoti">
                             </div>
                         </form>
                     </div>
