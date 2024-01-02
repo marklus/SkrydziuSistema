@@ -21,7 +21,7 @@ $_SESSION['prev']="register";
             <link href="include/styles.css" rel="stylesheet" type="text/css" >
         </head>
         <body>   
-                    <table class="center"><tr><td><img src="include/top.png"></td></tr><tr><td> 
+                    <table class="center"><tr><td><img src=""></td></tr><tr><td> 
                         <table style="border-width: 2px; border-style: dotted;"><tr><td>
                            Atgal į [<a href="index.php">Pradžia</a>]</td></tr>
 				    </table>   
