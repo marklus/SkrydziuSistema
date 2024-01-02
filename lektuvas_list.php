@@ -147,8 +147,6 @@ if (!empty($_SESSION['user']))     //Jei vartotojas prisijungęs, valom logino k
                         // Perform search across multiple fields in the 'lektuvai' table
                         $sql = "SELECT * FROM lektuvai WHERE 
                             registracijos_numeris LIKE '%$search_query%' OR
-                            pagaminimo_data LIKE '%$search_query%' OR
-                            isigijimo_data LIKE '%$search_query%' OR
                             id_lektuvu_modelis LIKE '%$search_query%' OR
                             id_skrydziu_imone LIKE '%$search_query%'";
                     } else {
@@ -454,7 +452,7 @@ if (!empty($_SESSION['user']))     //Jei vartotojas prisijungęs, valom logino k
                     <div class="modal-content">
                         <form action="./lektuvas_list.php" method="post"> <!-- Update the action attribute -->
                             <div class="modal-header">
-                                <h4 class="modal-title">Lėktuvo paieška pagal kelis kriterijus</h4>
+                                <h4 class="modal-title">Lėktuvo paieška pagal registracijos numerį, modelį, įmonę</h4>
                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;
                                 </button>
                             </div>
