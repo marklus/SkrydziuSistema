@@ -101,7 +101,9 @@ if (!empty($_SESSION['user']))     //Jei vartotojas prisijungęs, valom logino k
                             <div class="col-sm-6">
                                 <a href="#addAirplaneModal" class="btn btn-success" data-toggle="modal"><i
                                             class="fas fa-plus-circle"></i><span>Pridėti</span></a>
-                                <input type="text" class="form-control" placeholder="Paieška">
+<!--                                <input type="text" class="form-control" placeholder="Paieška">-->
+                                <a href="#SearchAirplaneModal" class="btn btn-success" data-toggle="modal"><i class="fas fa-plus-circle"></i><span>Atlikti paiešką</span></a>
+
                             </div>
                         </div>
                     </div>
@@ -412,6 +414,34 @@ if (!empty($_SESSION['user']))     //Jei vartotojas prisijungęs, valom logino k
                 </div>
             </div>
 
+            <?php
+            //**************************************************************************************************
+            //MODALAS PAIEŠKOS
+            //**************************************************************************************************
+            ?>
+            <div id="SearchAirplaneModal" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <form action="oro_uostas.php" method="post">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Lėktuvo paieška pagal jo pavadinimą</h4>
+
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            </div>
+                            <div class="modal-body">
+
+                                <input type="text" name="search_id" id="search_id" placeholder="Rašyti čia">
+
+
+                            </div>
+                            <div class="modal-footer">
+                                <input type="button" class="btn btn-default" data-dismiss="modal" value="Atšaukti">
+                                <input type="submit" class="btn btn-info" name="search_submit" value="Pateikti">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
 
             <?php
             //**************************************************************************************************
