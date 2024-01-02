@@ -41,6 +41,7 @@ if (!empty($_SESSION['user']))     //Jei vartotojas prisijungęs, valom logino k
     include("include/login.php");                    // prisijungimo forma
     echo "</td></tr></table></div><br>";
 }
+
 ?>
 
 
@@ -99,10 +100,19 @@ if (!empty($_SESSION['user']))     //Jei vartotojas prisijungęs, valom logino k
                                 <h2>Lėktuvai <b> </b></h2>
                             </div>
                             <div class="col-sm-6">
-                                <a href="#addAirplaneModal" class="btn btn-success" data-toggle="modal"><i
-                                            class="fas fa-plus-circle"></i><span>Pridėti</span></a>
-<!--                                <input type="text" class="form-control" placeholder="Paieška">-->
-                                <a href="#SearchAirplaneModal" class="btn btn-success" data-toggle="modal"><i class="fas fa-plus-circle"></i><span>Atlikti paiešką</span></a>
+
+                                <!--                                <input type="text" class="form-control" placeholder="Paieška">-->
+
+                                <?php
+                                if ($userlevel == $user_roles[ADMIN_LEVEL]) {
+                                    ?>
+                                    <a href="#addAirplaneModal" class="btn btn-success" data-toggle="modal"><i
+                                                class="fas fa-plus-circle"></i><span>Pridėti</span></a>
+                                    <?php
+                                }
+                                ?>
+                                <a href="#SearchAirplaneModal" class="btn btn-success" data-toggle="modal"><i
+                                            class="fas fa-plus-circle"></i><span>Atlikti paiešką</span></a>
 
                             </div>
                         </div>
@@ -126,7 +136,6 @@ if (!empty($_SESSION['user']))     //Jei vartotojas prisijungęs, valom logino k
                     $db = mysqli_connect(DB_SERVER, DB_USER, DB_PASS, DB_NAME);
 
 
-
                     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["search_airplane"])) {
                         //**************************************************************************************************
                         //LĖKTUVŲ IŠRINKIMAS JEI BUVO VYKDOMA PAIEŠKA
@@ -142,9 +151,7 @@ if (!empty($_SESSION['user']))     //Jei vartotojas prisijungęs, valom logino k
                             isigijimo_data LIKE '%$search_query%' OR
                             id_lektuvu_modelis LIKE '%$search_query%' OR
                             id_skrydziu_imone LIKE '%$search_query%'";
-                    }
-                    else
-                    {
+                    } else {
                         $sql = "SELECT lektuvai.*, 
                                 skrydziu_imones.id_skrydziu_imone AS skrydzio_imone_id,
                                 lektuvu_modeliai.id_lektuvu_modelis AS lektuvo_modelis_id,
@@ -155,7 +162,6 @@ if (!empty($_SESSION['user']))     //Jei vartotojas prisijungęs, valom logino k
                             LEFT JOIN skrydziu_imones ON lektuvai.id_skrydziu_imone = skrydziu_imones.id_skrydziu_imone
                             LEFT JOIN lektuvu_modeliai ON lektuvai.id_lektuvu_modelis = lektuvu_modeliai.id_lektuvu_modelis
                             LEFT JOIN lektuvu_gamintojai ON lektuvu_modeliai.id_lektuvu_gamintojas = lektuvu_gamintojai.id_lektuvu_gamintojas";
-
                     }
                     $result = mysqli_query($db, $sql);
 
@@ -205,15 +211,16 @@ if (!empty($_SESSION['user']))     //Jei vartotojas prisijungęs, valom logino k
 
 
                             echo '<td>';
+                            if ($userlevel == $user_roles[ADMIN_LEVEL]) {
 //                            echo '<a href="#editAirplaneModal" class="edit" data-toggle="modal" data-id="' . $row['registracijos_numeris'] . '"><i class="fas fa-pen" data-toggle="tooltip" title="Redaguoti"></i></a>';
-                            echo '<a href="#editAirplaneModal" class="edit" data-toggle="modal" data-row=\'' . htmlspecialchars(
-                                    json_encode($row),
-                                    ENT_QUOTES,
-                                    'UTF-8'
-                                ) . '\'><i class="fas fa-pen" data-toggle="tooltip" title="Redaguoti"></i></a>';
+                                echo '<a href="#editAirplaneModal" class="edit" data-toggle="modal" data-row=\'' . htmlspecialchars(
+                                        json_encode($row),
+                                        ENT_QUOTES,
+                                        'UTF-8'
+                                    ) . '\'><i class="fas fa-pen" data-toggle="tooltip" title="Redaguoti"></i></a>';
 
-                            echo '<a href="#deleteAirplaneModal" class="delete" data-toggle="modal" data-id="' . $row['registracijos_numeris'] . '"><i class="fas fa-trash" data-toggle="tooltip" title="Pašalinti"></i></a>';
-
+                                echo '<a href="#deleteAirplaneModal" class="delete" data-toggle="modal" data-id="' . $row['registracijos_numeris'] . '"><i class="fas fa-trash" data-toggle="tooltip" title="Pašalinti"></i></a>';
+                            }
 
                             echo '<a href="lektuvas.php?id=' . $row['registracijos_numeris'] . '">LĖKTUVO PERŽIŪRA</a>';
                             echo '</td>';
@@ -364,7 +371,8 @@ if (!empty($_SESSION['user']))     //Jei vartotojas prisijungęs, valom logino k
 
                                 <div class="form-group">
                                     <label for="edit_id_lektuvu_modelis">Lėktuvo Modelis</label>
-                                    <select id="edit_id_lektuvu_modelis" name="edit_id_lektuvu_modelis" class="form-control" required>
+                                    <select id="edit_id_lektuvu_modelis" name="edit_id_lektuvu_modelis"
+                                            class="form-control" required>
                                         <?php
                                         $modelSql = "SELECT lm.id_lektuvu_modelis, lm.pavadinimas AS modelis, lg.pavadinimas AS gamintojas
                                              FROM lektuvu_modeliai AS lm
@@ -380,7 +388,8 @@ if (!empty($_SESSION['user']))     //Jei vartotojas prisijungęs, valom logino k
 
                                 <div class="form-group">
                                     <label for="edit_id_skrydziu_imone">Skrydžių Įmonė</label>
-                                    <select id="edit_id_skrydziu_imone" name="edit_id_skrydziu_imone" class="form-control"
+                                    <select id="edit_id_skrydziu_imone" name="edit_id_skrydziu_imone"
+                                            class="form-control"
                                             required>
                                         <?php
                                         $companySql = "SELECT * FROM skrydziu_imones"; // Update with your table name
@@ -446,12 +455,14 @@ if (!empty($_SESSION['user']))     //Jei vartotojas prisijungęs, valom logino k
                         <form action="./lektuvas_list.php" method="post"> <!-- Update the action attribute -->
                             <div class="modal-header">
                                 <h4 class="modal-title">Lėktuvo paieška pagal kelis kriterijus</h4>
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;
+                                </button>
                             </div>
                             <div class="modal-body">
                                 <div class="form-group">
                                     <label for="search_query">Paieška</label>
-                                    <input type="text" id="search_query" name="search_query" class="form-control" placeholder="Įveskite paieškos kriterijus">
+                                    <input type="text" id="search_query" name="search_query" class="form-control"
+                                           placeholder="Įveskite paieškos kriterijus">
                                 </div>
                             </div>
                             <div class="modal-footer">
