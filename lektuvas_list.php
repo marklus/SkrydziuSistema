@@ -128,29 +128,33 @@ if (!empty($_SESSION['user']))     //Jei vartotojas prisijungęs, valom logino k
 
 
                     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["search_airplane"])) {
+                        //**************************************************************************************************
+                        //LĖKTUVŲ IŠRINKIMAS JEI BUVO VYKDOMA PAIEŠKA
+                        //**************************************************************************************************
+
                         // Retrieve search query
                         $search_query = $_POST["search_query"];
 
                         // Perform search across multiple fields in the 'lektuvai' table
                         $sql = "SELECT * FROM lektuvai WHERE 
-        registracijos_numeris LIKE '%$search_query%' OR
-        pagaminimo_data LIKE '%$search_query%' OR
-        isigijimo_data LIKE '%$search_query%' OR
-        id_lektuvu_modelis LIKE '%$search_query%' OR
-        id_skrydziu_imone LIKE '%$search_query%'";
+                            registracijos_numeris LIKE '%$search_query%' OR
+                            pagaminimo_data LIKE '%$search_query%' OR
+                            isigijimo_data LIKE '%$search_query%' OR
+                            id_lektuvu_modelis LIKE '%$search_query%' OR
+                            id_skrydziu_imone LIKE '%$search_query%'";
                     }
                     else
                     {
                         $sql = "SELECT lektuvai.*, 
-                skrydziu_imones.id_skrydziu_imone AS skrydzio_imone_id,
-                lektuvu_modeliai.id_lektuvu_modelis AS lektuvo_modelis_id,
-                skrydziu_imones.pavadinimas AS skrydzio_imone, 
-                lektuvu_modeliai.pavadinimas AS lektuvo_modelis,
-                lektuvu_gamintojai.pavadinimas AS lektuvo_gamintojas
-            FROM lektuvai
-            LEFT JOIN skrydziu_imones ON lektuvai.id_skrydziu_imone = skrydziu_imones.id_skrydziu_imone
-            LEFT JOIN lektuvu_modeliai ON lektuvai.id_lektuvu_modelis = lektuvu_modeliai.id_lektuvu_modelis
-            LEFT JOIN lektuvu_gamintojai ON lektuvu_modeliai.id_lektuvu_gamintojas = lektuvu_gamintojai.id_lektuvu_gamintojas";
+                                skrydziu_imones.id_skrydziu_imone AS skrydzio_imone_id,
+                                lektuvu_modeliai.id_lektuvu_modelis AS lektuvo_modelis_id,
+                                skrydziu_imones.pavadinimas AS skrydzio_imone, 
+                                lektuvu_modeliai.pavadinimas AS lektuvo_modelis,
+                                lektuvu_gamintojai.pavadinimas AS lektuvo_gamintojas
+                            FROM lektuvai
+                            LEFT JOIN skrydziu_imones ON lektuvai.id_skrydziu_imone = skrydziu_imones.id_skrydziu_imone
+                            LEFT JOIN lektuvu_modeliai ON lektuvai.id_lektuvu_modelis = lektuvu_modeliai.id_lektuvu_modelis
+                            LEFT JOIN lektuvu_gamintojai ON lektuvu_modeliai.id_lektuvu_gamintojas = lektuvu_gamintojai.id_lektuvu_gamintojas";
 
                     }
                     $result = mysqli_query($db, $sql);
@@ -281,8 +285,8 @@ if (!empty($_SESSION['user']))     //Jei vartotojas prisijungęs, valom logino k
                                             required>
                                         <?php
                                         $modelSql = "SELECT lm.id_lektuvu_modelis, lm.pavadinimas AS modelis, lg.pavadinimas AS gamintojas
-             FROM lektuvu_modeliai AS lm
-             LEFT JOIN lektuvu_gamintojai AS lg ON lm.id_lektuvu_gamintojas = lg.id_lektuvu_gamintojas"; // Update with your table name
+                                             FROM lektuvu_modeliai AS lm
+                                             LEFT JOIN lektuvu_gamintojai AS lg ON lm.id_lektuvu_gamintojas = lg.id_lektuvu_gamintojas"; // Update with your table name
                                         $modelResult = mysqli_query($db, $modelSql);
 
                                         while ($modelRow = mysqli_fetch_assoc($modelResult)) {
@@ -363,8 +367,8 @@ if (!empty($_SESSION['user']))     //Jei vartotojas prisijungęs, valom logino k
                                     <select id="edit_id_lektuvu_modelis" name="edit_id_lektuvu_modelis" class="form-control" required>
                                         <?php
                                         $modelSql = "SELECT lm.id_lektuvu_modelis, lm.pavadinimas AS modelis, lg.pavadinimas AS gamintojas
-                     FROM lektuvu_modeliai AS lm
-                     LEFT JOIN lektuvu_gamintojai AS lg ON lm.id_lektuvu_gamintojas = lg.id_lektuvu_gamintojas"; // Update with your table name
+                                             FROM lektuvu_modeliai AS lm
+                                             LEFT JOIN lektuvu_gamintojai AS lg ON lm.id_lektuvu_gamintojas = lg.id_lektuvu_gamintojas"; // Update with your table name
                                         $modelResult = mysqli_query($db, $modelSql);
 
                                         while ($modelRow = mysqli_fetch_assoc($modelResult)) {
