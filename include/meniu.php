@@ -73,8 +73,8 @@ $role="";
 								Skrydziai <span class="sr-only"></span></a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="lektuvas-list.php"><i class="fa fa-list-alt"></i>
-								Lėktuvas <span class="sr-only"></span></a>
+							<a class="nav-link" href="lektuvas_list.php"><i class="fa fa-list-alt"></i>
+								Lėktuvai <span class="sr-only"></span></a>
 						</li>
 					</ul>
 					<ul class="navbar-nav">

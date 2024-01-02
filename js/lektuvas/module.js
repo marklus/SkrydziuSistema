@@ -7,6 +7,12 @@ import * as THREE from 'https://cdn.jsdelivr.net/npm/three@latest/build/three.mo
             OrbitControls
         } from 'https://cdn.jsdelivr.net/npm/three@latest/examples/jsm/controls/OrbitControls.js';
 
+document.addEventListener('DOMContentLoaded', function() {
+    // const modelPath = window.modelPath;
+    const modelPath = decodeURIComponent(window.modelPath);
+    // console.log('Model Path:', modelPath);
+
+
 
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -18,7 +24,8 @@ import * as THREE from 'https://cdn.jsdelivr.net/npm/three@latest/build/three.mo
         const ambientLight = new THREE.AmbientLight(0xffffff, 0.5); // Soft white light
         scene.add(ambientLight);
 
-        // renderer.setSize(window.innerWidth, window.innerHeight);
+
+// renderer.setSize(window.innerWidth, window.innerHeight);
         // document.body.appendChild(renderer.domElement);
         const container = document.getElementById('container');
         const canvasWidth = container.offsetWidth - (2 * 100); // Considering left and right padding of 20px
@@ -28,7 +35,8 @@ import * as THREE from 'https://cdn.jsdelivr.net/npm/three@latest/build/three.mo
 
         const loader = new OBJLoader();
         loader.load(
-            '3dModels/Airplane1/11803_Airplane_v1_l1.obj',
+            modelPath
+            ,
             function(object) {
 
 
@@ -56,3 +64,4 @@ import * as THREE from 'https://cdn.jsdelivr.net/npm/three@latest/build/three.mo
         }
 
         animate();
+});

@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 18, 2023 at 11:32 AM
--- Server version: 10.4.27-MariaDB
--- PHP Version: 8.2.0
+-- Generation Time: Dec 17, 2023 at 04:52 PM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.0.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -79,6 +79,9 @@ CREATE TABLE `lektuvai` (
   `wifi` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+
+
+
 -- --------------------------------------------------------
 
 --
@@ -98,9 +101,10 @@ CREATE TABLE `lektuvu_gamintojai` (
 
 CREATE TABLE `lektuvu_modeliai` (
   `pavadinimas` varchar(255) DEFAULT NULL,
-  `id_lektuvu_modelis` int(11) NOT NULL,
-  `kelias_iki_3d` varchar(255) DEFAULT NULL
+  `id_lektuvu_modelis` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
 
 -- --------------------------------------------------------
 
@@ -123,8 +127,7 @@ CREATE TABLE `oro_uostai` (
   `pavadinimas` varchar(255) DEFAULT NULL,
   `iata_oro_uosto_kodas` varchar(255) DEFAULT NULL,
   `reitingas` double NOT NULL,
-  `adresas` varchar(255) NOT NULL,
-  `id_miestas` int(11) NOT NULL
+  `adresas` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -138,8 +141,7 @@ CREATE TABLE `pamainos` (
   `pabaigos_laikas` date NOT NULL,
   `darbuotojo_id` int(255) NOT NULL,
   `statusas` varchar(255) NOT NULL,
-  `id_pamaina` int(11) NOT NULL,
-  `skrydzio_id` int(11) NOT NULL
+  `id_pamaina` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -264,8 +266,9 @@ CREATE TABLE `vietos` (
 -- Table structure for table `vietos_lektuve`
 --
 
+
 CREATE TABLE `vietos_lektuve` (
-  `id_vieta_lektuve` int(11) NOT NULL
+                                  `id_vieta_lektuve` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -304,19 +307,11 @@ ALTER TABLE `miestai`
   ADD PRIMARY KEY (`id_miestas`);
 
 --
--- Indexes for table `oro_uostai`
---
-ALTER TABLE `oro_uostai`
-  ADD PRIMARY KEY (`id_miestas`),
-  ADD KEY `iata_oro_uosto_kodas` (`iata_oro_uosto_kodas`);
-
---
 -- Indexes for table `pamainos`
 --
 ALTER TABLE `pamainos`
   ADD PRIMARY KEY (`id_pamaina`),
-  ADD KEY `darbuotojo_id` (`darbuotojo_id`),
-  ADD KEY `fk_skrydis` (`skrydzio_id`);
+  ADD KEY `darbuotojo_id` (`darbuotojo_id`);
 
 --
 -- Indexes for table `skrydziai`
@@ -336,12 +331,6 @@ ALTER TABLE `skrydziu_imones`
 ALTER TABLE `users`
   ADD PRIMARY KEY (`userid`);
 
---
--- Indexes for table `uzsakymai`
---
-ALTER TABLE `uzsakymai`
-  ADD PRIMARY KEY (`id_uzsakymas`),
-  ADD KEY `fk_uzsakymai_bilietai` (`id_bilietas`);
 
 --
 -- Indexes for table `valstybes`
@@ -396,12 +385,6 @@ ALTER TABLE `miestai`
   MODIFY `id_miestas` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `oro_uostai`
---
-ALTER TABLE `oro_uostai`
-  MODIFY `id_miestas` int(11) NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT for table `pamainos`
 --
 ALTER TABLE `pamainos`
@@ -419,13 +402,6 @@ ALTER TABLE `skrydziai`
 ALTER TABLE `skrydziu_imones`
   MODIFY `id_skrydziu_imone` int(11) NOT NULL AUTO_INCREMENT;
 
---
--- AUTO_INCREMENT for table `uzsakymai`
---
-ALTER TABLE `uzsakymai`
-  MODIFY `id_uzsakymas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
-
---
 -- AUTO_INCREMENT for table `valstybes`
 --
 ALTER TABLE `valstybes`
@@ -457,26 +433,78 @@ ALTER TABLE `bilietai`
 -- Constraints for table `pamainos`
 --
 ALTER TABLE `pamainos`
-  ADD CONSTRAINT `fk_skrydis` FOREIGN KEY (`skrydzio_id`) REFERENCES `skrydziai` (`id_skrydis`);
-COMMIT;
+  ADD CONSTRAINT `darbuotojo_id` FOREIGN KEY (`darbuotojo_id`) REFERENCES `darbuotojai` (`id_darbuotojas`);
+
+-- airplane changes
+
+ALTER TABLE lektuvai
+    ADD INDEX idx_registracijos_numeris (registracijos_numeris);
+
+
+ALTER TABLE `lektuvu_modeliai`
+    ADD COLUMN `kelias_iki_3d` VARCHAR(255) DEFAULT NULL;
+
+ALTER TABLE lektuvai
+    ADD COLUMN id_lektuvu_modelis INT(11) NOT NULL,
+ADD CONSTRAINT fk_lektuvai_lektuvu_modeliai
+    FOREIGN KEY (id_lektuvu_modelis)
+    REFERENCES lektuvu_modeliai (id_lektuvu_modelis);
+
+ALTER TABLE lektuvai
+    ADD COLUMN id_skrydziu_imone INT(11) NOT NULL,
+ADD CONSTRAINT fk_lektuvai_skrydziu_imones
+    FOREIGN KEY (id_skrydziu_imone)
+    REFERENCES skrydziu_imones (id_skrydziu_imone);
+
+ALTER TABLE lektuvu_modeliai
+    ADD COLUMN id_lektuvu_gamintojas INT(11) NOT NULL,
+ADD CONSTRAINT fk_lektuvu_modeliai_lektuvu_gamintojai
+    FOREIGN KEY (id_lektuvu_gamintojas)
+    REFERENCES lektuvu_gamintojai (id_lektuvu_gamintojas);
+
+ALTER TABLE vietos_lektuve
+    ADD COLUMN id_vietos INT(11) NOT NULL,
+    ADD COLUMN id_lektuvo varchar(255) NOT NULL,
+    ADD CONSTRAINT fk_vietos_lektuve_vieta
+        FOREIGN KEY (id_vietos)
+        REFERENCES vietos (id_vieta),
+    ADD CONSTRAINT fk_vietos_lektuve_lektuvas
+        FOREIGN KEY (id_lektuvo)
+        REFERENCES lektuvai(registracijos_numeris);
+
+
+-- some airplane stuff :))
+
+-- Inserting into lektuvu_gamintojai
+INSERT INTO lektuvu_gamintojai (pavadinimas, id_lektuvu_gamintojas)
+VALUES ('Boeing', 1);
+
+INSERT INTO skrydziu_imones (pavadinimas)
+VALUES ('New Airline');
+
+
+-- Inserting into lektuvu_modeliai
+INSERT INTO lektuvu_modeliai (pavadinimas, id_lektuvu_modelis, kelias_iki_3d, id_lektuvu_gamintojas)
+VALUES ('Model 737', 1, '3dModels/Airplane1/11803_Airplane_v1_l1.obj', 1);
+
+-- Inserting into vietos
+INSERT INTO vietos (eile, keliones_patogumo_indeksas)
+VALUES (1, 'A');
+
+-- Inserting into lektuvai
+INSERT INTO lektuvai (registracijos_numeris, pagaminimo_data, isigijimo_data, wifi, id_lektuvu_modelis, id_skrydziu_imone)
+VALUES ('ABC123', '2022-01-01', '2023-01-01', 1, 1, 1);
+
+-- Inserting into vietos
+INSERT INTO vietos ()
+VALUES ();
+
+-- Inserting into vietos_lektuve
+INSERT INTO vietos_lektuve (id_vietos, id_lektuvo)
+VALUES (1, "ABC123");
+
+-- COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-
---- insert some airplane stuff :))
-
-INSERT INTO lektuvu_gamintojai (pavadinimas, id_lektuvu_gamintojas) 
-VALUES ('Boeing', 1);
-
-INSERT INTO lektuvu_modeliai (pavadinimas, id_lektuvu_modelis, kelias_iki_3d) 
-VALUES ('Model 737', 1, '3dModels/Airplane1/11803_Airplane_v1_l1.obj');
-
-INSERT INTO lektuvai (registracijos_numeris, pagaminimo_data, isigijimo_data, wifi) 
-VALUES ('ABC123', '2022-01-01', '2023-01-01', 1);
-
-INSERT INTO vietos (eile, keliones_patogumo_indeksas, id_vieta) 
-VALUES (1, 'A', 1);
-
-INSERT INTO vietos_lektuve (id_vieta_lektuve) 
-VALUES (1);
