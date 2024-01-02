@@ -412,7 +412,7 @@ function redirectToFlightRadar() {
 						<form action="skrydziai.php" method="post">
 							<input type="hidden" name="edit_id" id="edit_id">
 							<div class="modal-header">
-							<h4 class="modal-title">Pridėti Užsakymą</h4>
+							<h4 class="modal-title">Pridėti Skrydį</h4>
 							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 							</div>
 							<div class="modal-body">
@@ -656,7 +656,7 @@ function redirectToFlightRadar() {
 						
 							<div class="modal-content">
 							<div class="modal-header">
-										<h4 class="modal-title">Pašalinti užsakymą</h4>
+										<h4 class="modal-title">Pašalinti skrydį</h4>
 										<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 									</div>
 								<form action="skrydziai.php" method="post">
@@ -666,8 +666,8 @@ function redirectToFlightRadar() {
 
 								</div>
 									<div class="modal-body">
-										<p>Ar tikrai norite pašalinti užsakymą?</p>
-										<p class="text-warning"><small>Užsakymo nebus galima grąžinti.</small></p>
+										<p>Ar tikrai norite pašalinti skrydį?</p>
+										<p class="text-warning"><small>skrydžio nebus galima grąžinti.</small></p>
 									</div>
 									<div class="modal-footer">
 										<input type="button" class="btn btn-default" data-dismiss="modal" value="Atšaukti">
@@ -685,7 +685,7 @@ function redirectToFlightRadar() {
 						
 							<div class="modal-content">
 							<div class="modal-header">
-										<h4 class="modal-title">Pašalinti užsakymą</h4>
+										<h4 class="modal-title">Pašalinti skrydį</h4>
 										<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 									</div>
 								<form action="skrydziai.php" method="post">
@@ -695,8 +695,8 @@ function redirectToFlightRadar() {
 
 								</div>
 									<div class="modal-body">
-										<p>Ar tikrai norite pašalinti užsakymą?</p>
-										<p class="text-warning"><small>Užsakymo nebus galima grąžinti.</small></p>
+										<p>Ar tikrai norite pašalinti skrydį?</p>
+										<p class="text-warning"><small>skrydžio nebus galima grąžinti.</small></p>
 									</div>
 									<div class="modal-footer">
 										<input type="button" class="btn btn-default" data-dismiss="modal" value="Atšaukti">
