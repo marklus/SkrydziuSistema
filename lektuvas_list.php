@@ -422,26 +422,26 @@ if (!empty($_SESSION['user']))     //Jei vartotojas prisijungęs, valom logino k
             <div id="SearchAirplaneModal" class="modal fade">
                 <div class="modal-dialog">
                     <div class="modal-content">
-                        <form action="oro_uostas.php" method="post">
+                        <form action="./lektuvas_actions/handle_airplane_search.php" method="post"> <!-- Update the action attribute -->
                             <div class="modal-header">
-                                <h4 class="modal-title">Lėktuvo paieška pagal jo pavadinimą</h4>
-
+                                <h4 class="modal-title">Lėktuvo paieška pagal kelis kriterijus</h4>
                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                             </div>
                             <div class="modal-body">
-
-                                <input type="text" name="search_id" id="search_id" placeholder="Rašyti čia">
-
-
+                                <div class="form-group">
+                                    <label for="search_query">Paieška</label>
+                                    <input type="text" id="search_query" name="search_query" class="form-control" placeholder="Įveskite paieškos kriterijus">
+                                </div>
                             </div>
                             <div class="modal-footer">
                                 <input type="button" class="btn btn-default" data-dismiss="modal" value="Atšaukti">
-                                <input type="submit" class="btn btn-info" name="search_submit" value="Pateikti">
+                                <input type="submit" class="btn btn-info" name="search_submit" value="Ieškoti">
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
+
 
             <?php
             //**************************************************************************************************
